@@ -3,10 +3,16 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { colors, Input, Select, Tooltip } from '@novu/design-system';
 import { useLayouts } from '../../../../hooks';
 import { useEffect } from 'react';
-import { useStepFormPath } from '../../hooks/useStepFormPath';
-import { useStepFormErrors } from '../../hooks/useStepFormErrors';
 
-export const EmailInboxContent = ({ integration, readonly }: { readonly: boolean; integration: any }) => {
+export const EmailInboxContent = ({
+  integration,
+  index,
+  readonly,
+}: {
+  index: number;
+  readonly: boolean;
+  integration: any;
+}) => {
   const theme = useMantineTheme();
   const {
     control,
@@ -15,18 +21,16 @@ export const EmailInboxContent = ({ integration, readonly }: { readonly: boolean
     formState: { errors },
   } = useFormContext();
   const { layouts, isLoading } = useLayouts(0, 100);
-  const stepFormPath = useStepFormPath();
-  const stepFormErrors = useStepFormErrors();
 
   useEffect(() => {
-    const layout = getValues(`${stepFormPath}.template.layoutId`);
+    const layout = getValues(`steps.${index}.template.layoutId`);
     if (layouts?.length && !layout) {
       const defaultLayout = layouts?.find((el) => el.isDefault);
       setTimeout(() => {
-        setValue(`${stepFormPath}.template.layoutId`, defaultLayout?._id, { shouldValidate: true });
+        setValue(`steps.${index}.template.layoutId`, defaultLayout?._id, { shouldValidate: true });
       }, 0);
     }
-  }, [getValues, setValue, layouts, stepFormPath]);
+  }, [getValues, setValue, layouts, index]);
 
   return (
     <div
@@ -40,7 +44,7 @@ export const EmailInboxContent = ({ integration, readonly }: { readonly: boolean
       <Grid grow justify="center" align="stretch">
         <Grid.Col span={3}>
           <Controller
-            name={`${stepFormPath}.template.senderName`}
+            name={`steps.${index}.template.senderName`}
             defaultValue=""
             control={control}
             render={({ field }) => {
@@ -53,7 +57,7 @@ export const EmailInboxContent = ({ integration, readonly }: { readonly: boolean
                       <span>Sender name</span>
                     </Tooltip>
                   }
-                  error={stepFormErrors ? stepFormErrors.template?.senderName?.message : undefined}
+                  error={errors?.steps ? errors.steps[index]?.template?.senderName?.message : undefined}
                   disabled={readonly}
                   value={field.value}
                   placeholder={integration?.credentials?.senderName}
@@ -66,7 +70,7 @@ export const EmailInboxContent = ({ integration, readonly }: { readonly: boolean
         <Grid.Col span={4}>
           <div>
             <Controller
-              name={`${stepFormPath}.template.subject`}
+              name={`steps.${index}.template.subject`}
               defaultValue=""
               control={control}
               render={({ field }) => {
@@ -75,7 +79,7 @@ export const EmailInboxContent = ({ integration, readonly }: { readonly: boolean
                     {...field}
                     label="Subject"
                     required
-                    error={stepFormErrors ? stepFormErrors.template?.subject?.message : undefined}
+                    error={errors?.steps ? errors.steps[index]?.template?.subject?.message : undefined}
                     disabled={readonly}
                     value={field.value}
                     placeholder="Type the email subject..."
@@ -88,7 +92,7 @@ export const EmailInboxContent = ({ integration, readonly }: { readonly: boolean
         </Grid.Col>
         <Grid.Col span={4}>
           <Controller
-            name={`${stepFormPath}.template.preheader`}
+            name={`steps.${index}.template.preheader`}
             defaultValue=""
             control={control}
             render={({ field, fieldState }) => {
@@ -108,7 +112,7 @@ export const EmailInboxContent = ({ integration, readonly }: { readonly: boolean
         </Grid.Col>
       </Grid>
       <Controller
-        name={`${stepFormPath}.template.layoutId`}
+        name={`steps.${index}.template.layoutId`}
         defaultValue=""
         control={control}
         render={({ field }) => {
@@ -120,7 +124,7 @@ export const EmailInboxContent = ({ integration, readonly }: { readonly: boolean
               loading={isLoading}
               disabled={readonly}
               required={(layouts || [])?.length > 0}
-              error={stepFormErrors ? stepFormErrors.template?.layoutId?.message : undefined}
+              error={errors?.steps ? errors?.steps[index]?.template?.layoutId?.message : undefined}
               searchable
               placeholder="Select layout"
               data={(layouts || []).map((layout) => ({ value: layout._id as string, label: layout.name }))}

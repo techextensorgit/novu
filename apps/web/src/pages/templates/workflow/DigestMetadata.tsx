@@ -11,26 +11,22 @@ import { RegularInfo } from './digest/icons/RegularInfo';
 import { TimedDigestMetadata } from './TimedDigestMetadata';
 import { RegularDigestMetadata } from './RegularDigestMetadata';
 import { StepSettings } from './SideBar/StepSettings';
-import { useEnvController } from '../../../hooks';
-import { useStepFormPath } from '../hooks/useStepFormPath';
 
 const GroupStyled = styled(Group)`
   gap: 18px;
 `;
 
-export const DigestMetadata = () => {
-  const { readonly } = useEnvController();
-  const stepFormPath = useStepFormPath();
+export const DigestMetadata = ({ index, readonly }: { index: number; readonly: boolean }) => {
   const { control, watch } = useFormContext();
 
   const { colorScheme } = useMantineColorScheme();
 
-  const type = watch(`${stepFormPath}.digestMetadata.type`);
-  const digestKey = watch(`${stepFormPath}.digestMetadata.digestKey`);
+  const type = watch(`steps.${index}.digestMetadata.type`);
+  const digestKey = watch(`steps.${index}.digestMetadata.digestKey`);
 
   return (
     <div data-test-id="digest-step-settings-interval">
-      <StepSettings />
+      <StepSettings index={index} />
       <Accordion mt={16} styles={{ item: { '&:last-of-type': { marginBottom: 0 } } }}>
         <Tooltip
           position="left"
@@ -103,7 +99,7 @@ export const DigestMetadata = () => {
             <Accordion.Panel>
               <Controller
                 control={control}
-                name={`${stepFormPath}.digestMetadata.digestKey`}
+                name={`steps.${index}.digestMetadata.digestKey`}
                 defaultValue=""
                 render={({ field, fieldState }) => {
                   return (
@@ -133,7 +129,7 @@ export const DigestMetadata = () => {
                   <b>Will be sent</b>
                 </div>
                 <div>
-                  <WillBeSentHeader path={stepFormPath} />
+                  <WillBeSentHeader index={index} />
                 </div>
               </div>
             </GroupStyled>
@@ -142,7 +138,7 @@ export const DigestMetadata = () => {
             <Controller
               control={control}
               defaultValue={DigestTypeEnum.REGULAR}
-              name={`${stepFormPath}.digestMetadata.type`}
+              name={`steps.${index}.digestMetadata.type`}
               render={({ field }) => {
                 return (
                   <TypeSegmented
@@ -204,8 +200,8 @@ export const DigestMetadata = () => {
                 borderRadius: 8,
               }}
             >
-              {type === DigestTypeEnum.TIMED && <TimedDigestMetadata />}
-              {type === DigestTypeEnum.REGULAR && <RegularDigestMetadata />}
+              {type === DigestTypeEnum.TIMED && <TimedDigestMetadata index={index} readonly={readonly} />}
+              {type === DigestTypeEnum.REGULAR && <RegularDigestMetadata index={index} readonly={readonly} />}
             </div>
           </Accordion.Panel>
         </Accordion.Item>

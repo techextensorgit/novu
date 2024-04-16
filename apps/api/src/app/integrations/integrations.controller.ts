@@ -12,14 +12,10 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ChannelTypeEnum, IJwtPayload, MemberRoleEnum } from '@novu/shared';
-import {
-  CalculateLimitNovuIntegration,
-  CalculateLimitNovuIntegrationCommand,
-  OtelSpan,
-} from '@novu/application-generic';
-import { ApiExcludeEndpoint, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { CalculateLimitNovuIntegration, CalculateLimitNovuIntegrationCommand } from '@novu/application-generic';
+import { ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
-import { UserAuthGuard } from '../auth/framework/user.auth.guard';
+import { JwtAuthGuard } from '../auth/framework/auth.guard';
 import { UserSession } from '../shared/framework/user.decorator';
 import { CreateIntegration } from './usecases/create-integration/create-integration.usecase';
 import { CreateIntegrationRequestDto } from './dtos/create-integration-request.dto';
@@ -39,21 +35,15 @@ import { GetWebhookSupportStatus } from './usecases/get-webhook-support-status/g
 import { GetWebhookSupportStatusCommand } from './usecases/get-webhook-support-status/get-webhook-support-status.command';
 import { GetInAppActivatedCommand } from './usecases/get-in-app-activated/get-in-app-activated.command';
 import { GetInAppActivated } from './usecases/get-in-app-activated/get-in-app-activated.usecase';
-import {
-  ApiCommonResponses,
-  ApiResponse,
-  ApiNotFoundResponse,
-  ApiOkResponse,
-} from '../shared/framework/response.decorator';
+import { ApiResponse } from '../shared/framework/response.decorator';
 import { ChannelTypeLimitDto } from './dtos/get-channel-type-limit.sto';
 import { GetActiveIntegrationsCommand } from './usecases/get-active-integration/get-active-integration.command';
 import { SetIntegrationAsPrimary } from './usecases/set-integration-as-primary/set-integration-as-primary.usecase';
 import { SetIntegrationAsPrimaryCommand } from './usecases/set-integration-as-primary/set-integration-as-primary.command';
 
-@ApiCommonResponses()
 @Controller('/integrations')
 @UseInterceptors(ClassSerializerInterceptor)
-@UseGuards(UserAuthGuard)
+@UseGuards(JwtAuthGuard)
 @ApiTags('Integrations')
 export class IntegrationsController {
   constructor(
@@ -70,7 +60,7 @@ export class IntegrationsController {
 
   @Get('/')
   @ApiOkResponse({
-    type: [IntegrationResponseDto],
+    type: IntegrationResponseDto,
     description: 'The list of integrations belonging to the organization that are successfully returned.',
   })
   @ApiOperation({
@@ -91,7 +81,7 @@ export class IntegrationsController {
 
   @Get('/active')
   @ApiOkResponse({
-    type: [IntegrationResponseDto],
+    type: IntegrationResponseDto,
     description: 'The list of active integrations belonging to the organization that are successfully returned.',
   })
   @ApiOperation({
@@ -110,7 +100,7 @@ export class IntegrationsController {
     );
   }
 
-  @Get('/webhook/provider/:providerOrIntegrationId/status')
+  @Get('/webhook/provider/:providerId/status')
   @ApiOkResponse({
     type: Boolean,
     description: 'The status of the webhook for the provider requested',
@@ -123,13 +113,13 @@ export class IntegrationsController {
   @ExternalApiAccessible()
   async getWebhookSupportStatus(
     @UserSession() user: IJwtPayload,
-    @Param('providerOrIntegrationId') providerOrIntegrationId: string
+    @Param('providerId') providerId: string
   ): Promise<boolean> {
     return await this.getWebhookSupportStatusUsecase.execute(
       GetWebhookSupportStatusCommand.create({
         environmentId: user.environmentId,
         organizationId: user.organizationId,
-        providerOrIntegrationId,
+        providerId: providerId,
         userId: user._id,
       })
     );
@@ -256,8 +246,7 @@ export class IntegrationsController {
   }
 
   @Get('/:channelType/limit')
-  @ApiExcludeEndpoint()
-  @OtelSpan()
+  @ApiResponse(ChannelTypeLimitDto)
   async getProviderLimit(
     @UserSession() user: IJwtPayload,
     @Param('channelType') channelType: ChannelTypeEnum
@@ -278,7 +267,6 @@ export class IntegrationsController {
   }
 
   @Get('/in-app/status')
-  @ApiExcludeEndpoint()
   async getInAppActivated(@UserSession() user: IJwtPayload) {
     return await this.getInAppActivatedUsecase.execute(
       GetInAppActivatedCommand.create({

@@ -22,6 +22,6 @@ export class OrganizationResponseDto {
   _id: string;
   @ApiProperty()
   name: string;
-  @ApiPropertyOptional()
-  branding?: Branding;
+  @ApiProperty()
+  branding: Branding;
 }

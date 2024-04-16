@@ -20,7 +20,6 @@ export class SubscriberOnlineService {
   async handleDisconnection(subscriber: ISubscriberJwt, activeConnections: number) {
     const lastOnlineAt = new Date().toISOString();
     let isOnline = false;
-
     if (activeConnections > 1) {
       isOnline = true;
     }

@@ -1,5 +1,6 @@
 import { dragAndDrop } from './notification-editor';
 import { goBack } from './notification-editor';
+import { ROUTES } from '../../src/constants/routes.enum';
 
 describe('Changes Screen', function () {
   beforeEach(function () {
@@ -18,7 +19,7 @@ describe('Changes Screen', function () {
     promoteNotification();
 
     switchEnvironment('Production');
-    cy.location('pathname').should('equal', '/workflows');
+    cy.location('pathname').should('equal', ROUTES.WORKFLOWS);
 
     cy.getByTestId('create-workflow-btn').get('button').should('be.disabled');
     cy.getByTestId('notifications-template').find('tbody tr').first().click({ force: true });
@@ -52,12 +53,10 @@ describe('Changes Screen', function () {
     cy.waitForNetworkIdle(500);
 
     cy.getByTestId('title').first().clear().type('Updated Title');
-    cy.getByTestId('sidebar-close').click();
     cy.getByTestId('notification-template-submit-btn').click();
 
     cy.getByTestId('side-nav-changes-count').contains('1');
 
-    cy.getByTestId('settings-page').click();
     cy.getByTestId('active-toggle-switch').click({ force: true });
     cy.getByTestId('side-nav-changes-count').contains('1');
 
@@ -119,7 +118,7 @@ function switchEnvironment(environment: 'Production' | 'Development') {
 
 function createNotification() {
   cy.intercept('**/notification-groups').as('getNotificationGroups');
-  cy.visit('/workflows/create');
+  cy.visit(ROUTES.WORKFLOWS_CREATE);
   cy.waitForNetworkIdle(500);
 
   cy.getByTestId('title').clear().type('Test Notification Title');

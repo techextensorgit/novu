@@ -1,22 +1,26 @@
+import { IOrganizationEntity } from '@novu/shared';
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { IOrganizationEntity } from '@novu/shared';
-import { Tabs } from '@novu/design-system';
 
-import { useStepFormPath } from '../../hooks/useStepFormPath';
+import { Tabs } from '@novu/design-system';
 import { useActiveIntegrations, useEnvController } from '../../../../hooks';
+import { EmailCustomCodeEditor } from './EmailCustomCodeEditor';
 import { EmailInboxContent } from './EmailInboxContent';
 import { EmailMessageEditor } from './EmailMessageEditor';
-import { CustomCodeEditor } from '../CustomCodeEditor';
 
 const EDITOR = 'Editor';
 const CUSTOM_CODE = 'Custom Code';
 
-export function EmailContentCard({ organization }: { organization: IOrganizationEntity | undefined }) {
+export function EmailContentCard({
+  index,
+  organization,
+}: {
+  index: number;
+  organization: IOrganizationEntity | undefined;
+}) {
   const { readonly } = useEnvController();
-  const stepFormPath = useStepFormPath();
   const { control, setValue, watch } = useFormContext(); // retrieve all hook methods
-  const contentType = watch(`${stepFormPath}.template.contentType`);
+  const contentType = watch(`steps.${index}.template.contentType`);
   const activeTab = contentType === 'customHtml' ? CUSTOM_CODE : EDITOR;
   const { integrations = [] } = useActiveIntegrations();
   const [integration, setIntegration]: any = useState(null);
@@ -29,23 +33,23 @@ export function EmailContentCard({ organization }: { organization: IOrganization
   }, [integrations, setIntegration]);
 
   const onTabChange = (value: string | null) => {
-    setValue(`${stepFormPath}.template.contentType`, value === EDITOR ? 'editor' : 'customHtml');
+    setValue(`steps.${index}.template.contentType`, value === EDITOR ? 'editor' : 'customHtml');
   };
 
   const menuTabs = [
     {
       value: EDITOR,
-      content: <EmailMessageEditor branding={organization?.branding} readonly={readonly} />,
+      content: <EmailMessageEditor branding={organization?.branding} readonly={readonly} stepIndex={index} />,
     },
     {
       value: CUSTOM_CODE,
       content: (
         <Controller
-          name={`${stepFormPath}.template.htmlContent`}
+          name={`steps.${index}.template.htmlContent`}
           defaultValue=""
           control={control}
           render={({ field }) => {
-            return <CustomCodeEditor onChange={field.onChange} value={field.value} />;
+            return <EmailCustomCodeEditor onChange={field.onChange} value={field.value} />;
           }}
         />
       ),
@@ -54,7 +58,7 @@ export function EmailContentCard({ organization }: { organization: IOrganization
 
   return (
     <>
-      <EmailInboxContent integration={integration} readonly={readonly} />
+      <EmailInboxContent integration={integration} index={index} readonly={readonly} />
       <div data-test-id="email-step-settings-edit">
         <div data-test-id="editor-type-selector">
           <Tabs value={activeTab} onTabChange={onTabChange} menuTabs={menuTabs} keepMounted={false} />

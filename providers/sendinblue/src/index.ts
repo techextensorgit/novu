@@ -1,1 +1,1 @@
-export * from './lib/brevo.provider';
+export * from './lib/sendinblue.provider';

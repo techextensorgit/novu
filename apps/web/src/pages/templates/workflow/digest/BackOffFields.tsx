@@ -3,27 +3,22 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { Collapse } from '@mantine/core';
 import { DigestTypeEnum } from '@novu/shared';
 
-import { colors, Input, Switch, Tooltip, inputStyles, Text } from '@novu/design-system';
+import { colors, Input, Switch, Tooltip, inputStyles } from '@novu/design-system';
 import { IntervalSelect } from './IntervalSelect';
 import { BackOffTooltipIcon } from './icons/BackOffTooltipIcon';
 import { When } from '../../../../components/utils/When';
-import { useEnvController } from '../../../../hooks';
-import { useStepFormPath } from '../../hooks/useStepFormPath';
 
 const defaultBackoffAmount = '5';
 
-export const BackOffFields = () => {
-  const { readonly } = useEnvController();
-  const stepFormPath = useStepFormPath();
+export const BackOffFields = ({ index, control, readonly }) => {
   const {
-    control,
     formState: { errors, isSubmitted },
     watch,
     setValue,
   } = useFormContext();
 
-  const backoff = watch(`${stepFormPath}.digestMetadata.${DigestTypeEnum.REGULAR}.backoff`);
-  const backoffAmountFieldName = `${stepFormPath}.digestMetadata.${DigestTypeEnum.REGULAR}.backoffAmount`;
+  const backoff = watch(`steps.${index}.digestMetadata.${DigestTypeEnum.REGULAR}.backoff`);
+  const backoffAmountFieldName = `steps.${index}.digestMetadata.${DigestTypeEnum.REGULAR}.backoffAmount`;
   const showErrors = isSubmitted && errors?.steps;
 
   return (
@@ -44,16 +39,14 @@ export const BackOffFields = () => {
       >
         <Group spacing={0} mt={20} sx={{ color: colors.B60 }}>
           <Controller
-            name={`${stepFormPath}.digestMetadata.${DigestTypeEnum.REGULAR}.backoff`}
+            name={`steps.${index}.digestMetadata.${DigestTypeEnum.REGULAR}.backoff`}
             defaultValue={false}
             control={control}
             render={({ field }) => {
               return <Switch data-test-id="backoff-switch" checked={field.value === true} onChange={field.onChange} />;
             }}
           />
-          <Text ml={10} color={colors.B60}>
-            Only frequent events
-          </Text>
+          <div>Only frequent events</div>
         </Group>
       </Tooltip>
       <Collapse in={backoff}>
@@ -106,7 +99,7 @@ export const BackOffFields = () => {
               <IntervalSelect
                 readonly={readonly}
                 control={control}
-                name={`${stepFormPath}.digestMetadata.${DigestTypeEnum.REGULAR}.backoffUnit`}
+                name={`steps.${index}.digestMetadata.${DigestTypeEnum.REGULAR}.backoffUnit`}
                 showErrors={showErrors}
                 testId="time-unit-backoff"
               />

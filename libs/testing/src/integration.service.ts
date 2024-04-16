@@ -87,7 +87,6 @@ export class IntegrationService {
       channel: ChannelTypeEnum.EMAIL,
       credentials: {},
       active: false,
-      identifier: 'novu-email',
     };
 
     await this.integrationRepository.create(novuMailPayload);
@@ -99,7 +98,6 @@ export class IntegrationService {
       channel: ChannelTypeEnum.SMS,
       credentials: {},
       active: false,
-      identifier: 'novu-sms',
     };
 
     await this.integrationRepository.create(novuSmsPayload);
@@ -113,7 +111,6 @@ export class IntegrationService {
       active: true,
       primary: true,
       priority: 1,
-      identifier: 'sendgrid',
     };
 
     await this.integrationRepository.create(mailPayload);
@@ -127,7 +124,6 @@ export class IntegrationService {
       active: true,
       primary: true,
       priority: 1,
-      identifier: 'twilio',
     };
     await this.integrationRepository.create(smsPayload);
 
@@ -138,7 +134,6 @@ export class IntegrationService {
       channel: ChannelTypeEnum.CHAT,
       credentials: { applicationId: 'secret_123' },
       active: true,
-      identifier: 'slack',
     };
 
     await this.integrationRepository.create(chatSlackPayload);
@@ -150,7 +145,6 @@ export class IntegrationService {
       channel: ChannelTypeEnum.CHAT,
       credentials: { applicationId: 'secret_123' },
       active: true,
-      identifier: 'discord',
     };
 
     await this.integrationRepository.create(chatDiscordPayload);
@@ -162,7 +156,6 @@ export class IntegrationService {
       channel: ChannelTypeEnum.PUSH,
       credentials: { applicationId: 'secret_123', deviceTokens: ['test'] },
       active: true,
-      identifier: 'fcm',
     };
 
     await this.integrationRepository.create(pushFcmPayload);
@@ -176,7 +169,6 @@ export class IntegrationService {
         hmac: false,
       },
       active: true,
-      identifier: 'novu-in-app',
     };
 
     await this.integrationRepository.create(inAppPayload);

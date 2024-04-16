@@ -69,7 +69,7 @@ export class GenericSmsProvider implements ISmsProvider {
       method: 'POST',
       data: {
         ...options,
-        sender: options.from || this.config.from,
+        sender: this.config.from,
       },
     });
 
@@ -77,9 +77,7 @@ export class GenericSmsProvider implements ISmsProvider {
 
     return {
       id: this.getResponseValue(this.config.idPath || 'id', responseData),
-      date:
-        this.getResponseValue(this.config.datePath || 'date', responseData) ||
-        new Date().toISOString(),
+      date: this.getResponseValue(this.config.datePath || 'date', responseData),
     };
   }
 

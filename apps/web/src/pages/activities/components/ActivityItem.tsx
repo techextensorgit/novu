@@ -3,15 +3,13 @@ import { createStyles, CSSObject, Grid, MantineTheme, Text, UnstyledButton, useM
 import { JobStatusEnum } from '@novu/shared';
 import { format } from 'date-fns';
 import styled from '@emotion/styled';
-import { useClipboard } from '@mantine/hooks';
 
 import { ActivityStep } from './ActivityStep';
 import { DigestedStep } from './DigestedStep';
 
 import { When } from '../../../components/utils/When';
-import { CheckCircle, colors, ErrorIcon, Timer } from '@novu/design-system';
+import { colors, CheckCircle, ErrorIcon, Timer } from '@novu/design-system';
 import { useNotificationStatus } from '../hooks/useNotificationStatus';
-import { CopyButton } from './CopyButton';
 
 const JOB_LENGTH_UPPER_THRESHOLD = 3;
 
@@ -37,18 +35,6 @@ const useStyles = createStyles(
     unstyledButton: {
       width: '100%',
       cursor: isOld ? 'default' : 'pointer',
-      '&:hover': {
-        '[data-copy]': {
-          visibility: 'visible',
-        },
-      },
-    },
-    copyButton: {
-      display: 'inline',
-      visibility: 'hidden',
-      position: 'relative',
-      top: '2px',
-      marginLeft: '8px',
     },
   })
 );
@@ -59,7 +45,6 @@ export const ActivityItem = ({ item, onClick }) => {
   const [isOld, setIsOld] = useState<boolean>(false);
   const [digestedNode, setDigestedNode] = useState<string>('');
   const { classes } = useStyles({ isOld });
-  const { copy } = useClipboard();
 
   useEffect(() => {
     const details = item.jobs.reduce((items: any[], job) => [...items, ...job.executionDetails], []);
@@ -137,15 +122,11 @@ export const ActivityItem = ({ item, onClick }) => {
                   <b>Subscriber id:</b>
                   {item?.subscriber?.subscriberId ? item.subscriber.subscriberId : 'Deleted Subscriber'}
                 </small>
-                {item?.subscriber?.subscriberId && (
-                  <CopyButton className={classes.copyButton} onCopy={() => copy(item.subscriber.subscriberId)} />
-                )}
               </div>
               <div data-test-id="transaction-id">
                 <small>
                   <b>Transaction id:</b> {item.transactionId}
                 </small>
-                <CopyButton className={classes.copyButton} onCopy={() => copy(item.transactionId)} />
               </div>
             </div>
           </Grid.Col>

@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
-import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ChannelTypeEnum, IJwtPayload } from '@novu/shared';
 
 import { GetActivityFeed } from './usecases/get-activity-feed/get-activity-feed.usecase';
@@ -16,10 +16,9 @@ import { GetActivityCommand } from './usecases/get-activity/get-activity.command
 
 import { UserSession } from '../shared/framework/user.decorator';
 import { ExternalApiAccessible } from '../auth/framework/external-api.decorator';
-import { UserAuthGuard } from '../auth/framework/user.auth.guard';
-import { ApiCommonResponses, ApiResponse, ApiOkResponse } from '../shared/framework/response.decorator';
+import { JwtAuthGuard } from '../auth/framework/auth.guard';
+import { ApiResponse } from '../shared/framework/response.decorator';
 
-@ApiCommonResponses()
 @Controller('/notifications')
 @ApiTags('Notification')
 export class NotificationsController {
@@ -37,7 +36,7 @@ export class NotificationsController {
   @ApiOperation({
     summary: 'Get notifications',
   })
-  @UseGuards(UserAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @ExternalApiAccessible()
   getNotifications(
     @UserSession() user: IJwtPayload,
@@ -85,7 +84,7 @@ export class NotificationsController {
     summary: 'Get notification statistics',
   })
   @Get('/stats')
-  @UseGuards(UserAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @ExternalApiAccessible()
   getActivityStats(@UserSession() user: IJwtPayload): Promise<ActivityStatsResponseDto> {
     return this.getActivityStatsUsecase.execute(
@@ -97,7 +96,7 @@ export class NotificationsController {
   }
 
   @Get('/graph/stats')
-  @UseGuards(UserAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @ExternalApiAccessible()
   @ApiResponse(ActivityGraphStatesResponse, 200, true)
   @ApiOperation({
@@ -127,7 +126,7 @@ export class NotificationsController {
   @ApiOperation({
     summary: 'Get notification',
   })
-  @UseGuards(UserAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @ExternalApiAccessible()
   getActivity(
     @UserSession() user: IJwtPayload,

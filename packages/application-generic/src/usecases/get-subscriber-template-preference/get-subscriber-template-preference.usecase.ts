@@ -1,16 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import {
-  MessageTemplateRepository,
   NotificationTemplateEntity,
-  SubscriberEntity,
   SubscriberPreferenceRepository,
   SubscriberRepository,
-  TenantRepository,
-  WorkflowOverrideRepository,
+  SubscriberEntity,
+  MessageTemplateRepository,
 } from '@novu/dal';
 import {
   ChannelTypeEnum,
-  IOverridePreferencesSources,
   IPreferenceChannels,
   IPreferenceOverride,
   ISubscriberPreferenceResponse,
@@ -26,7 +23,6 @@ import { CachedEntity, buildSubscriberKey } from '../../services/cache';
 
 const PRIORITY_ORDER = [
   PreferenceOverrideSourceEnum.TEMPLATE,
-  PreferenceOverrideSourceEnum.WORKFLOW_OVERRIDE,
   PreferenceOverrideSourceEnum.SUBSCRIBER,
 ];
 
@@ -35,9 +31,7 @@ export class GetSubscriberTemplatePreference {
   constructor(
     private subscriberPreferenceRepository: SubscriberPreferenceRepository,
     private messageTemplateRepository: MessageTemplateRepository,
-    private subscriberRepository: SubscriberRepository,
-    private workflowOverrideRepository: WorkflowOverrideRepository,
-    private tenantRepository: TenantRepository
+    private subscriberRepository: SubscriberRepository
   ) {}
 
   async execute(
@@ -61,18 +55,14 @@ export class GetSubscriberTemplatePreference {
         _subscriberId: subscriber._id,
         _templateId: command.template._id,
       });
-    const workflowOverride = await this.getWorkflowOverride(command);
 
-    const templateChannelPreference = command.template.preferenceSettings;
     const subscriberChannelPreference = subscriberPreference?.channels;
-    const workflowOverrideChannelPreference =
-      workflowOverride?.preferenceSettings;
+    const templateChannelPreference = command.template.preferenceSettings;
 
     const { channels, overrides } = overridePreferences(
       {
         template: templateChannelPreference,
         subscriber: subscriberChannelPreference,
-        workflowOverride: workflowOverrideChannelPreference,
       },
       initialActiveChannels
     );
@@ -85,30 +75,6 @@ export class GetSubscriberTemplatePreference {
         overrides,
       },
     };
-  }
-
-  private async getWorkflowOverride(
-    command: GetSubscriberTemplatePreferenceCommand
-  ) {
-    if (!command.tenant?.identifier) {
-      return null;
-    }
-
-    const tenant = await this.tenantRepository.findOne({
-      _environmentId: command.environmentId,
-      identifier: command.tenant.identifier,
-    });
-
-    if (!tenant) {
-      return null;
-    }
-
-    return await this.workflowOverrideRepository.findOne({
-      _environmentId: command.environmentId,
-      _organizationId: command.organizationId,
-      _workflowId: command.template._id,
-      _tenantId: tenant._id,
-    });
   }
 
   private async getActiveChannels(
@@ -245,7 +211,7 @@ function overridePreference(
 }
 
 export function overridePreferences(
-  preferenceSources: IOverridePreferencesSources,
+  preferenceSources: Record<PreferenceOverrideSourceEnum, IPreferenceChannels>,
   initialActiveChannels: IPreferenceChannels
 ) {
   let result: {

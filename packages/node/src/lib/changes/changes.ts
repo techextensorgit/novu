@@ -1,20 +1,12 @@
-import { IChanges, IChangesPayload } from './changes.interface';
+import { IChanges } from './changes.interface';
 import { WithHttp } from '../novu.interface';
 
 export class Changes extends WithHttp implements IChanges {
   /**
    * @returns {promise<object>} - Returns an object containing all changes
    */
-  async get(data: IChangesPayload) {
-    const { page, limit, promoted } = data;
-
-    return await this.http.get(`/changes`, {
-      params: {
-        page,
-        limit,
-        promoted,
-      },
-    });
+  async get() {
+    return await this.http.get(`/changes`);
   }
 
   /**
@@ -38,7 +30,7 @@ export class Changes extends WithHttp implements IChanges {
    */
   async applyMany(changeIds: string[]) {
     return await this.http.post(`/changes/bulk/apply`, {
-      changeIds,
+      ChangeIDs: changeIds,
     });
   }
 }

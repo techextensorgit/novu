@@ -1,10 +1,11 @@
-import { ActionIcon, Avatar, ColorScheme, Container, Group, Header, useMantineColorScheme } from '@mantine/core';
+import { ActionIcon, Avatar, Container, Group, Header, useMantineColorScheme } from '@mantine/core';
 import * as capitalize from 'lodash.capitalize';
 import { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useIntercom } from 'react-use-intercom';
 
-import { CONTEXT_PATH, INTERCOM_APP_ID, IS_DOCKER_HOSTED, REACT_APP_VERSION } from '../../../config';
+import LogRocket from 'logrocket';
+import { CONTEXT_PATH, INTERCOM_APP_ID, IS_DOCKER_HOSTED, LOGROCKET_ID, REACT_APP_VERSION } from '../../../config';
 import { ROUTES } from '../../../constants/routes.enum';
 import {
   colors,
@@ -13,25 +14,25 @@ import {
   Text,
   Tooltip,
   Ellipse,
+  Mail,
   Moon,
   Question,
   Sun,
   Logout,
-  InviteMembers,
 } from '@novu/design-system';
-import { useLocalThemePreference, useDebounce } from '../../../hooks';
+
+import { useLocalThemePreference } from '../../../hooks';
 import { discordInviteUrl } from '../../../pages/quick-start/consts';
 import { useAuthContext } from '../../providers/AuthProvider';
 import { useSpotlightContext } from '../../providers/SpotlightProvider';
 import { HEADER_HEIGHT } from '../constants';
 import { NotificationCenterWidget } from './NotificationCenterWidget';
-import { useSegment } from '../../providers/SegmentProvider';
 
 type Props = { isIntercomOpened: boolean };
 const menuItem = [
   {
     title: 'Invite Members',
-    icon: <InviteMembers />,
+    icon: <Mail />,
     path: ROUTES.TEAM,
   },
 ];
@@ -54,18 +55,10 @@ export function HeaderNav({ isIntercomOpened }: Props) {
   const { currentOrganization, currentUser, logout } = useAuthContext();
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const { themeStatus } = useLocalThemePreference();
+  const dark = colorScheme === 'dark';
   const { addItem, removeItems } = useSpotlightContext();
   const { boot } = useIntercom();
-  const segment = useSegment();
   const isSelfHosted = IS_DOCKER_HOSTED;
-
-  const debounceThemeChange = useDebounce((args: { colorScheme: ColorScheme; themeStatus: string }) => {
-    segment.track('Theme is set - [Theme]', args);
-  }, 500);
-
-  useEffect(() => {
-    debounceThemeChange({ colorScheme, themeStatus });
-  }, [colorScheme, themeStatus, debounceThemeChange]);
 
   useEffect(() => {
     const shouldBootIntercom = !!INTERCOM_APP_ID && currentUser && currentOrganization;
@@ -85,6 +78,30 @@ export function HeaderNav({ isIntercomOpened }: Props) {
       });
     }
   }, [boot, currentUser, currentOrganization]);
+
+  useEffect(() => {
+    if (!LOGROCKET_ID) return;
+    if (currentUser && currentOrganization) {
+      let logrocketTraits;
+
+      if (currentUser?.email !== undefined) {
+        logrocketTraits = {
+          name: currentUser?.firstName + ' ' + currentUser?.lastName,
+          organizationId: currentOrganization._id,
+          organization: currentOrganization.name,
+          email: currentUser?.email ? currentUser?.email : ' ',
+        };
+      } else {
+        logrocketTraits = {
+          name: currentUser?.firstName + ' ' + currentUser?.lastName,
+          organizationId: currentOrganization._id,
+          organization: currentOrganization.name,
+        };
+      }
+
+      LogRocket.identify(currentUser?._id, logrocketTraits);
+    }
+  }, [currentUser, currentOrganization]);
 
   let themeTitle = 'Match System Appearance';
   if (themeStatus === 'dark') {

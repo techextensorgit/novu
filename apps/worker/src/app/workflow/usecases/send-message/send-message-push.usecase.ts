@@ -1,13 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
 import * as Sentry from '@sentry/node';
-import { ModuleRef } from '@nestjs/core';
-
 import {
   MessageRepository,
   NotificationStepEntity,
   SubscriberRepository,
   MessageEntity,
   IntegrationEntity,
+  TenantRepository,
+  SubscriberEntity,
   JobEntity,
 } from '@novu/dal';
 import {
@@ -22,15 +22,14 @@ import {
 import {
   InstrumentUsecase,
   DetailEnum,
+  CreateExecutionDetails,
+  CreateExecutionDetailsCommand,
   SelectIntegration,
   CompileTemplate,
   CompileTemplateCommand,
   IPushHandler,
   PushFactory,
   GetNovuProviderCredentials,
-  SelectVariant,
-  ExecutionLogRoute,
-  ExecutionLogRouteCommand,
 } from '@novu/application-generic';
 import type { IPushOptions } from '@novu/stateless';
 
@@ -49,57 +48,74 @@ export class SendMessagePush extends SendMessageBase {
   constructor(
     protected subscriberRepository: SubscriberRepository,
     protected messageRepository: MessageRepository,
+    protected tenantRepository: TenantRepository,
     protected createLogUsecase: CreateLog,
-    protected executionLogRoute: ExecutionLogRoute,
+    protected createExecutionDetails: CreateExecutionDetails,
     private compileTemplate: CompileTemplate,
     protected selectIntegration: SelectIntegration,
-    protected getNovuProviderCredentials: GetNovuProviderCredentials,
-    protected selectVariant: SelectVariant,
-    protected moduleRef: ModuleRef
+    protected getNovuProviderCredentials: GetNovuProviderCredentials
   ) {
     super(
       messageRepository,
       createLogUsecase,
-      executionLogRoute,
+      createExecutionDetails,
       subscriberRepository,
+      tenantRepository,
       selectIntegration,
-      getNovuProviderCredentials,
-      selectVariant,
-      moduleRef
+      getNovuProviderCredentials
     );
   }
 
   @InstrumentUsecase()
   public async execute(command: SendMessageCommand) {
+    const subscriber = await this.getSubscriberBySubscriberId({
+      subscriberId: command.subscriberId,
+      _environmentId: command.environmentId,
+    });
+
+    if (!subscriber) throw new PlatformException(`Subscriber not found`);
+
     Sentry.addBreadcrumb({
       message: 'Sending Push',
     });
 
-    const step: NotificationStepEntity = command.step;
-    const { subscriber, step: stepData } = command.compileContext;
+    const pushChannel: NotificationStepEntity = command.step;
 
-    const template = await this.processVariants(command);
-    await this.initiateTranslations(command.environmentId, command.organizationId, subscriber.locale);
-
-    if (template) {
-      step.template = template;
+    const stepData: IPushOptions['step'] = {
+      digest: !!command.events?.length,
+      events: command.events,
+      total_count: command.events?.length,
+    };
+    const tenant = await this.handleTenantExecution(command.job);
+    let actor: SubscriberEntity | null = null;
+    if (command.job.actorId) {
+      actor = await this.getSubscriberBySubscriberId({
+        subscriberId: command.job.actorId,
+        _environmentId: command.environmentId,
+      });
     }
 
-    const data = this.getCompilePayload(command.compileContext);
+    const data = {
+      subscriber: subscriber,
+      step: stepData,
+      ...(tenant && { tenant }),
+      ...(actor && { actor }),
+      ...command.payload,
+    };
     let content = '';
     let title = '';
 
     try {
       content = await this.compileTemplate.execute(
         CompileTemplateCommand.create({
-          template: step.template?.content as string,
+          template: pushChannel.template?.content as string,
           data,
         })
       );
 
       title = await this.compileTemplate.execute(
         CompileTemplateCommand.create({
-          template: step.template?.title as string,
+          template: pushChannel.template?.title as string,
           data,
         })
       );
@@ -212,9 +228,9 @@ export class SendMessagePush extends SendMessageBase {
   }
 
   private async sendNotificationError(job: JobEntity): Promise<void> {
-    await this.executionLogRoute.execute(
-      ExecutionLogRouteCommand.create({
-        ...ExecutionLogRouteCommand.getDetailsFromJob(job),
+    await this.createExecutionDetails.execute(
+      CreateExecutionDetailsCommand.create({
+        ...CreateExecutionDetailsCommand.getDetailsFromJob(job),
         detail: DetailEnum.NOTIFICATION_ERROR,
         source: ExecutionDetailsSourceEnum.INTERNAL,
         status: ExecutionDetailsStatusEnum.FAILED,
@@ -255,9 +271,9 @@ export class SendMessagePush extends SendMessageBase {
   ): Promise<void> {
     // We avoid to throw the errors to be able to execute all actions in the loop
     try {
-      await this.executionLogRoute.execute(
-        ExecutionLogRouteCommand.create({
-          ...ExecutionLogRouteCommand.getDetailsFromJob(job),
+      await this.createExecutionDetails.execute(
+        CreateExecutionDetailsCommand.create({
+          ...CreateExecutionDetailsCommand.getDetailsFromJob(job),
           detail,
           source: ExecutionDetailsSourceEnum.INTERNAL,
           status: ExecutionDetailsStatusEnum.FAILED,
@@ -295,9 +311,9 @@ export class SendMessagePush extends SendMessageBase {
         step,
       });
 
-      await this.executionLogRoute.execute(
-        ExecutionLogRouteCommand.create({
-          ...ExecutionLogRouteCommand.getDetailsFromJob(command.job),
+      await this.createExecutionDetails.execute(
+        CreateExecutionDetailsCommand.create({
+          ...CreateExecutionDetailsCommand.getDetailsFromJob(command.job),
           messageId: message._id,
           detail: `${DetailEnum.MESSAGE_SENT}: ${integration.providerId}`,
           source: ExecutionDetailsSourceEnum.INTERNAL,
@@ -354,9 +370,9 @@ export class SendMessagePush extends SendMessageBase {
       _jobId: command.jobId,
     });
 
-    await this.executionLogRoute.execute(
-      ExecutionLogRouteCommand.create({
-        ...ExecutionLogRouteCommand.getDetailsFromJob(command.job),
+    await this.createExecutionDetails.execute(
+      CreateExecutionDetailsCommand.create({
+        ...CreateExecutionDetailsCommand.getDetailsFromJob(command.job),
         detail: `${DetailEnum.MESSAGE_CREATED}: ${integration.providerId}`,
         source: ExecutionDetailsSourceEnum.INTERNAL,
         status: ExecutionDetailsStatusEnum.PENDING,

@@ -6,17 +6,19 @@ import { UpdateSubscriber } from './update-subscriber.usecase';
 import { UpdateSubscriberCommand } from './update-subscriber.command';
 import {
   CacheService,
-  CacheInMemoryProviderService,
   InvalidateCacheService,
+  InMemoryProviderService,
   InMemoryProviderEnum,
 } from '../../services';
 
-const cacheInMemoryProviderService = {
-  provide: CacheInMemoryProviderService,
-  useFactory: async (): Promise<CacheInMemoryProviderService> => {
-    const cacheInMemoryProvider = new CacheInMemoryProviderService();
+const inMemoryProviderService = {
+  provide: InMemoryProviderService,
+  useFactory: async (): Promise<InMemoryProviderService> => {
+    const inMemoryProvider = new InMemoryProviderService(
+      InMemoryProviderEnum.REDIS
+    );
 
-    return cacheInMemoryProvider;
+    return inMemoryProvider;
   },
 };
 
@@ -24,7 +26,7 @@ const cacheService = {
   provide: CacheService,
   useFactory: async () => {
     const factoryInMemoryProviderService =
-      await cacheInMemoryProviderService.useFactory();
+      await inMemoryProviderService.useFactory();
 
     return new CacheService(factoryInMemoryProviderService);
   },
@@ -37,7 +39,7 @@ describe('Update Subscriber', function () {
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [SubscriberRepository, InvalidateCacheService],
-      providers: [UpdateSubscriber, cacheInMemoryProviderService, cacheService],
+      providers: [UpdateSubscriber, inMemoryProviderService, cacheService],
     }).compile();
 
     session = new UserSession();

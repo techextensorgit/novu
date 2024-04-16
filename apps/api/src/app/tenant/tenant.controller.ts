@@ -13,9 +13,16 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiConflictResponse,
+  ApiExcludeController,
+  ApiNoContentResponse,
+  ApiNotFoundResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 
-import { ApiRateLimitCategoryEnum, IJwtPayload } from '@novu/shared';
+import { IJwtPayload } from '@novu/shared';
 import {
   UpdateTenant,
   UpdateTenantCommand,
@@ -25,16 +32,10 @@ import {
   CreateTenantCommand,
 } from '@novu/application-generic';
 
-import { UserAuthGuard } from '../auth/framework/user.auth.guard';
+import { JwtAuthGuard } from '../auth/framework/auth.guard';
 import { UserSession } from '../shared/framework/user.decorator';
 import { ExternalApiAccessible } from '../auth/framework/external-api.decorator';
-import {
-  ApiCommonResponses,
-  ApiResponse,
-  ApiNoContentResponse,
-  ApiNotFoundResponse,
-  ApiConflictResponse,
-} from '../shared/framework/response.decorator';
+import { ApiResponse } from '../shared/framework/response.decorator';
 import { DeleteTenantCommand } from './usecases/delete-tenant/delete-tenant.command';
 import { DeleteTenant } from './usecases/delete-tenant/delete-tenant.usecase';
 import { ApiOkPaginatedResponse } from '../shared/framework/paginated-ok-response.decorator';
@@ -49,14 +50,11 @@ import {
   CreateTenantResponseDto,
   CreateTenantRequestDto,
 } from './dtos';
-import { ThrottlerCategory } from '../rate-limiting/guards';
 
-@ThrottlerCategory(ApiRateLimitCategoryEnum.CONFIGURATION)
-@ApiCommonResponses()
 @Controller('/tenants')
 @ApiTags('Tenants')
 @UseInterceptors(ClassSerializerInterceptor)
-@UseGuards(UserAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class TenantController {
   constructor(
     private createTenantUsecase: CreateTenant,
@@ -68,7 +66,7 @@ export class TenantController {
 
   @Get('')
   @ExternalApiAccessible()
-  @UseGuards(UserAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @ApiOkPaginatedResponse(GetTenantResponseDto)
   @ApiOperation({
     summary: 'Get tenants',
@@ -167,7 +165,7 @@ export class TenantController {
 
   @Delete('/:identifier')
   @ExternalApiAccessible()
-  @UseGuards(UserAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({
     summary: 'Delete tenant',
     description: 'Deletes a tenant entity from the Novu platform',

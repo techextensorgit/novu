@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { SubscriberRepository, DalException, TopicSubscribersRepository } from '@novu/dal';
+import { SubscriberRepository, DalException } from '@novu/dal';
 import { buildSubscriberKey, InvalidateCacheService } from '@novu/application-generic';
 
 import { RemoveSubscriberCommand } from './remove-subscriber.command';
@@ -11,8 +11,7 @@ export class RemoveSubscriber {
   constructor(
     private invalidateCache: InvalidateCacheService,
     private subscriberRepository: SubscriberRepository,
-    private getSubscriber: GetSubscriber,
-    private topicSubscribersRepository: TopicSubscribersRepository
+    private getSubscriber: GetSubscriber
   ) {}
 
   async execute(command: RemoveSubscriberCommand) {
@@ -35,12 +34,6 @@ export class RemoveSubscriber {
         _environmentId: subscriber._environmentId,
         _organizationId: subscriber._organizationId,
         subscriberId: subscriber.subscriberId,
-      });
-
-      await this.topicSubscribersRepository.delete({
-        _environmentId: subscriber._environmentId,
-        _organizationId: subscriber._organizationId,
-        externalSubscriberId: subscriber.subscriberId,
       });
     } catch (e) {
       if (e instanceof DalException) {

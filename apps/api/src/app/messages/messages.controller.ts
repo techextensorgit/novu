@@ -1,27 +1,21 @@
 import { Controller, Delete, Get, HttpCode, HttpStatus, Param, Query, UseGuards } from '@nestjs/common';
 import { RemoveMessage, RemoveMessageCommand } from './usecases/remove-message';
-import { UserAuthGuard } from '../auth/framework/user.auth.guard';
+import { JwtAuthGuard } from '../auth/framework/auth.guard';
 import { ExternalApiAccessible } from '../auth/framework/external-api.decorator';
 import { UserSession } from '../shared/framework/user.decorator';
 import { IJwtPayload } from '@novu/shared';
-import { ApiTags, ApiOperation, ApiParam } from '@nestjs/swagger';
+import { ApiTags, ApiOkResponse, ApiOperation, ApiParam, ApiNoContentResponse } from '@nestjs/swagger';
 import { DeleteMessageResponseDto } from './dtos/delete-message-response.dto';
 import { ActivitiesResponseDto } from '../notifications/dtos/activities-response.dto';
 import { GetMessages, GetMessagesCommand } from './usecases/get-messages';
 import { MessagesResponseDto } from '../widgets/dtos/message-response.dto';
 import { DeleteMessageParams } from './params/delete-message.param';
-import {
-  ApiCommonResponses,
-  ApiResponse,
-  ApiNoContentResponse,
-  ApiOkResponse,
-} from '../shared/framework/response.decorator';
+import { ApiResponse } from '../shared/framework/response.decorator';
 import { GetMessagesRequestDto } from './dtos/get-messages-requests.dto';
 import { RemoveMessagesByTransactionId } from './usecases/remove-messages-by-transactionId/remove-messages-by-transactionId.usecase';
 import { RemoveMessagesByTransactionIdCommand } from './usecases/remove-messages-by-transactionId/remove-messages-by-transactionId.command';
 import { DeleteMessageByTransactionIdRequestDto } from './dtos/remove-messages-by-transactionId-request.dto';
 
-@ApiCommonResponses()
 @Controller('/messages')
 @ApiTags('Messages')
 export class MessagesController {
@@ -33,7 +27,7 @@ export class MessagesController {
 
   @Get('')
   @ExternalApiAccessible()
-  @UseGuards(UserAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @ApiOkResponse({
     type: ActivitiesResponseDto,
   })
@@ -65,7 +59,7 @@ export class MessagesController {
 
   @Delete('/:messageId')
   @ExternalApiAccessible()
-  @UseGuards(UserAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @ApiResponse(DeleteMessageResponseDto)
   @ApiOperation({
     summary: 'Delete message',
@@ -88,7 +82,7 @@ export class MessagesController {
   @Delete('/transaction/:transactionId')
   @HttpCode(HttpStatus.NO_CONTENT)
   @ExternalApiAccessible()
-  @UseGuards(UserAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @ApiNoContentResponse()
   @ApiOperation({
     summary: 'Delete messages by transactionId',

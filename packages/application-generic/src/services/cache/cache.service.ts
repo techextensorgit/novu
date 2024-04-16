@@ -2,8 +2,8 @@ import { Injectable, Logger } from '@nestjs/common';
 
 import { QUERY_PREFIX } from './key-builders';
 import {
-  CacheInMemoryProviderService,
   InMemoryProviderClient,
+  InMemoryProviderService,
   Pipeline,
 } from '../in-memory-provider';
 import { addJitter } from '../../resilience';
@@ -23,12 +23,6 @@ export interface ICacheService {
   keys(pattern?: string);
   getStatus();
   cacheEnabled();
-  sadd(key: string, ...members: (string | number | Buffer)[]): Promise<number>;
-  eval<TData = unknown>(
-    script: string,
-    keys: string[],
-    args: (string | number | Buffer)[]
-  ): Promise<TData>;
 }
 
 export type CachingConfig = {
@@ -36,27 +30,23 @@ export type CachingConfig = {
 };
 
 export class CacheService implements ICacheService {
+  private client: InMemoryProviderClient;
   private cacheTtl: number;
   private readonly TTL_VARIANT_PERCENTAGE = 0.1;
 
-  constructor(
-    private cacheInMemoryProviderService: CacheInMemoryProviderService
-  ) {}
+  constructor(private inMemoryProviderService: InMemoryProviderService) {}
 
   public async initialize(): Promise<void> {
     Logger.log('Initiated cache service', LOG_CONTEXT);
 
-    await this.cacheInMemoryProviderService.initialize();
+    await this.inMemoryProviderService.delayUntilReadiness();
 
-    this.cacheTtl = this.cacheInMemoryProviderService.getTtl();
-  }
-
-  public get client(): InMemoryProviderClient {
-    return this.cacheInMemoryProviderService.getClient();
+    this.client = this.inMemoryProviderService.inMemoryProviderClient;
+    this.cacheTtl = this.inMemoryProviderService.inMemoryProviderConfig.ttl;
   }
 
   public getStatus(): string {
-    return this.cacheInMemoryProviderService.getClientStatus();
+    return this.client?.status;
   }
 
   public getTtl(): number {
@@ -64,7 +54,7 @@ export class CacheService implements ICacheService {
   }
 
   public cacheEnabled(): boolean {
-    const isEnabled = this.cacheInMemoryProviderService.isReady();
+    const isEnabled = this.inMemoryProviderService.isClientReady();
     if (!isEnabled) {
       Logger.log('Cache service is not enabled', LOG_CONTEXT);
     }
@@ -123,7 +113,7 @@ export class CacheService implements ICacheService {
       pipeline.sadd(credentials, query);
       pipeline.expire(
         credentials,
-        this.cacheInMemoryProviderService.getTtl() +
+        this.inMemoryProviderService.inMemoryProviderConfig.ttl +
           this.getTtlInSeconds(options)
       );
 
@@ -199,7 +189,7 @@ export class CacheService implements ICacheService {
 
     if (client) {
       return new Promise((resolve, reject) => {
-        const stream = this.cacheInMemoryProviderService.inMemoryScan(pattern);
+        const stream = this.inMemoryProviderService.inMemoryScan(pattern);
 
         stream.on('data', function (keys) {
           if (keys.length) {
@@ -224,26 +214,6 @@ export class CacheService implements ICacheService {
     const seconds = options?.ttl || this.cacheTtl;
 
     return addJitter(seconds, this.TTL_VARIANT_PERCENTAGE);
-  }
-
-  public async sadd(
-    key: string,
-    ...members: (string | number | Buffer)[]
-  ): Promise<number> {
-    return this.client?.sadd(key, ...members);
-  }
-
-  public async eval<TData = unknown>(
-    script: string,
-    keys: string[],
-    args: (string | number | Buffer)[]
-  ): Promise<TData> {
-    return this.client?.eval(
-      script,
-      keys.length,
-      ...keys,
-      ...args
-    ) as Promise<TData>;
   }
 }
 

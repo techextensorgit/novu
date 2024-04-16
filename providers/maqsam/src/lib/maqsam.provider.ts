@@ -37,7 +37,7 @@ export class MaqsamSmsProvider implements ISmsProvider {
       data: {
         to: options.to,
         message: options.content,
-        sender: options.from || this.config.from,
+        sender: this.config.from,
       },
     });
 

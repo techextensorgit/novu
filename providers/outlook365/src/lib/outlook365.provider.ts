@@ -70,10 +70,7 @@ export class Outlook365Provider implements IEmailProvider {
 
   private createMailData(options: IEmailOptions): SendMailOptions {
     const sendMailOptions: SendMailOptions = {
-      from: {
-        address: options.from || this.config.from,
-        name: options.senderName || this.config.senderName,
-      },
+      from: this.config.from,
       to: options.to,
       subject: options.subject,
       html: options.html,

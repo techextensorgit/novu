@@ -58,7 +58,4 @@ export class MessageTemplate {
     type: ActorTypeEnum;
     data: string | null;
   };
-
-  @IsOptional()
-  _creatorId?: string;
 }

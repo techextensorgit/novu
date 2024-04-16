@@ -13,18 +13,19 @@ import {
   UseGuards,
   Logger,
 } from '@nestjs/common';
-import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import {
-  ApiCommonResponses,
-  ApiResponse,
   ApiBadRequestResponse,
   ApiConflictResponse,
+  ApiCreatedResponse,
   ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
-} from '../shared/framework/response.decorator';
+  ApiOperation,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { IJwtPayload } from '@novu/shared';
-import { GetLayoutCommand, GetLayoutUseCase, OtelSpan } from '@novu/application-generic';
+import { GetLayoutCommand, GetLayoutUseCase } from '@novu/application-generic';
 
 import {
   CreateLayoutRequestDto,
@@ -49,14 +50,14 @@ import {
 } from './usecases';
 import { LayoutId } from './types';
 
-import { UserAuthGuard } from '../auth/framework/user.auth.guard';
+import { JwtAuthGuard } from '../auth/framework/auth.guard';
 import { ExternalApiAccessible } from '../auth/framework/external-api.decorator';
 import { UserSession } from '../shared/framework/user.decorator';
+import { ApiResponse } from '../shared/framework/response.decorator';
 
-@ApiCommonResponses()
 @Controller('/layouts')
 @ApiTags('Layouts')
-@UseGuards(UserAuthGuard)
+@UseGuards(JwtAuthGuard)
 export class LayoutsController {
   constructor(
     private createLayoutUseCase: CreateLayoutUseCase,
@@ -71,7 +72,6 @@ export class LayoutsController {
   @ExternalApiAccessible()
   @ApiResponse(CreateLayoutResponseDto, 201)
   @ApiOperation({ summary: 'Layout creation', description: 'Create a layout' })
-  @OtelSpan()
   async createLayout(
     @UserSession() user: IJwtPayload,
     @Body() body: CreateLayoutRequestDto
@@ -210,7 +210,6 @@ export class LayoutsController {
   @ApiConflictResponse({
     description:
       'One default layout is needed. If you are trying to turn a default layout as not default, you should turn a different layout as default first and automatically it will be done by the system.',
-    schema: { example: `One default layout is required` },
   })
   @ApiOperation({
     summary: 'Update a layout',

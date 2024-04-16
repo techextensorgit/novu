@@ -20,4 +20,4 @@ export * from './useVercelParams';
 export * from './useEffectOnce';
 export * from './useInlineComponent';
 export * from './useHoverOverItem';
-export { useDataRef, useKeyDown, useLocalThemePreference } from '@novu/shared-web';
+export { useDataRef, useKeyDown, useLocalThemePreference } from '@novu/design-system';

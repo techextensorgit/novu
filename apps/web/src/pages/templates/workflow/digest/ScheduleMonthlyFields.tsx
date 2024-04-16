@@ -4,22 +4,19 @@ import { DigestUnitEnum, OrdinalEnum, OrdinalValueEnum, MonthlyTypeEnum, DigestT
 
 import { colors, Select, When } from '@novu/design-system';
 import { DaySelect } from './DaySelect';
-import { useEnvController } from '../../../../hooks';
-import { useStepFormPath } from '../../hooks/useStepFormPath';
 
-export const ScheduleMonthlyFields = () => {
-  const { readonly } = useEnvController();
-  const { watch, control } = useFormContext();
-  const stepFormPath = useStepFormPath();
+export const ScheduleMonthlyFields = ({ index, control, readonly }) => {
+  const { watch } = useFormContext();
 
-  const ordinalFieldName = `${stepFormPath}.digestMetadata.${DigestTypeEnum.TIMED}.${DigestUnitEnum.MONTHS}.ordinal`;
-  const ordinalValueFieldName = `${stepFormPath}.digestMetadata.${DigestTypeEnum.TIMED}.${DigestUnitEnum.MONTHS}.ordinalValue`;
+  const unit = watch(`steps.${index}.digestMetadata.${DigestTypeEnum.TIMED}.unit`);
+  const ordinalFieldName = `steps.${index}.digestMetadata.${DigestTypeEnum.TIMED}.${DigestUnitEnum.MONTHS}.ordinal`;
+  const ordinalValueFieldName = `steps.${index}.digestMetadata.${DigestTypeEnum.TIMED}.${DigestUnitEnum.MONTHS}.ordinalValue`;
   const ordinal = watch(ordinalFieldName);
   const ordinalValue = watch(ordinalValueFieldName);
 
   return (
     <Controller
-      name={`${stepFormPath}.digestMetadata.${DigestTypeEnum.TIMED}.${DigestUnitEnum.MONTHS}.monthlyType`}
+      name={`steps.${index}.digestMetadata.${DigestTypeEnum.TIMED}.${DigestUnitEnum.MONTHS}.monthlyType`}
       defaultValue={MonthlyTypeEnum.EACH}
       control={control}
       render={({ field: radioGroup }) => {
@@ -36,7 +33,7 @@ export const ScheduleMonthlyFields = () => {
             </Group>
             <Controller
               control={control}
-              name={`${stepFormPath}.digestMetadata.${DigestTypeEnum.TIMED}.${DigestUnitEnum.MONTHS}.monthDays`}
+              name={`steps.${index}.digestMetadata.${DigestTypeEnum.TIMED}.${DigestUnitEnum.MONTHS}.monthDays`}
               defaultValue={[new Date().getDate()]}
               render={({ field }) => {
                 return <DaySelect value={field.value} disabled={readonly} onChange={field.onChange} />;

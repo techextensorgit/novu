@@ -1,4 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IApiKey } from '@novu/dal';
+import { ApiKey } from '../../shared/dtos/api-key';
 
 export class EnvironmentResponseDto {
   @ApiPropertyOptional()
@@ -13,15 +15,11 @@ export class EnvironmentResponseDto {
   @ApiProperty()
   identifier: string;
 
-  @ApiPropertyOptional()
-  apiKeys?: IApiKeyDto[];
+  @ApiProperty({
+    type: [ApiKey],
+  })
+  apiKeys: IApiKey[];
 
   @ApiProperty()
   _parentId: string;
-}
-
-export interface IApiKeyDto {
-  key: string;
-  _userId: string;
-  hash?: string;
 }

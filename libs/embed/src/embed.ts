@@ -48,8 +48,6 @@ class Novu {
 
   private listeners: { [key: string]: (data: any) => void } = {};
 
-  private showUserPreferences?: boolean;
-
   constructor(onloadFunc = function () {}) {
     this.debugMode = false;
     this.onloadFunc = onloadFunc;
@@ -81,7 +79,6 @@ class Novu {
       this.tabs = selectorOrOptions.tabs;
       this.stores = selectorOrOptions.stores;
       this.colorScheme = selectorOrOptions.colorScheme;
-      this.showUserPreferences = selectorOrOptions.showUserPreferences;
     }
 
     this.clientId = clientId;
@@ -251,7 +248,6 @@ class Novu {
                 tabs: this.tabs,
                 stores: this.stores,
                 colorScheme: this.colorScheme,
-                showUserPreferences: this.showUserPreferences,
               },
             },
             '*'
@@ -429,5 +425,4 @@ interface IOptions {
   tabs: ITab[];
   stores: IStore[];
   colorScheme?: ColorScheme;
-  showUserPreferences?: boolean;
 }

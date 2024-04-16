@@ -13,7 +13,6 @@ export interface ICredentials {
   token?: string;
   from?: string;
   senderName?: string;
-  contentType?: string;
   applicationId?: string;
   clientId?: string;
   projectName?: string;
@@ -32,14 +31,4 @@ export interface ICredentials {
   datePath?: string;
   authenticateByToken?: boolean;
   authenticationTokenKey?: string;
-  accessKey?: string;
-  instanceId?: string;
-  apiToken?: string;
-  apiURL?: string;
-  appID?: string;
-  alertUid?: string;
-  title?: string;
-  imageUrl?: string;
-  state?: string;
-  externalLink?: string;
 }

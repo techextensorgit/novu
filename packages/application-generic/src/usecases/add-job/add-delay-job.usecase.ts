@@ -1,30 +1,18 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
-
 import { JobRepository, JobStatusEnum } from '@novu/dal';
-import {
-  ExecutionDetailsSourceEnum,
-  ExecutionDetailsStatusEnum,
-  StepTypeEnum,
-} from '@novu/shared';
+import { StepTypeEnum } from '@novu/shared';
 
 import { ApiException } from '../../utils/exceptions';
 import { AddJobCommand } from './add-job.command';
 import { CalculateDelayService } from '../../services';
 import { InstrumentUsecase } from '../../instrumentation';
-import { DetailEnum } from '../create-execution-details';
-import {
-  ExecutionLogRoute,
-  ExecutionLogRouteCommand,
-} from '../execution-log-route';
 
 @Injectable()
 export class AddDelayJob {
   constructor(
     private jobRepository: JobRepository,
     @Inject(forwardRef(() => CalculateDelayService))
-    private calculateDelayService: CalculateDelayService,
-    @Inject(forwardRef(() => ExecutionLogRoute))
-    private executionLogRoute: ExecutionLogRoute
+    private calculateDelayService: CalculateDelayService
   ) {}
 
   @InstrumentUsecase()
@@ -39,42 +27,16 @@ export class AddDelayJob {
       return undefined;
     }
 
-    let delay;
+    await this.jobRepository.updateStatus(
+      command.environmentId,
+      data._id,
+      JobStatusEnum.DELAYED
+    );
 
-    try {
-      delay = this.calculateDelayService.calculateDelay({
-        stepMetadata: data.step.metadata,
-        payload: data.payload,
-        overrides: data.overrides,
-      });
-
-      await this.jobRepository.updateStatus(
-        command.environmentId,
-        data._id,
-        JobStatusEnum.DELAYED
-      );
-    } catch (error: any) {
-      await this.executionLogRoute.execute(
-        ExecutionLogRouteCommand.create({
-          ...ExecutionLogRouteCommand.getDetailsFromJob(command.job),
-          detail: DetailEnum.DELAY_MISCONFIGURATION,
-          source: ExecutionDetailsSourceEnum.INTERNAL,
-          status: ExecutionDetailsStatusEnum.FAILED,
-          isTest: false,
-          isRetry: false,
-          raw: JSON.stringify({ error: error.message }),
-        })
-      );
-
-      await this.jobRepository.updateStatus(
-        command.environmentId,
-        data._id,
-        JobStatusEnum.CANCELED
-      );
-
-      throw error;
-    }
-
-    return delay;
+    return this.calculateDelayService.calculateDelay({
+      stepMetadata: data.step.metadata,
+      payload: data.payload,
+      overrides: data.overrides,
+    });
   }
 }

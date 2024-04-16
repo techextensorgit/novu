@@ -2,7 +2,7 @@ import { IWorkflowStepMetadata } from '../../entities/step';
 import { BuilderFieldType, BuilderGroupValues, FilterParts } from '../../types';
 import { MessageTemplateDto } from '../message-template';
 
-export class StepVariantDto {
+export class NotificationStepDto {
   id?: string;
   _id?: string;
   name?: string;
@@ -22,8 +22,4 @@ export class StepVariantDto {
     url?: string;
   };
   metadata?: IWorkflowStepMetadata;
-}
-
-export class NotificationStepDto extends StepVariantDto {
-  variants?: StepVariantDto[];
 }

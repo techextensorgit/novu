@@ -61,7 +61,6 @@ export class ChangeRepository extends BaseRepository<ChangeDBModel, ChangeEntity
       enabled,
       _parentId: { $exists: false, $eq: null },
     })
-      .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit)
       .populate('user', userSelect);

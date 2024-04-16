@@ -1,16 +1,12 @@
 import { Module } from '@nestjs/common';
 import { TerminusModule } from '@nestjs/terminus';
+import { QueuesModule } from '@novu/application-generic';
 
 import { HealthController } from './health.controller';
 import { SharedModule } from '../shared/shared.module';
-import { WSServerHealthIndicator } from '../socket/services';
-import { SocketModule } from '../socket/socket.module';
-
-const PROVIDERS = [WSServerHealthIndicator];
 
 @Module({
-  imports: [TerminusModule, SharedModule, SocketModule],
-  providers: PROVIDERS,
+  imports: [TerminusModule, SharedModule, QueuesModule],
   controllers: [HealthController],
 })
 export class HealthModule {}

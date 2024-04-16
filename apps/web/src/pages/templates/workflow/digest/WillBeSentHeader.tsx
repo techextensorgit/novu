@@ -1,8 +1,8 @@
 import { useFormContext } from 'react-hook-form';
 import { useMantineColorScheme } from '@mantine/core';
 import { DigestTypeEnum, DigestUnitEnum } from '@novu/shared';
-import { colors } from '@novu/design-system';
 
+import { colors } from '@novu/design-system';
 import { pluralizeTime } from '../../../../utils';
 import { TimedDigestWillBeSentHeader } from './TimedDigestWillBeSentHeader';
 
@@ -32,17 +32,18 @@ const Highlight = ({ children, isHighlight }) => {
   );
 };
 
-export const WillBeSentHeader = ({ path, isHighlight = true }: { path: string; isHighlight?: boolean }) => {
+export const WillBeSentHeader = ({ index, isHighlight = true }: { index: number; isHighlight?: boolean }) => {
   const { watch } = useFormContext();
-  const type = watch(`${path}.digestMetadata.type`);
+
+  const type = watch(`steps.${index}.digestMetadata.type`);
 
   if (type === DigestTypeEnum.TIMED) {
-    return <TimedDigestWillBeSentHeader isHighlight={isHighlight} />;
+    return <TimedDigestWillBeSentHeader index={index} isHighlight={isHighlight} />;
   }
 
-  const unit = watch(`${path}.digestMetadata.regular.unit`);
-  const amount = watch(`${path}.digestMetadata.regular.amount`);
-  const backoff = watch(`${path}.digestMetadata.regular.backoff`);
+  const unit = watch(`steps.${index}.digestMetadata.regular.unit`);
+  const amount = watch(`steps.${index}.digestMetadata.regular.amount`);
+  const backoff = watch(`steps.${index}.digestMetadata.regular.backoff`);
 
   return (
     <>

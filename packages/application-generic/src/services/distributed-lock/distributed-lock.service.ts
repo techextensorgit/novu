@@ -4,7 +4,8 @@ import { Injectable, Logger } from '@nestjs/common';
 
 import {
   InMemoryProviderClient,
-  CacheInMemoryProviderService,
+  InMemoryProviderEnum,
+  InMemoryProviderService,
 } from '../in-memory-provider';
 
 const LOG_CONTEXT = 'DistributedLock';
@@ -21,13 +22,11 @@ export class DistributedLockService {
   public lockCounter = {};
   public shuttingDown = false;
 
-  constructor(
-    private cacheInMemoryProviderService: CacheInMemoryProviderService
-  ) {}
+  constructor(private inMemoryProviderService: InMemoryProviderService) {}
 
   async initialize(): Promise<void> {
-    await this.cacheInMemoryProviderService.initialize();
-    this.startup(this.cacheInMemoryProviderService.getClient());
+    await this.inMemoryProviderService.delayUntilReadiness();
+    this.startup(this.inMemoryProviderService.inMemoryProviderClient);
   }
 
   public startup(
@@ -104,7 +103,7 @@ export class DistributedLockService {
         } finally {
           this.shuttingDown = false;
           this.distributedLock = undefined;
-          await this.cacheInMemoryProviderService.shutdown();
+          await this.inMemoryProviderService.shutdown();
           Logger.verbose('Redlock shutdown', LOG_CONTEXT);
         }
       }

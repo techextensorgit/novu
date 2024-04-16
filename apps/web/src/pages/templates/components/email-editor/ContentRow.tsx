@@ -7,19 +7,20 @@ import { TextAlignEnum } from '@novu/shared';
 
 import { DotsHorizontalOutlined, Trash, Button, colors, Dropdown } from '@novu/design-system';
 import { useEnvController } from '../../../../hooks';
-import { useStepFormPath } from '../../hooks/useStepFormPath';
 
 export function ContentRow({
   children,
   onHoverElement,
   onRemove,
   allowRemove,
+  stepIndex,
   blockIndex,
 }: {
   children: JSX.Element | JSX.Element[];
   onHoverElement: (data: { top: number; height: number }) => void;
   onRemove: () => void;
   allowRemove: boolean;
+  stepIndex: number;
   blockIndex: number;
 }) {
   const methods = useFormContext();
@@ -27,7 +28,6 @@ export function ContentRow({
   const theme = useMantineTheme();
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const parentRef = useRef<HTMLDivElement>(null);
-  const stepFormPath = useStepFormPath();
 
   const textAlignments = [
     ['left', <AlignLeftOutlined key="left-align-icon" />],
@@ -50,7 +50,7 @@ export function ContentRow({
     </Dropdown.Label>,
     <Controller
       key="button-wrapper"
-      name={`${stepFormPath}.template.content.${blockIndex}.styles.textAlign`}
+      name={`steps.${stepIndex}.template.content.${blockIndex}.styles.textAlign`}
       defaultValue={TextAlignEnum.LEFT}
       control={methods.control}
       render={({ field }) => {

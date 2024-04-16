@@ -1,74 +1,122 @@
-import { GetFeatureFlag } from './index';
-import { GetFeatureFlagCommand } from './get-feature-flag.command';
+import {
+  GetIsTemplateStoreEnabled,
+  GetIsTopicNotificationEnabled,
+} from './index';
+import { FeatureFlagCommand } from './get-feature-flag.command';
 import { FeatureFlagsService } from '../../services';
-import { FeatureFlagsKeysEnum } from '../../services/types';
 
 const originalLaunchDarklySdkKey = process.env.LAUNCH_DARKLY_SDK_KEY;
-const mockKey = FeatureFlagsKeysEnum.IS_API_RATE_LIMITING_ENABLED;
 
 describe('Get Feature Flag', () => {
-  let getFeatureFlagCommand: GetFeatureFlagCommand;
+  let featureFlagCommand: FeatureFlagCommand;
 
   describe('Provider: Launch Darkly', () => {
-    describe('SDK key environment variable IS NOT set', () => {
+    describe('No SDK key environment variable is set', () => {
       beforeEach(async () => {
         process.env.LAUNCH_DARKLY_SDK_KEY = '';
 
-        getFeatureFlagCommand = GetFeatureFlagCommand.create({
-          key: mockKey,
+        featureFlagCommand = FeatureFlagCommand.create({
           environmentId: 'environmentId',
           organizationId: 'organizationId',
           userId: 'userId',
         });
       });
 
-      it('should return default hardcoded value when no SDK env is set and no feature flag is set', async () => {
-        process.env[mockKey] = '';
+      describe('IS_TEMPLATE_STORE_ENABLED', () => {
+        it('should return default hardcoded value when no SDK env is set and no feature flag is set', async () => {
+          process.env.IS_TEMPLATE_STORE_ENABLED = '';
 
-        const getFeatureFlag = new GetFeatureFlag(new FeatureFlagsService());
+          const getIsTemplateStoreEnabled = new GetIsTemplateStoreEnabled(
+            new FeatureFlagsService()
+          );
 
-        const result = await getFeatureFlag.execute(getFeatureFlagCommand);
-        expect(result).toEqual(false);
+          const result = await getIsTemplateStoreEnabled.execute(
+            featureFlagCommand
+          );
+          expect(result).toEqual(false);
+        });
+
+        it('should return env variable value when no SDK env is set but the feature flag is set', async () => {
+          process.env.IS_TEMPLATE_STORE_ENABLED = 'true';
+
+          const getIsTemplateStoreEnabled = new GetIsTemplateStoreEnabled(
+            new FeatureFlagsService()
+          );
+
+          const result = await getIsTemplateStoreEnabled.execute(
+            featureFlagCommand
+          );
+          expect(result).toEqual(true);
+        });
       });
 
-      it('should return env variable value when no SDK env is set but the feature flag is set', async () => {
-        process.env[mockKey] = 'true';
+      describe('IS_TOPIC_NOTIFICATION_ENABLED', () => {
+        it('should return default hardcoded value when no SDK env is set and no feature flag is set', async () => {
+          process.env.FF_IS_TOPIC_NOTIFICATION_ENABLED = '';
 
-        const getIsTemplateStoreEnabled = new GetFeatureFlag(
-          new FeatureFlagsService()
-        );
+          const getIsTopicNotificationEnabled =
+            new GetIsTopicNotificationEnabled(new FeatureFlagsService());
 
-        const result = await getIsTemplateStoreEnabled.execute(
-          getFeatureFlagCommand
-        );
-        expect(result).toEqual(true);
+          const result = await getIsTopicNotificationEnabled.execute(
+            featureFlagCommand
+          );
+          expect(result).toEqual(true);
+        });
+
+        it('should return env variable value when no SDK env is set but the feature flag is set', async () => {
+          process.env.FF_IS_TOPIC_NOTIFICATION_ENABLED = 'false';
+
+          const getIsTopicNotificationEnabled =
+            new GetIsTopicNotificationEnabled(new FeatureFlagsService());
+
+          const result = await getIsTopicNotificationEnabled.execute(
+            featureFlagCommand
+          );
+          expect(result).toEqual(false);
+        });
       });
     });
 
-    describe('SDK key environment variable IS set', () => {
+    describe('SDK key environment variable is set', () => {
       beforeEach(async () => {
         process.env.LAUNCH_DARKLY_SDK_KEY = originalLaunchDarklySdkKey;
 
-        getFeatureFlagCommand = GetFeatureFlagCommand.create({
-          key: mockKey,
+        featureFlagCommand = FeatureFlagCommand.create({
           environmentId: 'environmentId',
           organizationId: 'organizationId',
           userId: 'userId',
         });
       });
 
-      it(`should get the feature flag value stored in Launch Darkly (enabled)
+      describe('IS_TEMPLATE_STORE_ENABLED', () => {
+        it(`should get the feature flag value stored in Launch Darkly (enabled)
            when the SDK key env variable is set regardless of the feature flag set`, async () => {
-        process.env[mockKey] = 'false';
+          process.env.IS_TEMPLATE_STORE_ENABLED = 'false';
 
-        const getIsTemplateStoreEnabled = new GetFeatureFlag(
-          new FeatureFlagsService()
-        );
+          const getIsTemplateStoreEnabled = new GetIsTemplateStoreEnabled(
+            new FeatureFlagsService()
+          );
 
-        const result = await getIsTemplateStoreEnabled.execute(
-          getFeatureFlagCommand
-        );
-        expect(result).toEqual(true);
+          const result = await getIsTemplateStoreEnabled.execute(
+            featureFlagCommand
+          );
+          expect(result).toEqual(true);
+        });
+      });
+
+      describe('IS_TOPIC_NOTIFICATION_ENABLED', () => {
+        it(`should get the feature flag value stored in Launch Darkly (enabled)
+           when the SDK key env variable is set regardless of the feature flag set`, async () => {
+          process.env.FF_IS_TOPIC_NOTIFICATION_ENABLED = 'false';
+
+          const getIsTopicNotificationEnabled =
+            new GetIsTopicNotificationEnabled(new FeatureFlagsService());
+
+          const result = await getIsTopicNotificationEnabled.execute(
+            featureFlagCommand
+          );
+          expect(result).toEqual(true);
+        });
       });
     });
   });

@@ -1,23 +1,20 @@
-import {
-  EncryptedSecret,
-  ICredentialsDto,
-  NOVU_ENCRYPTION_SUB_MASK,
-  secureCredentials,
-} from '@novu/shared';
+import { ICredentialsDto, secureCredentials } from '@novu/shared';
 
 import { decrypt, encrypt } from './cipher';
 
-export function encryptSecret(text: string): EncryptedSecret {
+const NOVU_SUB_MASK = 'nvsk.';
+
+export function encryptProviderSecret(text: string): string {
   const encrypted = encrypt(text);
 
-  return `${NOVU_ENCRYPTION_SUB_MASK}${encrypted}`;
+  return NOVU_SUB_MASK + encrypted;
 }
 
-export function decryptSecret(text: string | EncryptedSecret): string {
+export function decryptProviderSecret(text: string): string {
   let encryptedSecret = text;
 
-  if (isNovuEncrypted(text)) {
-    encryptedSecret = text.slice(NOVU_ENCRYPTION_SUB_MASK.length);
+  if (isEncryptedCredential(text)) {
+    encryptedSecret = text.slice(NOVU_SUB_MASK.length);
   }
 
   return decrypt(encryptedSecret);
@@ -29,8 +26,8 @@ export function encryptCredentials(
   const encryptedCredentials: ICredentialsDto = {};
 
   for (const key in credentials) {
-    encryptedCredentials[key] = isCredentialEncryptionRequired(key)
-      ? encryptSecret(credentials[key])
+    encryptedCredentials[key] = needEncryption(key)
+      ? encryptProviderSecret(credentials[key])
       : credentials[key];
   }
 
@@ -44,34 +41,19 @@ export function decryptCredentials(
 
   for (const key in credentials) {
     decryptedCredentials[key] =
-      typeof credentials[key] === 'string' && isNovuEncrypted(credentials[key])
-        ? decryptSecret(credentials[key])
+      typeof credentials[key] === 'string' &&
+      isEncryptedCredential(credentials[key])
+        ? decryptProviderSecret(credentials[key])
         : credentials[key];
   }
 
   return decryptedCredentials;
 }
 
-export function encryptApiKey(apiKey: string): EncryptedSecret {
-  if (isNovuEncrypted(apiKey)) {
-    return apiKey;
-  }
-
-  return encryptSecret(apiKey);
+function isEncryptedCredential(text: string): boolean {
+  return text.startsWith(NOVU_SUB_MASK);
 }
 
-export function decryptApiKey(apiKey: string): string {
-  if (isNovuEncrypted(apiKey)) {
-    return decryptSecret(apiKey);
-  }
-
-  return apiKey;
-}
-
-function isNovuEncrypted(text: string): text is EncryptedSecret {
-  return text.startsWith(NOVU_ENCRYPTION_SUB_MASK);
-}
-
-function isCredentialEncryptionRequired(key: string): boolean {
+function needEncryption(key: string): boolean {
   return secureCredentials.some((secureCred) => secureCred === key);
 }

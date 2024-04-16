@@ -15,7 +15,6 @@ import {
 } from '@novu/shared';
 import Handlebars from 'handlebars';
 import { ApiException } from '../exceptions/api.exception';
-import { NotificationStep } from '../../workflows/usecases/create-notification-template';
 
 export class ContentService {
   replaceVariables(content: string, variables: { [key: string]: string }) {
@@ -42,7 +41,7 @@ export class ContentService {
     }
   }
 
-  extractMessageVariables(messages: NotificationStep[]): {
+  extractMessageVariables(messages: INotificationTemplateStep[]): {
     variables: IMustacheVariable[];
     reservedVariables: ITriggerReservedVariable[];
   } {
@@ -69,7 +68,7 @@ export class ContentService {
     };
   }
 
-  extractStepVariables(messages: NotificationStep[]): IMustacheVariable[] {
+  extractStepVariables(messages: INotificationTemplateStep[]): IMustacheVariable[] {
     const variables: IMustacheVariable[] = [];
 
     for (const message of messages) {
@@ -119,7 +118,7 @@ export class ContentService {
     return reservedVariables;
   }
 
-  extractSubscriberMessageVariables(messages: NotificationStep[]): string[] {
+  extractSubscriberMessageVariables(messages: INotificationTemplateStep[]): string[] {
     const variables: string[] = [];
 
     const hasSmsMessage = !!messages.find((i) => i.template?.type === StepTypeEnum.SMS);
@@ -135,7 +134,7 @@ export class ContentService {
     return Array.from(new Set(variables));
   }
 
-  private *messagesTextIterator(messages: NotificationStep[]): Generator<string> {
+  private *messagesTextIterator(messages: INotificationTemplateStep[]): Generator<string> {
     for (const message of messages) {
       if (!message.template) continue;
 

@@ -1,8 +1,3 @@
-import {
-  CompileTemplate,
-  CompileEmailTemplate,
-  CompileInAppTemplate,
-  CompileStepTemplate,
-} from '@novu/application-generic';
+import { CompileTemplate, CompileEmailTemplate } from '@novu/application-generic';
 
-export const USE_CASES = [CompileTemplate, CompileEmailTemplate, CompileInAppTemplate, CompileStepTemplate];
+export const USE_CASES = [CompileTemplate, CompileEmailTemplate];

@@ -1,7 +1,10 @@
 import { Grid, Group, ActionIcon, Center, useMantineTheme } from '@mantine/core';
 import styled from '@emotion/styled';
+import { useMemo } from 'react';
 import { Control, Controller, useFieldArray, useForm, useWatch } from 'react-hook-form';
-import { FilterPartTypeEnum, IFieldFilterPart, FieldLogicalOperatorEnum, FieldOperatorEnum } from '@novu/shared';
+
+import { FILTER_TO_LABEL, FilterPartTypeEnum, FieldLogicalOperatorEnum, FieldOperatorEnum } from '@novu/shared';
+
 import {
   Button,
   colors,
@@ -20,37 +23,27 @@ import {
   ErrorIcon,
   When,
 } from '@novu/design-system';
+import { ConditionsContextEnum, ConditionsContextFields, IConditions } from './types';
+import { HEADER_HEIGHT } from '../layout/constants';
 
-import { DataSelect, IConditions, IConditionsForm, IConditionsProps, IFilterTypeList } from './types';
-import { OnlineConditionRow } from './OnlineConditionRow';
-import { DefaultGroupOperatorData, DefaultOperatorData } from './constants';
-import { PreviousStepsConditionRow } from './PreviousStepsConditionRow';
-
-export interface IConditionsComponentProps {
-  isOpened: boolean;
-  isReadonly?: boolean;
-  onClose: () => void;
-  updateConditions: (data: IConditions[]) => void;
-  conditions?: IConditions[];
-  name: string;
-  label?: string;
-  filterPartsList: IFilterTypeList[];
-  defaultFilter?: FilterPartTypeEnum;
-  shouldDisallowEmptyConditions?: boolean;
+interface IConditionsForm {
+  conditions: IConditions[];
 }
-
 export function Conditions({
   isOpened,
-  isReadonly = false,
   conditions,
   onClose,
-  updateConditions,
+  setConditions,
   name,
-  label = '',
-  filterPartsList,
-  defaultFilter,
-  shouldDisallowEmptyConditions,
-}: IConditionsComponentProps) {
+  context = ConditionsContextEnum.INTEGRATIONS,
+}: {
+  isOpened: boolean;
+  onClose: () => void;
+  setConditions: (data: IConditions[]) => void;
+  conditions?: IConditions[];
+  name: string;
+  context?: ConditionsContextEnum;
+}) {
   const { colorScheme } = useMantineTheme();
 
   const {
@@ -63,33 +56,21 @@ export function Conditions({
     mode: 'onChange',
   });
 
-  const defaultOnFilter = defaultFilter ?? filterPartsList[0].value;
-
-  const { fields, append, remove, insert, update } = useFieldArray({
+  const { fields, append, remove, insert } = useFieldArray({
     control,
-    name: `conditions.0.children` as 'conditions.0.children',
+    name: `conditions.0.children`,
   });
 
-  const filterPartTypeList = filterPartsList?.map(({ value, label: filterLabel }) => {
-    return {
-      value,
-      label: filterLabel,
-    };
-  });
+  const { label, filterPartsList } = ConditionsContextFields[context];
 
-  function handleOnChildOnChange(index: number) {
-    return (data) => {
-      const { id: _, ...rest } = fields[index];
-
-      if (data === FilterPartTypeEnum.IS_ONLINE) {
-        update(index, { ...rest, on: data, value: true });
-
-        return;
-      }
-
-      update(index, { ...rest, on: data });
-    };
-  }
+  const FilterPartTypeList = useMemo(() => {
+    return filterPartsList.map((filterType) => {
+      return {
+        value: filterType,
+        label: FILTER_TO_LABEL[filterType],
+      };
+    });
+  }, [filterPartsList]);
 
   function handleDuplicate(index: number) {
     insert(index + 1, getValues(`conditions.0.children.${index}`));
@@ -99,24 +80,21 @@ export function Conditions({
     remove(index);
   }
 
-  /** Flag for determining if conditions are empty but expected not to be */
-  const hasDisallowedEmptyConditions = Boolean(
-    shouldDisallowEmptyConditions && getValues().conditions?.some(({ children }) => !children?.[0])
-  );
-
-  const isSubmitDisabled =
-    !isDirty || isReadonly || (conditions?.length === 0 && fields?.length === 0) || hasDisallowedEmptyConditions;
-
   const onApplyConditions = async () => {
     await trigger('conditions');
-    if (!errors.conditions && !isSubmitDisabled) {
+    if (!errors.conditions) {
       updateConditions(getValues('conditions'));
-      onClose();
     }
   };
 
+  function updateConditions(data) {
+    setConditions(data);
+    onClose();
+  }
+
   return (
     <Sidebar
+      headerHeight={HEADER_HEIGHT}
       isOpened={isOpened}
       onClose={onClose}
       isExpanded
@@ -133,136 +111,109 @@ export function Conditions({
           <Button variant="outline" onClick={onClose} data-test-id="conditions-form-cancel-btn">
             Cancel
           </Button>
-          <Tooltip
-            position="top"
-            error
-            disabled={isValid && !hasDisallowedEmptyConditions}
-            label={
-              hasDisallowedEmptyConditions ? 'At least one condition is required' : 'Some conditions are missing values'
-            }
-          >
+          <Tooltip position="top" error disabled={isValid} label={'Some conditions are missing values'}>
             <div>
-              <Button disabled={isSubmitDisabled} onClick={onApplyConditions} data-test-id="apply-conditions-btn">
+              <Button
+                disabled={!isDirty || (conditions?.length === 0 && fields?.length === 0)}
+                onClick={onApplyConditions}
+                data-test-id="apply-conditions-btn"
+              >
                 Apply conditions
               </Button>
             </div>
           </Tooltip>
         </Group>
       }
-      styles={{ body: { '.sidebar-body-holder': { height: '100%' } }, root: { zIndex: 300 } }}
     >
-      <div>
-        {fields.map((item, index) => {
-          const filterFieldOn = item.on;
-
-          const customData = filterPartsList?.find((filter) => filter.value === filterFieldOn)?.data;
-
-          return (
-            <div data-test-id="conditions-form-item" key={item.id}>
-              <Grid align={'center'}>
-                <Grid.Col span={'auto'}>
-                  <Grid columns={21} align="center" gutter={8}>
-                    <Grid.Col span={2} miw={120}>
-                      {index > 0 ? (
-                        <Wrapper>
-                          <Controller
-                            control={control}
-                            name={`conditions.0.value`}
-                            defaultValue={FieldLogicalOperatorEnum.AND}
-                            render={({ field }) => {
-                              return (
-                                <Select
-                                  data={DefaultGroupOperatorData}
-                                  {...field}
-                                  disabled={isReadonly}
-                                  data-test-id="conditions-form-value-dropdown"
-                                />
-                              );
-                            }}
+      {fields.map((item, index) => {
+        return (
+          <div data-test-id="conditions-form-item" key={item.id}>
+            <Grid columns={20} align="center" gutter="xs">
+              <Grid.Col span={2}>
+                {index > 0 ? (
+                  <Wrapper>
+                    <Controller
+                      control={control}
+                      name={`conditions.0.value`}
+                      defaultValue={FieldLogicalOperatorEnum.AND}
+                      render={({ field }) => {
+                        return (
+                          <Select
+                            data={[
+                              { value: FieldLogicalOperatorEnum.AND, label: 'And' },
+                              { value: FieldLogicalOperatorEnum.OR, label: 'Or' },
+                            ]}
+                            {...field}
+                            data-test-id="conditions-form-value-dropdown"
                           />
-                        </Wrapper>
-                      ) : (
-                        <Text ml={14} color={colors.B60}>
-                          When
-                        </Text>
-                      )}
-                    </Grid.Col>
-                    <Grid.Col span={3}>
-                      <Controller
-                        control={control}
-                        name={`conditions.0.children.${index}.on`}
-                        defaultValue={defaultOnFilter}
-                        render={({ field }) => {
-                          return (
-                            <Select
-                              placeholder="On"
-                              data={filterPartTypeList}
-                              {...field}
-                              onChange={handleOnChildOnChange(index)}
-                              disabled={isReadonly}
-                              data-test-id="conditions-form-on"
-                            />
-                          );
-                        }}
-                      />
-                    </Grid.Col>
-                    <When truthy={filterFieldOn === FilterPartTypeEnum.WEBHOOK}>
-                      <WebHookUrlForm control={control} index={index} isReadonly={isReadonly} />
-                      <EqualityForm webhook control={control} index={index} isReadonly={isReadonly} />
-                    </When>
-                    <When truthy={filterFieldOn === FilterPartTypeEnum.PREVIOUS_STEP}>
-                      <PreviousStepsConditionRow
-                        customData={customData}
-                        control={control}
-                        index={index}
-                        isReadonly={isReadonly}
-                      />
-                    </When>
-                    <When
-                      truthy={[FilterPartTypeEnum.IS_ONLINE, FilterPartTypeEnum.IS_ONLINE_IN_LAST].includes(
-                        filterFieldOn
-                      )}
-                    >
-                      <OnlineConditionRow
-                        fieldOn={filterFieldOn}
-                        control={control}
-                        index={index}
-                        isReadonly={isReadonly}
-                      />
-                    </When>
-                    <When
-                      truthy={[
-                        FilterPartTypeEnum.PAYLOAD,
-                        FilterPartTypeEnum.SUBSCRIBER,
-                        FilterPartTypeEnum.TENANT,
-                      ].includes(filterFieldOn)}
-                    >
-                      <EqualityForm customData={customData} control={control} index={index} isReadonly={isReadonly} />
-                    </When>
-                  </Grid>
-                </Grid.Col>
-                <ConditionRowMenu
-                  onDuplicate={() => handleDuplicate(index)}
-                  onDelete={() => handleDelete(index)}
-                  isReadonly={isReadonly}
+                        );
+                      }}
+                    />
+                  </Wrapper>
+                ) : (
+                  <Text ml={14} color={colors.B60}>
+                    When
+                  </Text>
+                )}
+              </Grid.Col>
+              <Grid.Col span={3}>
+                <Controller
+                  control={control}
+                  name={`conditions.0.children.${index}.on`}
+                  defaultValue={FilterPartTypeEnum.TENANT}
+                  render={({ field }) => {
+                    return (
+                      <Select placeholder="On" data={FilterPartTypeList} {...field} data-test-id="conditions-form-on" />
+                    );
+                  }}
                 />
-              </Grid>
-            </div>
-          );
-        })}
-      </div>
+              </Grid.Col>
+              <EqualityForm control={control} index={index} />
+              <Grid.Col span={1}>
+                <Dropdown
+                  withArrow={false}
+                  offset={0}
+                  control={
+                    <ActionIcon data-test-id="conditions-row-btn" variant={'transparent'}>
+                      <DotsHorizontal color={colors.B60} />
+                    </ActionIcon>
+                  }
+                  middlewares={{ flip: false, shift: false }}
+                  position="bottom-end"
+                >
+                  <Dropdown.Item
+                    data-test-id="conditions-row-duplicate"
+                    onClick={() => handleDuplicate(index)}
+                    icon={<Duplicate />}
+                  >
+                    Duplicate
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    data-test-id="conditions-row-delete"
+                    onClick={() => handleDelete(index)}
+                    icon={<Trash />}
+                  >
+                    Delete
+                  </Dropdown.Item>
+                </Dropdown>
+              </Grid.Col>
+            </Grid>
+          </div>
+        );
+      })}
 
-      <Group position="left" mb={8}>
+      <Group position="left">
         <Button
           variant="outline"
           onClick={() => {
             append({
               operator: FieldOperatorEnum.EQUAL,
-              on: defaultOnFilter,
-            } as IFieldFilterPart);
+              on: FilterPartTypeEnum.TENANT,
+              field: 'identifier',
+              value: '',
+            });
           }}
-          icon={<ConditionPlus style={{ color: colorScheme === 'dark' ? colors.white : colors.gradientMiddle }} />}
-          disabled={isReadonly}
+          icon={<ConditionPlus />}
           data-test-id="add-new-condition"
         >
           Add condition
@@ -272,19 +223,7 @@ export function Conditions({
   );
 }
 
-function EqualityForm({
-  control,
-  index,
-  webhook = false,
-  isReadonly = false,
-  customData,
-}: {
-  control: Control<IConditionsForm>;
-  index: number;
-  webhook?: boolean;
-  isReadonly?: boolean;
-  customData?: DataSelect[];
-}) {
+function EqualityForm({ control, index }: { control: Control<IConditionsForm>; index: number }) {
   const operator = useWatch({
     control,
     name: `conditions.0.children.${index}.operator`,
@@ -292,20 +231,20 @@ function EqualityForm({
 
   return (
     <>
-      <Grid.Col span={webhook ? 3 : 4}>
+      <Grid.Col span={5}>
         <Controller
           control={control}
           name={`conditions.0.children.${index}.field`}
-          rules={{ required: true }}
-          defaultValue=""
-          render={({ field, fieldState }) => {
+          defaultValue="identifier"
+          render={({ field }) => {
             return (
-              <Input
+              <Select
                 placeholder="Key"
+                data={[
+                  { value: 'name', label: 'Name' },
+                  { value: 'identifier', label: 'Identifier' },
+                ]}
                 {...field}
-                rightSection={<RightSectionError showError={!!fieldState.error} label="Key is missing" />}
-                error={!!fieldState.error}
-                disabled={isReadonly}
                 data-test-id="conditions-form-key"
               />
             );
@@ -321,9 +260,14 @@ function EqualityForm({
             return (
               <Select
                 placeholder="Operator"
-                data={customData ?? DefaultOperatorData}
+                data={[
+                  { value: FieldOperatorEnum.EQUAL, label: 'Equal' },
+                  { value: FieldOperatorEnum.NOT_EQUAL, label: 'Does not equal' },
+                  { value: FieldOperatorEnum.IN, label: 'Contains' },
+                  { value: FieldOperatorEnum.NOT_IN, label: 'Does not contain' },
+                  { value: FieldOperatorEnum.IS_DEFINED, label: 'Is defined' },
+                ]}
                 {...field}
-                disabled={isReadonly}
                 data-test-id="conditions-form-operator"
               />
             );
@@ -331,7 +275,7 @@ function EqualityForm({
         />
       </Grid.Col>
 
-      <Grid.Col span="auto">
+      <Grid.Col span={6}>
         {operator !== FieldOperatorEnum.IS_DEFINED && (
           <Controller
             control={control}
@@ -343,10 +287,24 @@ function EqualityForm({
                 <Input
                   {...field}
                   value={field.value as string}
-                  rightSection={<RightSectionError showError={!!fieldState.error} label={'Value is missing'} />}
+                  rightSection={
+                    <When truthy={!!fieldState.error}>
+                      <Tooltip
+                        opened
+                        data-test-id="conditions-form-tooltip-error"
+                        error
+                        position="top"
+                        offset={15}
+                        label={'Value is missing'}
+                      >
+                        <span>
+                          <ErrorIcon data-test-id="conditions-form-value-error" color={colors.error} />
+                        </span>
+                      </Tooltip>
+                    </When>
+                  }
                   error={!!fieldState.error}
                   placeholder="Value"
-                  disabled={isReadonly}
                   data-test-id="conditions-form-value"
                 />
               );
@@ -355,79 +313,6 @@ function EqualityForm({
         )}
       </Grid.Col>
     </>
-  );
-}
-
-function WebHookUrlForm({ control, index, isReadonly = false }: IConditionsProps) {
-  return (
-    <>
-      <Grid.Col span={4}>
-        <Controller
-          control={control}
-          name={`conditions.0.children.${index}.webhookUrl`}
-          defaultValue=""
-          rules={{ required: true }}
-          render={({ field, fieldState }) => {
-            return (
-              <Input
-                {...field}
-                rightSection={<RightSectionError showError={!!fieldState.error} label="Url is missing" />}
-                error={!!fieldState.error}
-                placeholder="Url"
-                disabled={isReadonly}
-                data-test-id="webhook-filter-url-input"
-              />
-            );
-          }}
-        />
-      </Grid.Col>
-    </>
-  );
-}
-
-export function RightSectionError({ showError, label }: { showError: boolean; label: string }) {
-  return (
-    <When truthy={showError}>
-      <Tooltip opened data-test-id="conditions-form-tooltip-error" error position="top" offset={15} label={label}>
-        <span>
-          <ErrorIcon data-test-id="conditions-form-value-error" color={colors.error} />
-        </span>
-      </Tooltip>
-    </When>
-  );
-}
-
-function ConditionRowMenu({
-  isReadonly,
-  onDuplicate,
-  onDelete,
-}: {
-  onDuplicate: () => void;
-  onDelete: () => void;
-  isReadonly?: boolean;
-}) {
-  return (
-    <Grid.Col span={'content'}>
-      <Dropdown
-        withArrow={false}
-        offset={0}
-        control={
-          <ActionIcon data-test-id="conditions-row-btn" variant={'transparent'}>
-            <DotsHorizontal color={colors.B60} />
-          </ActionIcon>
-        }
-        middlewares={{ flip: false, shift: false }}
-        position="bottom-end"
-        disabled={isReadonly}
-      >
-        <Dropdown.Item data-test-id="conditions-row-duplicate" onClick={onDuplicate} icon={<Duplicate />}>
-          Duplicate
-        </Dropdown.Item>
-        <Dropdown.Item data-test-id="conditions-row-delete" onClick={onDelete} icon={<Trash />}>
-          Delete
-        </Dropdown.Item>
-      </Dropdown>
-    </Grid.Col>
   );
 }
 

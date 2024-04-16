@@ -1,26 +1,17 @@
 import {
+  ActorTypeEnum,
   ChannelCTATypeEnum,
-  EnvironmentId,
   IEmailBlock,
   ITemplateVariable,
-  OrganizationId,
   StepTypeEnum,
   TemplateVariableTypeEnum,
 } from '../../types';
 import { TriggerContextTypeEnum } from '../notification-template';
-import { IActor } from '../messages';
 
 export type MessageTemplateContentType = 'editor' | 'customHtml';
 
 export interface IMessageTemplate {
-  id?: string;
   _id?: string;
-  _environmentId?: EnvironmentId;
-  _organizationId?: OrganizationId;
-  _creatorId?: string;
-  _feedId?: string;
-  _layoutId?: string | null;
-  _parentId?: string;
   subject?: string;
   name?: string;
   title?: string;
@@ -30,18 +21,20 @@ export interface IMessageTemplate {
   variables?: ITemplateVariable[];
   cta?: {
     type: ChannelCTATypeEnum;
-    data: {
-      url?: string;
-    };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data: any;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     action?: any;
   };
+  _feedId?: string;
+  _layoutId?: string;
   active?: boolean;
   preheader?: string;
   senderName?: string;
-  actor?: IActor;
-  createdAt?: string;
-  updatedAt?: string;
+  actor?: {
+    type: ActorTypeEnum;
+    data: string | null;
+  };
 }
 
 // eslint-disable-next-line @typescript-eslint/naming-convention

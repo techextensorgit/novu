@@ -107,7 +107,7 @@ export class MessageRepository extends BaseRepository<MessageDBModel, MessageEnt
     subscriberId: string,
     channel: ChannelTypeEnum,
     query: { feedId?: string[]; seen?: boolean; read?: boolean; payload?: object } = {},
-    options: { limit: number; skip?: number } = { limit: 100, skip: 0 }
+    options: { limit?: number; skip?: number } = { skip: 0 }
   ) {
     const requestQuery = await this.getFilterQueryForMessage(environmentId, subscriberId, channel, {
       feedId: query.feedId,
@@ -396,6 +396,7 @@ export class MessageRepository extends BaseRepository<MessageDBModel, MessageEnt
     const data = await this.MongooseModel.find(query, select, {
       limit: options?.limit,
       skip: options?.skip,
+      sort: { createdAt: -1 },
     })
       .populate('subscriber', '_id firstName lastName avatar subscriberId')
       .populate('actorSubscriber', '_id firstName lastName avatar subscriberId');

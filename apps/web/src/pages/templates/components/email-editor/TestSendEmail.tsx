@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { JsonInput, MultiSelect, ActionIcon } from '@mantine/core';
+import { JsonInput, MultiSelect, Group, ActionIcon } from '@mantine/core';
 import { useClipboard } from '@mantine/hooks';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useFormContext, useWatch } from 'react-hook-form';
@@ -23,20 +23,17 @@ import {
 import { getOrganizationMembers } from '../../../../api/organization';
 import { useProcessVariables, useIntegrationLimit } from '../../../../hooks';
 import { testSendEmailMessage } from '../../../../api/notification-templates';
-import { useStepFormPath } from '../../hooks/useStepFormPath';
-import type { IForm } from '../formTypes';
 
-export function TestSendEmail({ isIntegrationActive }: { isIntegrationActive: boolean }) {
+export function TestSendEmail({ index, isIntegrationActive }: { index: number; isIntegrationActive: boolean }) {
   const { currentUser } = useAuthContext();
-  const { control } = useFormContext<IForm>();
-  const path = useStepFormPath();
+  const { control } = useFormContext();
 
   const clipboardJson = useClipboard({ timeout: 1000 });
   const { classes } = useSelectStyles();
 
   const { mutateAsync: testSendEmailEvent, isLoading } = useMutation(testSendEmailMessage);
   const template = useWatch({
-    name: `${path}.template`,
+    name: `steps.${index}.template`,
     control,
   });
 

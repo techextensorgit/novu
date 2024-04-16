@@ -10,9 +10,6 @@ export class SendMessageCommand extends EnvironmentWithUserCommand {
   @IsDefined()
   payload: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
-  @IsOptional()
-  compileContext?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-
   @IsDefined()
   overrides: Record<string, Record<string, unknown>>;
 

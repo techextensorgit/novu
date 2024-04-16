@@ -5,22 +5,17 @@ import { DigestTypeEnum } from '@novu/shared';
 import { colors, Input, inputStyles } from '@novu/design-system';
 import { IntervalSelect } from './digest/IntervalSelect';
 import { BackOffFields } from './digest/BackOffFields';
-import { useStepFormPath } from '../hooks/useStepFormPath';
-import { useEnvController } from '../../../hooks';
 
 const amountDefaultValue = '5';
 
-export const RegularDigestMetadata = () => {
-  const { readonly } = useEnvController();
+export const RegularDigestMetadata = ({ index, readonly }: { index: number; readonly: boolean }) => {
   const {
     control,
     formState: { errors, isSubmitted },
     setValue,
   } = useFormContext();
-  const stepFormPath = useStepFormPath();
-
   const showErrors = isSubmitted && errors?.steps;
-  const amountFieldName = `${stepFormPath}.digestMetadata.${DigestTypeEnum.REGULAR}.amount`;
+  const amountFieldName = `steps.${index}.digestMetadata.${DigestTypeEnum.REGULAR}.amount`;
 
   return (
     <>
@@ -71,13 +66,13 @@ export const RegularDigestMetadata = () => {
           <IntervalSelect
             readonly={readonly}
             control={control}
-            name={`${stepFormPath}.digestMetadata.${DigestTypeEnum.REGULAR}.unit`}
+            name={`steps.${index}.digestMetadata.${DigestTypeEnum.REGULAR}.unit`}
             showErrors={showErrors}
           />
         </div>
         <span>before send</span>
       </Group>
-      <BackOffFields />
+      <BackOffFields index={index} control={control} readonly={readonly} />
     </>
   );
 };

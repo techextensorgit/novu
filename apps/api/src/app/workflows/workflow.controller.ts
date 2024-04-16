@@ -2,26 +2,21 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
-  Delete,
   Get,
+  Delete,
   Param,
   Post,
   Put,
-  Query,
   UseGuards,
   UseInterceptors,
+  Query,
 } from '@nestjs/common';
 import { IJwtPayload, MemberRoleEnum } from '@novu/shared';
 import { UserSession } from '../shared/framework/user.decorator';
 import { GetNotificationTemplates } from './usecases/get-notification-templates/get-notification-templates.usecase';
 import { GetNotificationTemplatesCommand } from './usecases/get-notification-templates/get-notification-templates.command';
 import { CreateNotificationTemplate, CreateNotificationTemplateCommand } from './usecases/create-notification-template';
-import {
-  ChangeWorkflowStatusRequestDto,
-  CreateWorkflowRequestDto,
-  UpdateWorkflowRequestDto,
-  VariablesResponseDto,
-} from './dto';
+import { CreateWorkflowRequestDto, UpdateWorkflowRequestDto, ChangeWorkflowStatusRequestDto } from './dto';
 import { GetNotificationTemplate } from './usecases/get-notification-template/get-notification-template.usecase';
 import { GetNotificationTemplateCommand } from './usecases/get-notification-template/get-notification-template.command';
 import { UpdateNotificationTemplate } from './usecases/update-notification-template/update-notification-template.usecase';
@@ -29,32 +24,27 @@ import { DeleteNotificationTemplate } from './usecases/delete-notification-templ
 import { UpdateNotificationTemplateCommand } from './usecases/update-notification-template/update-notification-template.command';
 import { ChangeTemplateActiveStatus } from './usecases/change-template-active-status/change-template-active-status.usecase';
 import { ChangeTemplateActiveStatusCommand } from './usecases/change-template-active-status/change-template-active-status.command';
-import { UserAuthGuard } from '../auth/framework/user.auth.guard';
+import { JwtAuthGuard } from '../auth/framework/auth.guard';
 import { RootEnvironmentGuard } from '../auth/framework/root-environment-guard.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { WorkflowResponse } from './dto/workflow-response.dto';
 import { WorkflowsResponseDto } from './dto/workflows.response.dto';
 import { ExternalApiAccessible } from '../auth/framework/external-api.decorator';
 import { WorkflowsRequestDto } from './dto/workflows-request.dto';
 import { Roles } from '../auth/framework/roles.decorator';
-import { ApiCommonResponses, ApiResponse } from '../shared/framework/response.decorator';
+import { ApiResponse } from '../shared/framework/response.decorator';
 import { DataBooleanDto } from '../shared/dtos/data-wrapper-dto';
 import { CreateWorkflowQuery } from './queries';
-import { ApiOkResponse } from '../shared/framework/response.decorator';
-import { GetWorkflowVariables } from './usecases/get-workflow-variables/get-workflow-variables.usecase';
-import { GetWorkflowVariablesCommand } from './usecases/get-workflow-variables/get-workflow-variables.command';
 
-@ApiCommonResponses()
 @Controller('/workflows')
 @UseInterceptors(ClassSerializerInterceptor)
-@UseGuards(UserAuthGuard)
+@UseGuards(JwtAuthGuard)
 @ApiTags('Workflows')
 export class WorkflowController {
   constructor(
     private getWorkflowsUsecase: GetNotificationTemplates,
     private createWorkflowUsecase: CreateNotificationTemplate,
     private getWorkflowUsecase: GetNotificationTemplate,
-    private getWorkflowVariablesUsecase: GetWorkflowVariables,
     private updateWorkflowByIdUsecase: UpdateNotificationTemplate,
     private deleteWorkflowByIdUsecase: DeleteNotificationTemplate,
     private changeWorkflowActiveStatusUsecase: ChangeTemplateActiveStatus
@@ -132,23 +122,6 @@ export class WorkflowController {
     );
   }
 
-  @Get('/variables')
-  @ApiResponse(VariablesResponseDto)
-  @ApiOperation({
-    summary: 'Get available variables',
-    description: 'Get the variables that can be used in the workflow',
-  })
-  @ExternalApiAccessible()
-  getWorkflowVariables(@UserSession() user: IJwtPayload): Promise<VariablesResponseDto> {
-    return this.getWorkflowVariablesUsecase.execute(
-      GetWorkflowVariablesCommand.create({
-        environmentId: user.environmentId,
-        organizationId: user.organizationId,
-        userId: user._id,
-      })
-    );
-  }
-
   @Get('/:workflowId')
   @ApiResponse(WorkflowResponse)
   @ApiOperation({
@@ -169,6 +142,7 @@ export class WorkflowController {
       })
     );
   }
+
   @Post('')
   @ExternalApiAccessible()
   @UseGuards(RootEnvironmentGuard)

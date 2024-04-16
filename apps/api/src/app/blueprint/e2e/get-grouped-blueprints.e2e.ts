@@ -13,8 +13,9 @@ import {
 } from '@novu/shared';
 import {
   buildGroupedBlueprintsKey,
-  CacheInMemoryProviderService,
   CacheService,
+  InMemoryProviderEnum,
+  InMemoryProviderService,
   InvalidateCacheService,
 } from '@novu/application-generic';
 
@@ -33,8 +34,8 @@ describe('Get grouped notification template blueprints - /blueprints/group-by-ca
   let indexModuleStub: sinon.SinonStub;
 
   before(async () => {
-    const cacheInMemoryProviderService = new CacheInMemoryProviderService();
-    const cacheService = new CacheService(cacheInMemoryProviderService);
+    const inMemoryProviderService = new InMemoryProviderService(InMemoryProviderEnum.REDIS);
+    const cacheService = new CacheService(inMemoryProviderService);
     await cacheService.initialize();
     invalidateCache = new InvalidateCacheService(cacheService);
 

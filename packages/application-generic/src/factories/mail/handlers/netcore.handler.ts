@@ -1,4 +1,4 @@
-import { ChannelTypeEnum, ICredentials } from '@novu/shared';
+import { ChannelTypeEnum } from '@novu/shared';
 import { NetCoreProvider } from '@novu/netcore';
 import { BaseHandler } from './base.handler';
 
@@ -7,11 +7,10 @@ export class NetCoreHandler extends BaseHandler {
     super('netcore', ChannelTypeEnum.EMAIL);
   }
 
-  buildProvider(credentials: ICredentials, from?: string) {
-    const config: { apiKey: string; from: string; senderName: string } = {
+  buildProvider(credentials, from?: string) {
+    const config: { apiKey: string; from: string } = {
       apiKey: credentials.apiKey,
       from: from as string,
-      senderName: credentials.senderName,
     };
 
     this.provider = new NetCoreProvider(config);

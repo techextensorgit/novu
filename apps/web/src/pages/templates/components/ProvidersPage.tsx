@@ -6,9 +6,9 @@ import { colors } from '@novu/design-system';
 import type { IIntegratedProvider } from '../../integrations/types';
 import { useProviders } from '../../integrations/useProviders';
 import { ListProviders } from './ListProviders';
+import { SubPageWrapper } from './SubPageWrapper';
 import { WorkflowSettingsTabs } from './WorkflowSettingsTabs';
 import { IntegrationsListModal } from '../../integrations/IntegrationsListModal';
-import { WorkflowSidebar } from './WorkflowSidebar';
 
 export function ProvidersPage() {
   const { emailProviders, smsProvider, chatProvider, pushProvider, inAppProvider, isLoading } = useProviders();
@@ -30,7 +30,13 @@ export function ProvidersPage() {
 
   return (
     <>
-      <WorkflowSidebar title="Workflow Settings">
+      <SubPageWrapper
+        title="Workflow Settings"
+        style={{
+          display: 'flex',
+          flexFlow: 'column',
+        }}
+      >
         <WorkflowSettingsTabs />
         <ScrollArea h="calc(100vh - 220px)" offsetScrollbars mr={-12}>
           <ListProviders
@@ -64,7 +70,7 @@ export function ProvidersPage() {
             providers={smsProvider}
           />
         </ScrollArea>
-      </WorkflowSidebar>
+      </SubPageWrapper>
       <IntegrationsListModal
         isOpen={configureChannel !== undefined}
         selectedProvider={provider}

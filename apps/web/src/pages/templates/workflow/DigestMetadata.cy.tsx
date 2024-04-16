@@ -1,11 +1,10 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { FormProvider, useForm } from 'react-hook-form';
-import { DigestTypeEnum, StepTypeEnum } from '@novu/shared';
-
 import { schema } from '../components/notificationTemplateSchema';
 import { DigestMetadata } from './DigestMetadata';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { FormProvider, useForm } from 'react-hook-form';
 import { IForm } from '../components/formTypes';
 import { TestWrapper } from '../../../testing';
+import { DigestTypeEnum } from '@novu/shared';
 
 const DigestWrapper = ({ data }) => {
   const methods = useForm<IForm>({
@@ -14,14 +13,6 @@ const DigestWrapper = ({ data }) => {
       steps: [
         {
           digestMetadata: data,
-          uuid: '123',
-          template: {
-            type: StepTypeEnum.DIGEST,
-            subject: '',
-            content: '',
-            contentType: 'editor',
-            variables: [],
-          },
         },
       ],
     },
@@ -29,22 +20,22 @@ const DigestWrapper = ({ data }) => {
   });
 
   return (
-    <TestWrapper initialEntries={[{ pathname: '/workflows/edit/asd/digest/123' }]}>
-      <FormProvider {...methods}>
-        <DigestMetadata />
-      </FormProvider>
-    </TestWrapper>
+    <FormProvider {...methods}>
+      <DigestMetadata readonly={false} index={0} />
+    </FormProvider>
   );
 };
 
 describe('Digest', function () {
   it('should render day select and be able to select multiple days', function () {
     cy.mount(
-      <DigestWrapper
-        data={{
-          type: DigestTypeEnum.REGULAR,
-        }}
-      />
+      <TestWrapper>
+        <DigestWrapper
+          data={{
+            type: DigestTypeEnum.REGULAR,
+          }}
+        />
+      </TestWrapper>
     );
 
     cy.getByTestId('digest-send-options').click();
@@ -62,11 +53,13 @@ describe('Digest', function () {
 
   it('should render week day select and be able to select multiple days', function () {
     cy.mount(
-      <DigestWrapper
-        data={{
-          type: DigestTypeEnum.REGULAR,
-        }}
-      />
+      <TestWrapper>
+        <DigestWrapper
+          data={{
+            type: DigestTypeEnum.REGULAR,
+          }}
+        />
+      </TestWrapper>
     );
 
     cy.getByTestId('digest-send-options').click();

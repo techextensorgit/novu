@@ -1,12 +1,10 @@
-FROM node:20-alpine3.19 as dev_base
-RUN apk add g++ make py3-pip
+FROM nikolaik/python-nodejs:python3.10-nodejs16-alpine as dev_base
 ENV NX_DAEMON=false
 
 RUN npm i pm2 -g
 RUN npm --no-update-notifier --no-fund --global install pnpm@8.9.0
 RUN pnpm --version
 
-USER 1000
 WORKDIR /usr/src/app
 
 # ------- DEV BUILD ----------
@@ -14,9 +12,9 @@ FROM dev_base AS dev
 ARG PACKAGE_PATH
 
 
-COPY --chown=1000:1000 ./meta .
-COPY --chown=1000:1000 ./deps .
-COPY --chown=1000:1000 ./pkg .
+COPY ./meta .
+COPY ./deps .
+COPY ./pkg .
 
 RUN --mount=type=cache,id=pnpm-store-webhook,target=/root/.pnpm-store\
  pnpm install --reporter=silent --filter "novuhq" --filter "{${PACKAGE_PATH}}..."\
@@ -51,16 +49,20 @@ ENV CI=true
 
 WORKDIR /usr/src/app
 
-COPY --chown=1000:1000 ./meta .
+RUN chown -R 1000:root .
+
+COPY ./meta .
 
 # Get the build artifacts that only include dist folders
-COPY --chown=1000:1000 --from=assets /usr/src/app .
+COPY --from=assets /usr/src/app .
 
 RUN --mount=type=cache,id=pnpm-store-webhook,target=/root/.pnpm-store\
  pnpm install --reporter=silent --filter "{${PACKAGE_PATH}}..."\
  --frozen-lockfile\
  --unsafe-perm\
  --reporter=silent
+
+RUN chown -R 1000:root .
 
 WORKDIR /usr/src/app/apps/webhook
 CMD [ "pm2-runtime", "dist/main.js" ]

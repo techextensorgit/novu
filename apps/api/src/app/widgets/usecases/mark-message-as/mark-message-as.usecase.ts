@@ -85,15 +85,15 @@ export class MarkMessageAs {
   private updateSocketCount(subscriber: SubscriberEntity, mark: MarkEnum) {
     const eventMessage = mark === MarkEnum.READ ? WebSocketEventEnum.UNREAD : WebSocketEventEnum.UNSEEN;
 
-    this.webSocketsQueueService.add({
-      name: 'sendMessage',
-      data: {
+    this.webSocketsQueueService.add(
+      'sendMessage',
+      {
         event: eventMessage,
         userId: subscriber._id,
         _environmentId: subscriber._environmentId,
       },
-      groupId: subscriber._organizationId,
-    });
+      subscriber._organizationId
+    );
   }
   @CachedEntity({
     builder: (command: { subscriberId: string; _environmentId: string }) =>

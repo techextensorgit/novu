@@ -1,14 +1,14 @@
-import { InboundParseQueueService, WorkflowInMemoryProviderService } from '@novu/application-generic';
+import { BullMqService, InboundParseQueue, QueueBaseOptions } from '@novu/application-generic';
+import { JobTopicNameEnum } from '@novu/shared';
 
 export class InboundMailService {
-  public inboundParseQueueService: InboundParseQueueService;
-  private workflowInMemoryProviderService: WorkflowInMemoryProviderService;
+  private inboundParseQueue: InboundParseQueue;
+
   constructor() {
-    this.workflowInMemoryProviderService = new WorkflowInMemoryProviderService();
-    this.inboundParseQueueService = new InboundParseQueueService(this.workflowInMemoryProviderService);
+    this.inboundParseQueue = new InboundParseQueue();
   }
 
-  async start() {
-    await this.workflowInMemoryProviderService.initialize();
+  public get inboundParseQueueService() {
+    return this.inboundParseQueue;
   }
 }

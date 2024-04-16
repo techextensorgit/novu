@@ -1,4 +1,4 @@
-import { Analytics } from '@segment/analytics-node';
+import Analytics = require('analytics-node');
 import { IJwtPayload } from '@novu/shared';
 import { ANALYTICS_ENABLED, SEGMENTS_WRITE_KEY } from '../constants';
 
@@ -27,9 +27,7 @@ export class AnalyticService {
   constructor() {
     this._analyticsEnabled = ANALYTICS_ENABLED;
     if (this._analyticsEnabled) {
-      this._analytics = new Analytics({
-        writeKey: SEGMENTS_WRITE_KEY,
-      });
+      this._analytics = new Analytics(SEGMENTS_WRITE_KEY);
     }
   }
 
@@ -90,7 +88,7 @@ export class AnalyticService {
       return;
     }
 
-    await this._analytics.closeAndFlush();
+    await this._analytics.flush();
   }
 
   private isAnalyticsEnabled() {

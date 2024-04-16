@@ -4,7 +4,7 @@ import { Menu, MenuProps } from '@mantine/core';
 import useStyles from './Dropdown.styles';
 import { shadows } from '../config';
 
-export interface IDropdownProps
+interface IDropdownProps
   extends Pick<
     MenuProps,
     | 'withArrow'
@@ -18,7 +18,6 @@ export interface IDropdownProps
     | 'disabled'
     | 'width'
     | 'styles'
-    | 'zIndex'
   > {
   control: React.ReactNode;
   children: React.ReactNode;

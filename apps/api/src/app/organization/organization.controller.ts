@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { OrganizationEntity } from '@novu/dal';
 import { IJwtPayload, MemberRoleEnum } from '@novu/shared';
-import { ApiExcludeEndpoint, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { Roles } from '../auth/framework/roles.decorator';
 import { UserSession } from '../shared/framework/user.decorator';
 import { CreateOrganizationDto } from './dtos/create-organization.dto';
@@ -21,7 +21,7 @@ import { CreateOrganizationCommand } from './usecases/create-organization/create
 import { CreateOrganization } from './usecases/create-organization/create-organization.usecase';
 import { RemoveMember } from './usecases/membership/remove-member/remove-member.usecase';
 import { RemoveMemberCommand } from './usecases/membership/remove-member/remove-member.command';
-import { UserAuthGuard } from '../auth/framework/user.auth.guard';
+import { JwtAuthGuard } from '../auth/framework/auth.guard';
 import { GetMembersCommand } from './usecases/membership/get-members/get-members.command';
 import { GetMembers } from './usecases/membership/get-members/get-members.usecase';
 import { ChangeMemberRoleCommand } from './usecases/membership/change-member-role/change-member-role.command';
@@ -40,15 +40,13 @@ import { RenameOrganizationDto } from './dtos/rename-organization.dto';
 import { UpdateBrandingDetailsDto } from './dtos/update-branding-details.dto';
 import { UpdateMemberRolesDto } from './dtos/update-member-roles.dto';
 import { ExternalApiAccessible } from '../auth/framework/external-api.decorator';
-import { ApiCommonResponses, ApiResponse } from '../shared/framework/response.decorator';
+import { ApiResponse } from '../shared/framework/response.decorator';
 import { OrganizationBrandingResponseDto, OrganizationResponseDto } from './dtos/organization-response.dto';
 import { MemberResponseDto } from './dtos/member-response.dto';
-
 @Controller('/organizations')
 @UseInterceptors(ClassSerializerInterceptor)
-@UseGuards(UserAuthGuard)
+@UseGuards(JwtAuthGuard)
 @ApiTags('Organizations')
-@ApiCommonResponses()
 export class OrganizationController {
   constructor(
     private createOrganizationUsecase: CreateOrganization,
@@ -71,16 +69,13 @@ export class OrganizationController {
     @UserSession() user: IJwtPayload,
     @Body() body: CreateOrganizationDto
   ): Promise<OrganizationEntity> {
-    return await this.createOrganizationUsecase.execute(
-      CreateOrganizationCommand.create({
-        userId: user._id,
-        logo: body.logo,
-        name: body.name,
-        jobTitle: body.jobTitle,
-        domain: body.domain,
-        productUseCases: body.productUseCases,
-      })
-    );
+    const command = CreateOrganizationCommand.create({
+      userId: user._id,
+      logo: body.logo,
+      name: body.name,
+    });
+
+    return await this.createOrganizationUsecase.execute(command);
   }
 
   @Get('/')
@@ -132,7 +127,6 @@ export class OrganizationController {
 
   @Put('/members/:memberId/roles')
   @ExternalApiAccessible()
-  @ApiExcludeEndpoint()
   @Roles(MemberRoleEnum.ADMIN)
   @ApiResponse(MemberResponseDto)
   @ApiOperation({
@@ -144,14 +138,10 @@ export class OrganizationController {
     @Param('memberId') memberId: string,
     @Body() body: UpdateMemberRolesDto
   ) {
-    if (body.role !== MemberRoleEnum.ADMIN) {
-      throw new Error('Only admin role can be assigned to a member');
-    }
-
     return await this.changeMemberRoleUsecase.execute(
       ChangeMemberRoleCommand.create({
         memberId,
-        role: MemberRoleEnum.ADMIN,
+        role: body.role,
         userId: user._id,
         organizationId: user.organizationId,
       })

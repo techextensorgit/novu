@@ -30,7 +30,7 @@ export class Sms77SmsProvider implements ISmsProvider {
     options: ISmsOptions
   ): Promise<ISendMessageSuccessResponse> {
     const params: SmsParams = {
-      from: options.from || this.config.from,
+      from: this.config.from,
       json: true,
       text: options.content,
       to: options.to,

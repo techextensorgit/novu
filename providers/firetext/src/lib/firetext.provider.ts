@@ -47,7 +47,7 @@ export class FiretextSmsProvider implements ISmsProvider {
     const baseMessage = {
       apiKey: this.config.apiKey,
       to: options.to,
-      from: options.from || this.config.from,
+      from: this.config.from,
       message: options.content,
     };
 

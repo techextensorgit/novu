@@ -4,7 +4,7 @@ import { GupshupSmsProvider } from '@novu/gupshup';
 
 export class GupshupSmsHandler extends BaseSmsHandler {
   constructor() {
-    super('gupshup', ChannelTypeEnum.SMS);
+    super('Gupshup', ChannelTypeEnum.SMS);
   }
 
   buildProvider(credentials: ICredentials) {

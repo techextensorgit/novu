@@ -18,14 +18,16 @@ export function InAppWidgetPreview({
   children,
   value,
   onChange,
+  index,
   enableAvatar,
   preview = false,
 }: {
   readonly: boolean;
   preview?: boolean;
   children: JSX.Element;
-  value: IMessageAction | undefined;
+  value: IMessageAction;
   onChange: (data: any) => void;
+  index: number;
   enableAvatar: boolean;
 }) {
   const theme = useMantineTheme();
@@ -41,7 +43,7 @@ export function InAppWidgetPreview({
 
   function onRemoveTemplate() {
     setIsButtonsTemplateSelected(false);
-    onChange({});
+    onChange('');
   }
 
   const editableContent = (
@@ -88,6 +90,7 @@ export function InAppWidgetPreview({
             <Group position="left" spacing={10} noWrap>
               {enableAvatar && (
                 <AvatarContainer
+                  index={index}
                   opened={avatarContainerOpened}
                   setOpened={setAvatarContainerOpened}
                   readonly={readonly}

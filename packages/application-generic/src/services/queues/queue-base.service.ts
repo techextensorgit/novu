@@ -1,4 +1,4 @@
-import { IJobData, JobTopicNameEnum } from '@novu/shared';
+import { JobTopicNameEnum } from '@novu/shared';
 import { Logger } from '@nestjs/common';
 
 import {
@@ -17,11 +17,12 @@ export class QueueBaseService {
   public readonly DEFAULT_ATTEMPTS = 3;
   public queue: Queue;
 
-  constructor(
-    public readonly topic: JobTopicNameEnum,
-    private bullMqService: BullMqService
-  ) {
-    this.instance = bullMqService;
+  constructor(public readonly topic: JobTopicNameEnum) {
+    this.instance = new BullMqService();
+  }
+
+  public get bullMqService(): BullMqService {
+    return this.instance;
   }
 
   public createQueue(overrideOptions?: QueueOptions): void {
@@ -54,26 +55,6 @@ export class QueueBaseService {
     return await this.instance.isQueuePaused();
   }
 
-  public async getStatus() {
-    return await this.instance.getStatus();
-  }
-
-  public async getGroupsJobsCount() {
-    return await (this.instance.queue as any).getGroupsJobsCount();
-  }
-
-  public async getWaitingCount() {
-    return await this.instance.queue.getWaitingCount();
-  }
-
-  public async getDelayedCount() {
-    return await this.instance.queue.getDelayedCount();
-  }
-
-  public async getActiveCount() {
-    return await this.instance.queue.getActiveCount();
-  }
-
   public async gracefulShutdown(): Promise<void> {
     Logger.log(`Shutting the ${this.topic} queue service down`, LOG_CONTEXT);
 
@@ -86,40 +67,56 @@ export class QueueBaseService {
     );
   }
 
-  public async add(params: IJobParams) {
-    const jobOptions = {
-      removeOnComplete: true,
-      removeOnFail: true,
-      ...params.options,
-    };
-
-    await this.instance.add(
-      params.name,
-      params.data,
-      jobOptions,
-      params.groupId
-    );
-  }
-
-  public async addBulk(data: IBulkJobParams[]) {
-    await this.instance.addBulk(data);
-  }
-
   async onModuleDestroy(): Promise<void> {
     await this.gracefulShutdown();
   }
-}
 
-export interface IJobParams {
-  name: string;
-  data?: any;
-  groupId?: string;
-  options?: JobsOptions;
-}
+  public async addMinimalJob(
+    id: string,
+    data?: any,
+    groupId?: string,
+    options: JobsOptions = {}
+  ) {
+    const jobData = data
+      ? {
+          _environmentId: data._environmentId,
+          _id: id,
+          _organizationId: data._organizationId,
+          _userId: data._userId,
+        }
+      : undefined;
 
-export interface IBulkJobParams {
-  name: string;
-  data: any;
-  groupId?: string;
-  options?: BulkJobOptions;
+    await this.add(id, jobData, groupId, {
+      removeOnComplete: true,
+      removeOnFail: true,
+      ...options,
+    });
+  }
+
+  public async add(
+    name: string,
+    data?: any,
+    groupId?: string,
+    options: JobsOptions = {}
+  ) {
+    const jobOptions = {
+      removeOnComplete: true,
+      removeOnFail: true,
+      ...options,
+    };
+
+    await this.instance.add(name, data, jobOptions, groupId);
+  }
+  public async addBulk(
+    data: [
+      {
+        name: string;
+        data: any;
+        options: BulkJobOptions;
+        groupId?: string;
+      }
+    ]
+  ) {
+    await this.instance.addBulk(data);
+  }
 }

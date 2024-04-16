@@ -7,7 +7,6 @@ import { GetFeedCount } from './get-feed-count/get-feed-count.usecase';
 import { RemoveMessage } from './remove-message/remove-message.usecase';
 import { MarkAllMessagesAs } from './mark-all-messages-as/mark-all-messages-as.usecase';
 import { RemoveAllMessages } from './remove-messages/remove-all-messages.usecase';
-import { RemoveMessagesBulk } from './remove-messages-bulk/remove-messages-bulk.usecase';
 
 export const USE_CASES = [
   GetOrganizationData,
@@ -19,6 +18,5 @@ export const USE_CASES = [
   RemoveMessage,
   RemoveAllMessages,
   MarkAllMessagesAs,
-  RemoveMessagesBulk,
   //
 ];

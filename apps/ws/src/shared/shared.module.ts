@@ -11,15 +11,9 @@ import {
   MessageRepository,
   MemberRepository,
 } from '@novu/dal';
-import {
-  AnalyticsService,
-  DalServiceHealthIndicator,
-  WebSocketsInMemoryProviderService,
-  QueuesModule,
-} from '@novu/application-generic';
+import { AnalyticsService, DalServiceHealthIndicator } from '@novu/application-generic';
 
 import { SubscriberOnlineService } from './subscriber-online';
-import { JobTopicNameEnum } from '@novu/shared';
 
 const DAL_MODELS = [
   UserRepository,
@@ -52,18 +46,10 @@ const analyticsService = {
   },
 };
 
-const PROVIDERS = [
-  analyticsService,
-  dalService,
-  DalServiceHealthIndicator,
-  SubscriberOnlineService,
-  WebSocketsInMemoryProviderService,
-  ...DAL_MODELS,
-];
+const PROVIDERS = [analyticsService, dalService, DalServiceHealthIndicator, SubscriberOnlineService, ...DAL_MODELS];
 
 @Module({
   imports: [
-    QueuesModule.forRoot([JobTopicNameEnum.WEB_SOCKETS]),
     JwtModule.register({
       secretOrKeyProvider: () => process.env.JWT_SECRET as string,
       signOptions: {
@@ -72,6 +58,6 @@ const PROVIDERS = [
     }),
   ],
   providers: [...PROVIDERS],
-  exports: [...PROVIDERS, JwtModule, QueuesModule],
+  exports: [...PROVIDERS, JwtModule],
 })
 export class SharedModule {}

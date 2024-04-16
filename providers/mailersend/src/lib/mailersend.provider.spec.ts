@@ -4,7 +4,6 @@ import { CheckIntegrationResponseEnum } from '@novu/stateless';
 
 const mockConfig = {
   apiKey: 'SG.1234',
-  senderName: 'Novu Team',
 };
 
 const mockNovuMessage = {
@@ -73,7 +72,7 @@ test('should trigger mailerSend correctly', async () => {
   expect(spy).toBeCalledWith('/email', {
     method: 'POST',
     body: {
-      from: { email: mockNovuMessage.from, name: mockConfig.senderName },
+      from: { email: mockNovuMessage.from, name: undefined },
       to: [recipient1, recipient2],
       cc: undefined,
       bcc: undefined,

@@ -1,20 +1,25 @@
-import { NotFoundError } from 'rxjs';
 import { Injectable, Logger } from '@nestjs/common';
-
 import { JobRepository } from '@novu/dal';
 import { ExecutionDetailsSourceEnum, ExecutionDetailsStatusEnum } from '@novu/shared';
-import { DetailEnum, ExecutionLogRoute, ExecutionLogRouteCommand, InstrumentUsecase } from '@novu/application-generic';
+import {
+  CreateExecutionDetails,
+  CreateExecutionDetailsCommand,
+  DetailEnum,
+  InstrumentUsecase,
+} from '@novu/application-generic';
 
 import { HandleLastFailedJobCommand } from './handle-last-failed-job.command';
+
 import { QueueNextJob, QueueNextJobCommand } from '../queue-next-job';
 import { PlatformException } from '../../../shared/utils';
+import { NotFoundError } from 'rxjs';
 
 const LOG_CONTEXT = 'HandleLastFailedJob';
 
 @Injectable()
 export class HandleLastFailedJob {
   constructor(
-    private executionLogRoute: ExecutionLogRoute,
+    private createExecutionDetails: CreateExecutionDetails,
     private queueNextJob: QueueNextJob,
     private jobRepository: JobRepository
   ) {}
@@ -36,9 +41,9 @@ export class HandleLastFailedJob {
       throw new PlatformException(message);
     }
 
-    await this.executionLogRoute.execute(
-      ExecutionLogRouteCommand.create({
-        ...ExecutionLogRouteCommand.getDetailsFromJob(job),
+    await this.createExecutionDetails.execute(
+      CreateExecutionDetailsCommand.create({
+        ...CreateExecutionDetailsCommand.getDetailsFromJob(job),
         detail: DetailEnum.WEBHOOK_FILTER_FAILED_LAST_RETRY,
         source: ExecutionDetailsSourceEnum.WEBHOOK,
         status: ExecutionDetailsStatusEnum.PENDING,

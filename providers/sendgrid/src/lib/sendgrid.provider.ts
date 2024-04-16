@@ -7,12 +7,9 @@ import {
   ICheckIntegrationResponse,
   CheckIntegrationResponseEnum,
   IEmailEventBody,
-  IAttachmentOptions,
 } from '@novu/stateless';
 
 import { MailDataRequired, MailService } from '@sendgrid/mail';
-
-type AttachmentJSON = MailDataRequired['attachments'][0];
 
 export class SendgridEmailProvider implements IEmailProvider {
   id = 'sendgrid';
@@ -77,30 +74,10 @@ export class SendgridEmailProvider implements IEmailProvider {
     delete options.customData?.dynamicTemplateData;
     delete options.customData?.templateId;
 
-    const attachments = options.attachments?.map(
-      (attachment: IAttachmentOptions) => {
-        const attachmentJson: AttachmentJSON = {
-          content: attachment.file.toString('base64'),
-          filename: attachment.name,
-          type: attachment.mime,
-        };
-
-        if (attachment?.cid) {
-          attachmentJson.contentId = attachment?.cid;
-        }
-
-        if (attachment?.disposition) {
-          attachmentJson.disposition = attachment?.disposition;
-        }
-
-        return attachmentJson;
-      }
-    );
-
     const mailData: Partial<MailDataRequired> = {
       from: {
         email: options.from || this.config.from,
-        name: options.senderName || this.config.senderName,
+        name: this.config.senderName,
       },
       ...this.getIpPoolObject(options),
       to: options.to.map((email) => ({ email })),
@@ -118,7 +95,13 @@ export class SendgridEmailProvider implements IEmailProvider {
         novuSubscriberId: options.notificationDetails?.subscriberId,
         ...options.customData,
       },
-      attachments: attachments,
+      attachments: options.attachments?.map((attachment) => {
+        return {
+          content: attachment.file.toString('base64'),
+          filename: attachment.name,
+          type: attachment.mime,
+        };
+      }),
       personalizations: [
         {
           to: options.to.map((email) => ({ email })),

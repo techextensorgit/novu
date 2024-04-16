@@ -5,7 +5,7 @@ import {
 } from '@nestjs/terminus';
 import { Injectable, Logger } from '@nestjs/common';
 
-import { CacheService } from '../services/cache';
+import { CacheService } from '../services';
 
 const LOG_CONTEXT = 'CacheServiceHealthIndicator';
 

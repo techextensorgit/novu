@@ -33,7 +33,7 @@ class Mailin extends events.EventEmitter {
     super();
 
     this.configuration = {
-      host: '127.0.0.1',
+      host: '0.0.0.0',
       port: 2500,
       tmp: '.tmp',
       disableWebhook: true,
@@ -54,7 +54,7 @@ class Mailin extends events.EventEmitter {
     this._smtp = null;
   }
 
-  public async start(options: object, callback: (err?) => void) {
+  public start(options: object, callback: (err?) => void) {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const _this = this;
 
@@ -364,11 +364,7 @@ class Mailin extends events.EventEmitter {
         const username: string = parts[0];
         const environmentId = username.split('-nv-e=').at(-1);
 
-        inboundMailService.inboundParseQueueService.add({
-          name: finalizedMessage.messageId,
-          data: finalizedMessage,
-          groupId: environmentId,
-        });
+        inboundMailService.inboundParseQueueService.add(finalizedMessage.messageId, finalizedMessage, environmentId);
 
         return resolve();
       });
@@ -450,8 +446,6 @@ class Mailin extends events.EventEmitter {
       onMailFrom: onMailFrom,
       onRcptTo: onRcptTo,
     });
-
-    await inboundMailService.start();
 
     const server = new SMTPServer(smtpOptions);
 

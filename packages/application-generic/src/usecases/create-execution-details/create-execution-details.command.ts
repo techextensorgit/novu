@@ -1,9 +1,8 @@
-import { IsNotEmpty, IsOptional, IsString, IsDate } from 'class-validator';
-import { ExecutionDetailsEntity, ExecutionDetailsRepository } from '@novu/dal';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { JobEntity } from '@novu/dal';
 import {
   ExecutionDetailsSourceEnum,
   ExecutionDetailsStatusEnum,
-  IJob,
   StepTypeEnum,
 } from '@novu/shared';
 import { EmailEventStatusEnum, SmsEventStatusEnum } from '@novu/stateless';
@@ -58,18 +57,10 @@ export class CreateExecutionDetailsCommand extends EnvironmentWithSubscriber {
   @IsString()
   _subscriberId?: string;
 
-  @IsOptional()
-  @IsString()
-  _id?: string;
-
-  @IsOptional()
-  @IsDate()
-  createdAt?: Date;
-
   webhookStatus?: EmailEventStatusEnum | SmsEventStatusEnum;
 
   static getDetailsFromJob(
-    job: IJob
+    job: JobEntity
   ): Pick<
     CreateExecutionDetailsCommand,
     | 'environmentId'
@@ -97,15 +88,6 @@ export class CreateExecutionDetailsCommand extends EnvironmentWithSubscriber {
       transactionId: job.transactionId,
       channel: job.type,
       expireAt: job.expireAt,
-    };
-  }
-
-  static getExecutionLogMetadata(): Pick<ExecutionDetailsEntity, '_id'> & {
-    createdAt: Date;
-  } {
-    return {
-      _id: ExecutionDetailsRepository.createObjectId(),
-      createdAt: new Date(),
     };
   }
 }

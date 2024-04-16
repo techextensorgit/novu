@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { IJwtPayload } from '@novu/shared';
 import { UserSession } from '../shared/framework/user.decorator';
-import { UserAuthGuard } from '../auth/framework/user.auth.guard';
+import { JwtAuthGuard } from '../auth/framework/auth.guard';
 import { CreateFeed } from './usecases/create-feed/create-feed.usecase';
 import { CreateFeedCommand } from './usecases/create-feed/create-feed.command';
 import { CreateFeedRequestDto } from './dto/create-feed-request.dto';
@@ -22,12 +22,11 @@ import { DeleteFeedCommand } from './usecases/delete-feed/delete-feed.command';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FeedResponseDto } from './dto/feed-response.dto';
 import { ExternalApiAccessible } from '../auth/framework/external-api.decorator';
-import { ApiCommonResponses, ApiResponse } from '../shared/framework/response.decorator';
+import { ApiResponse } from '../shared/framework/response.decorator';
 
-@ApiCommonResponses()
 @Controller('/feeds')
 @UseInterceptors(ClassSerializerInterceptor)
-@UseGuards(UserAuthGuard)
+@UseGuards(JwtAuthGuard)
 @ApiTags('Feeds')
 export class FeedsController {
   constructor(

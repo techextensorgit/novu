@@ -1,25 +1,14 @@
-import { ReactNode } from 'react';
 import { TextInput, useMantineColorScheme } from '@mantine/core';
 import { Controller, useFormContext } from 'react-hook-form';
-import { colors } from '@novu/design-system';
-
 import { useEnvController } from '../../../hooks';
-import type { IForm } from './formTypes';
+import { IForm } from './formTypes';
+import { colors } from '@novu/notification-center';
 
-export const StepNameInput = ({
-  path,
-  defaultValue,
-  label,
-}: {
-  path?: string;
-  defaultValue: string;
-  label?: ReactNode;
-}) => {
+export const StepNameInput = ({ index, defaultValue }: { index: number; defaultValue: string }) => {
   const {
     control,
     formState: { errors, isSubmitted },
   } = useFormContext<IForm>();
-
   const { readonly } = useEnvController();
   const showErrors = isSubmitted && errors?.steps;
   const { colorScheme } = useMantineColorScheme();
@@ -27,18 +16,15 @@ export const StepNameInput = ({
   return (
     <Controller
       control={control}
-      name={`${path}.name` as any}
+      name={`steps.${index}.name`}
       defaultValue=""
       render={({ field, fieldState }) => {
         return (
           <TextInput
             styles={(theme) => ({
               root: {
-                display: 'flex',
-                flexDirection: 'column-reverse',
-                gap: 4,
                 flex: '1 1 auto',
-                width: '100%',
+                marginRight: 16,
               },
               wrapper: {
                 background: 'transparent',
@@ -52,10 +38,9 @@ export const StepNameInput = ({
                 fontSize: '20px',
                 fontWeight: 'bolder',
                 padding: 9,
-                // paddingTop: 20,
                 lineHeight: '28px',
                 minHeight: 'auto',
-                height: '40px',
+                height: 'auto',
                 width: '100%',
                 textOverflow: 'ellipsis',
                 '&:not(:placeholder-shown)': {
@@ -72,13 +57,8 @@ export const StepNameInput = ({
                   opacity: 1,
                 },
               },
-              label: {
-                fontSize: '14px',
-                lineHeight: '20px',
-              },
             })}
             {...field}
-            label={label}
             value={field.value !== undefined ? field.value : defaultValue}
             error={showErrors && fieldState.error?.message}
             type="text"

@@ -6,7 +6,6 @@ import {
   MessageTemplateRepository,
   NotificationStepEntity,
   NotificationGroupRepository,
-  StepVariantEntity,
 } from '@novu/dal';
 import { ChangeEntityTypeEnum } from '@novu/shared';
 import {
@@ -43,40 +42,13 @@ export class PromoteNotificationTemplateChange {
     const messages = await this.messageTemplateRepository.find({
       _environmentId: command.environmentId,
       _parentId: {
-        $in: (newItem.steps || []).flatMap((step) => [
-          step._templateId,
-          ...(step.variants || []).flatMap((variant) => variant._templateId),
-        ]),
+        $in: newItem.steps ? newItem.steps.map((step) => step._templateId) : [],
       },
     });
 
     const missingMessages: string[] = [];
 
     const mapNewStepItem = (step: NotificationStepEntity) => {
-      const oldMessage = messages.find((message) => {
-        return message._parentId === step._templateId;
-      });
-
-      if (step.variants && step.variants.length > 0) {
-        step.variants = step.variants
-          ?.map(mapNewVariantItem)
-          .filter((variant): variant is StepVariantEntity => variant !== undefined);
-      }
-
-      if (!oldMessage) {
-        missingMessages.push(step._templateId);
-
-        return undefined;
-      }
-
-      if (step?._templateId && oldMessage._id) {
-        step._templateId = oldMessage._id;
-      }
-
-      return step;
-    };
-
-    const mapNewVariantItem = (step: StepVariantEntity) => {
       const oldMessage = messages.find((message) => {
         return message._parentId === step._templateId;
       });

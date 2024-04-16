@@ -87,7 +87,10 @@ const WarningMessage = styled.div<{ backgroundColor: string }>`
   justify-content: space-between;
   align-items: center;
   padding: 15px;
+  margin-bottom: 40px;
   color: #e54545;
+  cursor: pointer;
+
   background: ${({ backgroundColor }) => backgroundColor};
   border-radius: 7px;
   cursor: pointer;

@@ -15,7 +15,7 @@ import { CreateNotificationGroup } from './usecases/create-notification-group/cr
 import { UserSession } from '../shared/framework/user.decorator';
 import { CreateNotificationGroupCommand } from './usecases/create-notification-group/create-notification-group.command';
 import { CreateNotificationGroupRequestDto } from './dtos/create-notification-group-request.dto';
-import { UserAuthGuard } from '../auth/framework/user.auth.guard';
+import { JwtAuthGuard } from '../auth/framework/auth.guard';
 import { GetNotificationGroups } from './usecases/get-notification-groups/get-notification-groups.usecase';
 import { GetNotificationGroupsCommand } from './usecases/get-notification-groups/get-notification-groups.command';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -28,12 +28,11 @@ import { DeleteNotificationGroupCommand } from './usecases/delete-notification-g
 import { DeleteNotificationGroupResponseDto } from './dtos/delete-notification-group-response.dto';
 import { UpdateNotificationGroupCommand } from './usecases/update-notification-group/update-notification-group.command';
 import { UpdateNotificationGroup } from './usecases/update-notification-group/update-notification-group.usecase';
-import { ApiCommonResponses, ApiResponse } from '../shared/framework/response.decorator';
+import { ApiResponse } from '../shared/framework/response.decorator';
 
-@ApiCommonResponses()
 @Controller('/notification-groups')
 @UseInterceptors(ClassSerializerInterceptor)
-@UseGuards(UserAuthGuard)
+@UseGuards(JwtAuthGuard)
 @ApiTags('Workflow groups')
 export class NotificationGroupsController {
   constructor(

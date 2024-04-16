@@ -1,5 +1,5 @@
 import { IsDefined, IsObject, IsOptional, IsString } from 'class-validator';
-import { TriggerRecipientSubscriber, TriggerTenantContext } from '@novu/shared';
+import { ISubscribersDefine, ITenantDefine } from '@novu/shared';
 
 import { EnvironmentWithUserCommand } from '../../../shared/commands/project.command';
 
@@ -20,8 +20,8 @@ export class TriggerEventToAllCommand extends EnvironmentWithUserCommand {
   overrides: Record<string, Record<string, unknown>>;
 
   @IsOptional()
-  actor?: TriggerRecipientSubscriber | null;
+  actor?: ISubscribersDefine | null;
 
   @IsOptional()
-  tenant?: TriggerTenantContext | null;
+  tenant?: ITenantDefine | null;
 }

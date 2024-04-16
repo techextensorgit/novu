@@ -1,9 +1,9 @@
 import React, { ChangeEvent, FocusEvent } from 'react';
-import { TextInputProps, TextInput as MantineTextInput, Styles, InputProps } from '@mantine/core';
+import { TextInputProps, TextInput as MantineTextInput, Styles } from '@mantine/core';
 import { inputStyles } from '../config/inputs.styles';
 import { SpacingProps } from '../shared/spacing.props';
 
-export interface IInputProps extends SpacingProps, Pick<InputProps, 'classNames'> {
+interface IInputProps extends SpacingProps {
   label?: React.ReactNode;
   error?: React.ReactNode;
   placeholder?: string;
@@ -20,8 +20,6 @@ export interface IInputProps extends SpacingProps, Pick<InputProps, 'classNames'
   max?: string | number;
   onBlur?: (event: FocusEvent<HTMLInputElement>) => void;
   styles?: Styles<string, Record<string, any>>;
-  className?: string;
-  id?: string;
 }
 
 /**

@@ -1,14 +1,7 @@
 const nr = require('newrelic');
 import { Injectable, Logger } from '@nestjs/common';
 
-import {
-  BullMqService,
-  getWebSocketWorkerOptions,
-  IWebSocketDataDto,
-  WebSocketsWorkerService,
-  WorkerOptions,
-  WorkflowInMemoryProviderService,
-} from '@novu/application-generic';
+import { INovuWorker, WebSocketsWorkerService } from '@novu/application-generic';
 
 import { ExternalServicesRoute, ExternalServicesRouteCommand } from '../usecases/external-services-route';
 import { ObservabilityBackgroundTransactionEnum } from '@novu/shared';
@@ -16,12 +9,9 @@ import { ObservabilityBackgroundTransactionEnum } from '@novu/shared';
 const LOG_CONTEXT = 'WebSocketWorker';
 
 @Injectable()
-export class WebSocketWorker extends WebSocketsWorkerService {
-  constructor(
-    private externalServicesRoute: ExternalServicesRoute,
-    private workflowInMemoryProviderService: WorkflowInMemoryProviderService
-  ) {
-    super(new BullMqService(workflowInMemoryProviderService));
+export class WebSocketWorker extends WebSocketsWorkerService implements INovuWorker {
+  constructor(private externalServicesRoute: ExternalServicesRoute) {
+    super();
 
     this.initWorker(this.getWorkerProcessor(), this.getWorkerOpts());
   }
@@ -32,30 +22,31 @@ export class WebSocketWorker extends WebSocketsWorkerService {
         // eslint-disable-next-line @typescript-eslint/no-this-alias
         const _this = this;
 
-        Logger.log(`Job ${job.id} / ${job.data.event} is being processed WebSocketWorker`, LOG_CONTEXT);
+        Logger.verbose(
+          `Job ${job.id} / ${job.data.event} is being processed in the MemoryDB instance WebSocketWorker`,
+          LOG_CONTEXT
+        );
 
         nr.startBackgroundTransaction(
           ObservabilityBackgroundTransactionEnum.WS_SOCKET_QUEUE,
           'WS Service',
           function () {
             const transaction = nr.getTransaction();
-            const { data: jobData } = job;
-            const data: IWebSocketDataDto = jobData;
 
             _this.externalServicesRoute
               .execute(
                 ExternalServicesRouteCommand.create({
-                  userId: data.userId,
-                  event: data.event,
-                  payload: data.payload,
-                  _environmentId: data._environmentId,
+                  userId: job.data.userId,
+                  event: job.data.event,
+                  payload: job.data.payload,
+                  _environmentId: job.data._environmentId,
                 })
               )
               .then(resolve)
               .catch((error) => {
                 Logger.error(
-                  error,
                   'Unexpected exception occurred while handling external services route ',
+                  error,
                   LOG_CONTEXT
                 );
 
@@ -70,7 +61,10 @@ export class WebSocketWorker extends WebSocketsWorkerService {
     };
   }
 
-  private getWorkerOpts(): WorkerOptions {
-    return getWebSocketWorkerOptions();
+  private getWorkerOpts() {
+    return {
+      lockDuration: 90000,
+      concurrency: 200,
+    };
   }
 }

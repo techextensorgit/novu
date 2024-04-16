@@ -1,15 +1,19 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
-import { HealthIndicatorResult, HealthIndicatorStatus } from '@nestjs/terminus';
-import { setTimeout } from 'timers/promises';
+import { Injectable, Logger } from '@nestjs/common';
 
 import { Worker } from '../bull-mq';
 
-import { IHealthIndicator } from '../../health';
-import { IDestroy } from '../../modules';
-
-export interface INovuWorker extends IDestroy {
+import {
+  StandardQueueServiceHealthIndicator,
+  SubscriberProcessQueueHealthIndicator,
+  WebSocketsQueueServiceHealthIndicator,
+  WorkflowQueueServiceHealthIndicator,
+} from '../../health';
+import { setTimeout } from 'timers/promises';
+export interface INovuWorker {
   readonly DEFAULT_ATTEMPTS: number;
+  gracefulShutdown: () => Promise<void>;
   readonly topic: string;
+  onModuleDestroy: () => Promise<void>;
   pause: () => Promise<void>;
   resume: () => Promise<void>;
   worker: Worker;
@@ -20,15 +24,16 @@ const LOG_CONTEXT = 'ReadinessService';
 @Injectable()
 export class ReadinessService {
   constructor(
-    @Inject('QUEUE_HEALTH_INDICATORS')
-    private healthIndicators: IHealthIndicator[]
+    private standardQueueServiceHealthIndicator: StandardQueueServiceHealthIndicator,
+    private workflowQueueServiceHealthIndicator: WorkflowQueueServiceHealthIndicator,
+    private subscriberProcessQueueHealthIndicator: SubscriberProcessQueueHealthIndicator
   ) {}
 
   async areQueuesEnabled(): Promise<boolean> {
     Logger.log('Enabling queues as workers are meant to be ready', LOG_CONTEXT);
 
-    const retries = 10;
-    const delay = 5000;
+    const retries = 5;
+    const delay = 1000;
 
     for (let i = 1; i < retries + 1; i++) {
       const result = await this.checkServicesHealth();
@@ -38,7 +43,10 @@ export class ReadinessService {
       }
 
       Logger.warn(
-        `Some health indicator returned false when checking if queues are enabled ${i}/${retries}`,
+        {
+          attempt: i,
+          message: `Some health indicator returned false when checking if queues are enabled ${i}/${retries}`,
+        },
         LOG_CONTEXT
       );
 
@@ -50,15 +58,13 @@ export class ReadinessService {
 
   private async checkServicesHealth() {
     try {
-      const healths = await Promise.all(
-        this.healthIndicators.map((health) => health.isHealthy())
-      );
+      const healths = await Promise.all([
+        this.standardQueueServiceHealthIndicator.isHealthy(),
+        this.workflowQueueServiceHealthIndicator.isHealthy(),
+        this.subscriberProcessQueueHealthIndicator.isHealthy(),
+      ]);
 
-      const statuses = healths.map(
-        (health: HealthIndicatorResult) => Object.values(health)[0].status
-      );
-
-      return statuses.every((status: HealthIndicatorStatus) => status === 'up');
+      return healths.every((health) => !!health === true);
     } catch (error) {
       Logger.error(
         error,

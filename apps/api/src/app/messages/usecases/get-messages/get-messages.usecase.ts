@@ -13,9 +13,9 @@ export class GetMessages {
     const LIMIT = command.limit;
     const COUNT_LIMIT = 1000;
 
-    if (LIMIT > 1000) {
-      throw new BadRequestException('Limit can not be larger then 1000');
-    }
+//     if (LIMIT > 1000) {
+//       throw new BadRequestException('Limit can not be larger then 1000');
+//     }
 
     const query: Partial<Omit<MessageEntity, 'transactionId'>> & { _environmentId: string; transactionId?: string[] } =
       {

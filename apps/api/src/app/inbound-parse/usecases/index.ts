@@ -1,3 +1,3 @@
-import { GetMxRecord } from './get-mx-record/get-mx-record.usecase';
+import { InboundEmailParse } from './inbound-email-parse/inbound-email-parse.usecase';
 
-export const USE_CASES = [GetMxRecord];
+export const USE_CASES = [InboundEmailParse];

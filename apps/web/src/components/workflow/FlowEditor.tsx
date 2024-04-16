@@ -1,12 +1,4 @@
-import {
-  ComponentType,
-  MouseEvent,
-  MouseEvent as ReactMouseEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { ComponentType, MouseEvent as ReactMouseEvent, useCallback, useEffect, useRef, useState } from 'react';
 import ReactFlow, {
   addEdge,
   Background,
@@ -31,7 +23,7 @@ import { StepTypeEnum } from '@novu/shared';
 import { colors } from '@novu/design-system';
 import { getChannel } from '../../utils/channels';
 import { useEnvController } from '../../hooks';
-import type { IEdge, IFlowStep, INode } from './types';
+import type { IEdge, IFlowStep } from './types';
 
 const triggerNode: Node = {
   id: '1',
@@ -48,25 +40,25 @@ const DEFAULT_WRAPPER_STYLES = {
   minHeight: '600px',
 };
 
-export interface IFlowEditorProps extends ReactFlowProps {
-  isReadonly?: boolean;
+interface IFlowEditorProps extends ReactFlowProps {
   steps: IFlowStep[];
   dragging?: boolean;
   errors?: any;
-  nodeTypes: Record<string, ComponentType<NodeProps>>;
+  nodeTypes: {
+    triggerNode: ComponentType<NodeProps>;
+    channelNode: ComponentType<NodeProps>;
+    addNode?: ComponentType<NodeProps>;
+  };
   edgeTypes?: { special: ComponentType<EdgeProps> };
   withControls?: boolean;
   wrapperStyles?: React.CSSProperties;
-  onEdit?: (e: MouseEvent<HTMLButtonElement>, node: INode) => void;
   onDelete?: (id: string) => void;
-  onAddVariant?: (id: string) => void;
   onStepInit?: (step: IFlowStep) => Promise<void>;
   onGetStepError?: (i: number, errors: any) => string;
   addStep?: (channelType: StepTypeEnum, id: string, index?: number) => void;
 }
 
 export function FlowEditor({
-  isReadonly = false,
   steps,
   dragging,
   errors,
@@ -87,9 +79,7 @@ export function FlowEditor({
   onStepInit,
   onGetStepError,
   addStep,
-  onEdit,
   onDelete,
-  onAddVariant,
   ...restProps
 }: IFlowEditorProps) {
   const { colorScheme } = useMantineColorScheme();
@@ -165,21 +155,17 @@ export function FlowEditor({
     let parentId = '1';
     const finalNodes = [cloneDeep(triggerNode)];
     let finalEdges: Edge<any>[] = [];
-    let isParentVariantNode = false;
 
     if (steps.length) {
       for (let i = 0; i < steps.length; i++) {
         const step = steps[i];
         const oldNode = nodes[i + 1];
-        const position =
-          oldNode && oldNode.type !== 'addNode' ? oldNode.position : { x: 0, y: isParentVariantNode ? 160 : 120 };
+        const position = oldNode && oldNode.type !== 'addNode' ? oldNode.position : { x: 0, y: 120 };
         const newId = (step._id || step.id) as string;
 
         await onStepInit?.(step);
 
         const newNode = buildNewNode(newId, position, parentId, step, i);
-        isParentVariantNode = newNode.data.step.variants && newNode.data.step.variants?.length > 0;
-
         finalNodes.push(newNode);
 
         const edgeType = edgeTypes ? 'special' : 'default';
@@ -190,7 +176,7 @@ export function FlowEditor({
       }
     }
     if (!readonly && nodeTypes.addNode) {
-      const addNodeButton = buildAddNodeButton(parentId, isParentVariantNode);
+      const addNodeButton = buildAddNodeButton(parentId);
       finalNodes.push(addNodeButton);
     }
 
@@ -206,7 +192,6 @@ export function FlowEditor({
     i: number
   ): Node {
     const channel = getChannel(step.template?.type);
-    const hasVariants = step.variants && step.variants?.length > 0;
 
     return {
       id: newId,
@@ -215,16 +200,17 @@ export function FlowEditor({
       parentNode: parentId,
       data: {
         ...channel,
-        isReadonly,
+        active: step.active,
         index: i,
         error: onGetStepError?.(i, errors) ?? '',
         onDelete,
-        onAddVariant,
-        onEdit,
-        step,
+        uuid: step.uuid,
+        name: step.name,
+        content: step.template?.content,
+        htmlContent: step.template?.htmlContent,
+        delayMetadata: step.delayMetadata,
+        digestMetadata: step.digestMetadata,
       },
-      // this class is needed to update the node height for nodes with variants
-      ...(hasVariants && { className: 'variantNode' }),
     };
   }
 
@@ -240,7 +226,7 @@ export function FlowEditor({
     };
   }
 
-  function buildAddNodeButton(parentId: string, isParentVariantNode: boolean): Node {
+  function buildAddNodeButton(parentId: string): Node {
     return {
       id: '2',
       type: 'addNode',
@@ -254,7 +240,7 @@ export function FlowEditor({
       className: 'nodrag',
       connectable: false,
       parentNode: parentId,
-      position: { x: 0, y: isParentVariantNode ? 130 : 90 },
+      position: { x: 0, y: 90 },
     };
   }
 
@@ -360,9 +346,6 @@ const Wrapper = styled.div<{ dark: boolean }>`
       }
     }
   }
-  .react-flow__node.variantNode {
-    height: 120px;
-  }
 
   .react-flow__node.react-flow__node-addNode {
     cursor: default;
@@ -378,7 +361,6 @@ const Wrapper = styled.div<{ dark: boolean }>`
   .react-flow__attribution {
     background: transparent;
     opacity: 0.5;
-    z-index: 1;
   }
   .react-flow__edge-path {
     stroke: ${colors.B60};

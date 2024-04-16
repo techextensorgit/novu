@@ -1,27 +1,26 @@
-import { useState, useEffect } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { Grid, useMantineTheme, JsonInput, SegmentedControl } from '@mantine/core';
-import { colors, inputStyles, When } from '@novu/design-system';
-
+import { colors, inputStyles } from '@novu/design-system';
 import { useEnvController, useProcessVariables } from '../../../../hooks';
 import { InAppEditorBlock } from './InAppEditorBlock';
+import { Grid, useMantineTheme, JsonInput, SegmentedControl } from '@mantine/core';
 import { VariablesManagement } from '../email-editor/variables-management/VariablesManagement';
+import { useState, useEffect } from 'react';
 import { AvatarFeedFields } from './AvatarFeedFields';
+import { When } from '../../../../components/utils/When';
 import { TranslateProductLead } from '../TranslateProductLead';
-import { useStepFormPath } from '../../hooks/useStepFormPath';
 
 const EDITOR = 'Editor';
 const PREVIEW = 'Preview';
 
-export function InAppContentCard({ openVariablesModal }: { openVariablesModal: () => void }) {
+export function InAppContentCard({ index, openVariablesModal }: { index: number; openVariablesModal: () => void }) {
   const { readonly } = useEnvController();
   const { control } = useFormContext();
   const theme = useMantineTheme();
   const [payloadValue, setPayloadValue] = useState('{}');
   const [activeTab, setActiveTab] = useState<string>(EDITOR);
-  const stepFormPath = useStepFormPath();
+
   const variables = useWatch({
-    name: `${stepFormPath}.template.variables`,
+    name: `steps.${index}.template.variables`,
     control,
   });
 
@@ -73,7 +72,13 @@ export function InAppContentCard({ openVariablesModal }: { openVariablesModal: (
         <Grid mt={24} mb={0}>
           <Grid.Col span={9} p={0}>
             <div style={{ margin: '0 10px' }}>
-              <InAppEditorBlock payload={payloadValue} readonly={true} preview={true} />
+              <InAppEditorBlock
+                control={control as any}
+                payload={payloadValue}
+                index={index}
+                readonly={true}
+                preview={true}
+              />
             </div>
           </Grid.Col>
           <Grid.Col span={3} p={0}>
@@ -106,14 +111,14 @@ export function InAppContentCard({ openVariablesModal }: { openVariablesModal: (
       <When truthy={activeTab === EDITOR}>
         <Grid mt={24} grow>
           <Grid.Col span={9}>
-            <InAppEditorBlock readonly={readonly} />
+            <InAppEditorBlock control={control as any} index={index} readonly={readonly} />
             <TranslateProductLead
               id="translate-in-app-editor"
               style={{
                 marginTop: 32,
               }}
             />
-            <AvatarFeedFields />
+            <AvatarFeedFields control={control} index={index} />
           </Grid.Col>
           <Grid.Col
             span={3}
@@ -121,7 +126,7 @@ export function InAppContentCard({ openVariablesModal }: { openVariablesModal: (
               maxWidth: '350px',
             }}
           >
-            <VariablesManagement path={`${stepFormPath}.template.variables`} openVariablesModal={openVariablesModal} />
+            <VariablesManagement openVariablesModal={openVariablesModal} index={index} />
           </Grid.Col>
         </Grid>
       </When>

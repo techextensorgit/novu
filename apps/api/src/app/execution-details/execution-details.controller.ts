@@ -3,16 +3,15 @@ import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { IJwtPayload } from '@novu/shared';
 import { ExecutionDetailsResponseDto } from '@novu/application-generic';
 import { UserSession } from '../shared/framework/user.decorator';
-import { UserAuthGuard } from '../auth/framework/user.auth.guard';
+import { JwtAuthGuard } from '../auth/framework/auth.guard';
 import { ExternalApiAccessible } from '../auth/framework/external-api.decorator';
 import { GetExecutionDetails, GetExecutionDetailsCommand } from './usecases/get-execution-details';
-import { ApiCommonResponses, ApiResponse } from '../shared/framework/response.decorator';
+import { ApiResponse } from '../shared/framework/response.decorator';
 import { ExecutionDetailsRequestDto } from './dtos/execution-details-request.dto';
 
-@ApiCommonResponses()
 @Controller('/execution-details')
 @UseInterceptors(ClassSerializerInterceptor)
-@UseGuards(UserAuthGuard)
+@UseGuards(JwtAuthGuard)
 @ApiTags('Execution Details')
 export class ExecutionDetailsController {
   constructor(private getExecutionDetails: GetExecutionDetails) {}

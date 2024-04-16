@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { WorkflowQueueService } from '../services/queues';
+import { WorkflowQueueService } from '../services';
 import { QueueHealthIndicator } from './queue-health-indicator.service';
 
 const LOG_CONTEXT = 'WorkflowQueueServiceHealthIndicator';

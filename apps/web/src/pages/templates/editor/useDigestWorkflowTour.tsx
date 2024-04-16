@@ -20,7 +20,7 @@ const digestTourSteps: Step[] = [
     offset: 0,
   },
   {
-    target: '[data-test-id="custom-code-editor"]',
+    target: '#codeEditor',
     content: '',
     placement: 'right',
     disableBeacon: true,

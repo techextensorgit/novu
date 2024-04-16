@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { IJwtPayload } from '@novu/shared';
 
-import { UserAuthGuard } from '../auth/framework/user.auth.guard';
+import { JwtAuthGuard } from '../auth/framework/auth.guard';
 import { UserSession } from '../shared/framework/user.decorator';
 import { CompleteAndUpdateVercelIntegrationRequestDto } from './dtos/complete-and-update-vercel-integration-request.dto';
 import { SetVercelConfigurationRequestDto } from './dtos/setup-vercel-integration-request.dto';
@@ -31,7 +31,7 @@ import { UpdateVercelConfiguration } from './usecases/update-vercel-configuratio
 
 @Controller('/partner-integrations')
 @UseInterceptors(ClassSerializerInterceptor)
-@UseGuards(UserAuthGuard)
+@UseGuards(JwtAuthGuard)
 @ApiTags('Partner Integrations')
 @ApiExcludeController()
 export class PartnerIntegrationsController {

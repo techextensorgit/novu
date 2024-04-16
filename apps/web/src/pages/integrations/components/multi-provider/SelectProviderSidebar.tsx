@@ -1,7 +1,16 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 import { Group, Image, Space, Stack, Tabs, TabsValue, useMantineColorScheme } from '@mantine/core';
-import { ChannelTypeEnum, InAppProviderIdEnum } from '@novu/shared';
+import {
+  ChannelTypeEnum,
+  emailProviders,
+  smsProviders,
+  pushProviders,
+  inAppProviders,
+  chatProviders,
+  InAppProviderIdEnum,
+} from '@novu/shared';
+
 import {
   colors,
   Sidebar,
@@ -14,20 +23,36 @@ import {
   Search,
   useTabsStyles,
 } from '@novu/design-system';
-
 import { useDebounce } from '../../../../hooks';
 import { ChannelTitle } from '../../../templates/components/ChannelTitle';
 import type { IIntegratedProvider } from '../../types';
 import { CHANNELS_ORDER } from '../IntegrationsListNoData';
 import { CHANNEL_TYPE_TO_STRING } from '../../../../utils/channels';
-import { getLogoFileName, initialProvidersList } from '../../../../utils/providers';
+import { getLogoFileName } from '../../../../utils/providers';
 import { sortProviders } from './sort-providers';
 import { When } from '../../../../components/utils/When';
 import { CONTEXT_PATH } from '../../../../config';
 import { useProviders } from '../../useProviders';
+import { HEADER_HEIGHT } from '../../../../components/layout/constants';
 
 const filterSearch = (list, search: string) =>
   list.filter((prov) => prov.displayName.toLowerCase().includes(search.toLowerCase()));
+
+const mapStructure = (listProv): IIntegratedProvider[] =>
+  listProv.map((providerItem) => ({
+    providerId: providerItem.id,
+    displayName: providerItem.displayName,
+    channel: providerItem.channel,
+    docReference: providerItem.docReference,
+  }));
+
+const initialProvidersList = {
+  [ChannelTypeEnum.EMAIL]: mapStructure(emailProviders),
+  [ChannelTypeEnum.SMS]: mapStructure(smsProviders),
+  [ChannelTypeEnum.PUSH]: mapStructure(pushProviders),
+  [ChannelTypeEnum.IN_APP]: mapStructure(inAppProviders),
+  [ChannelTypeEnum.CHAT]: mapStructure(chatProviders),
+};
 
 export function SelectProviderSidebar({
   scrollTo,
@@ -106,6 +131,7 @@ export function SelectProviderSidebar({
     <Sidebar
       isOpened={isOpened}
       isLoading={isIntegrationsLoading}
+      headerHeight={HEADER_HEIGHT}
       onClose={onSidebarClose}
       customHeader={
         <Stack spacing={8}>

@@ -1,25 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import { AddressingTypeEnum, TriggerEventStatusEnum, TriggerRequestCategoryEnum } from '@novu/shared';
+import { TriggerEventStatusEnum } from '@novu/shared';
+import { MapTriggerRecipients } from '@novu/application-generic';
 
 import { ProcessBulkTriggerCommand } from './process-bulk-trigger.command';
 
 import { TriggerEventResponseDto } from '../../dtos';
+import { ParseEventRequestCommand } from '../parse-event-request/parse-event-request.command';
 import { ParseEventRequest } from '../parse-event-request/parse-event-request.usecase';
-import { ParseEventRequestMulticastCommand } from '../parse-event-request/parse-event-request.command';
 
 @Injectable()
 export class ProcessBulkTrigger {
-  constructor(private parseEventRequest: ParseEventRequest) {}
+  constructor(private parseEventRequest: ParseEventRequest, private mapTriggerRecipients: MapTriggerRecipients) {}
 
   async execute(command: ProcessBulkTriggerCommand) {
     const results: TriggerEventResponseDto[] = [];
 
     for (const event of command.events) {
       let result: TriggerEventResponseDto;
+      const mappedTenant = event.tenant ? this.parseEventRequest.mapTenant(event.tenant) : null;
+      const mappedActor = event.actor ? this.mapTriggerRecipients.mapSubscriber(event.actor) : null;
 
       try {
         result = (await this.parseEventRequest.execute(
-          ParseEventRequestMulticastCommand.create({
+          ParseEventRequestCommand.create({
             userId: command.userId,
             environmentId: command.environmentId,
             organizationId: command.organizationId,
@@ -27,11 +30,9 @@ export class ProcessBulkTrigger {
             payload: event.payload,
             overrides: event.overrides || {},
             to: event.to,
-            actor: event.actor,
-            tenant: event.tenant,
+            actor: mappedActor,
+            tenant: mappedTenant,
             transactionId: event.transactionId,
-            addressingType: AddressingTypeEnum.MULTICAST,
-            requestCategory: TriggerRequestCategoryEnum.BULK,
           })
         )) as unknown as TriggerEventResponseDto;
       } catch (e) {

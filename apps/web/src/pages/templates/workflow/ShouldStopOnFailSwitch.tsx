@@ -1,19 +1,15 @@
 import styled from '@emotion/styled';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { Switch } from '@novu/design-system';
-
 import { useEnvController } from '../../../hooks';
-import { useStepFormPath } from '../hooks/useStepFormPath';
 
-export const ShouldStopOnFailSwitch = () => {
-  const { control } = useFormContext();
+export const ShouldStopOnFailSwitch = ({ control, index }) => {
   const { readonly } = useEnvController();
-  const path = useStepFormPath();
 
   return (
     <Controller
       control={control}
-      name={`${path}.shouldStopOnFail`}
+      name={`steps.${index}.shouldStopOnFail`}
       defaultValue={false}
       render={({ field: { value, ...field } }) => {
         return (

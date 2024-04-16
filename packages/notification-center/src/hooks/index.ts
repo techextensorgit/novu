@@ -16,5 +16,4 @@ export * from './useFetchUserPreferences';
 export * from './useFetchUserGlobalPreferences';
 export * from './useMarkNotificationsAs';
 export * from './useRemoveNotification';
-export * from './useRemoveNotifications';
 export * from './useRemoveAllNotifications';

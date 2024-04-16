@@ -115,9 +115,6 @@ export class NotificationRepository extends BaseRepository<
           {
             path: 'executionDetails',
             select: 'createdAt detail isRetry isTest providerId raw source status updatedAt webhookStatus',
-            options: {
-              sort: { createdAt: 1 },
-            },
           },
           {
             path: 'step',

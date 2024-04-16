@@ -14,7 +14,7 @@ import { EnvironmentCommand } from '../../commands/project.command';
 export class CreateSubscriberCommand extends EnvironmentCommand {
   @IsString()
   @IsNotEmpty()
-  @Transform(({ value }) => value?.toString().trim())
+  @Transform(({ value }) => value?.trim())
   subscriberId: string;
 
   @IsEmail()

@@ -9,13 +9,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import {
-  ApiRateLimitCostEnum,
-  IBulkInviteResponse,
-  IGetInviteResponseDto,
-  IJwtPayload,
-  MemberRoleEnum,
-} from '@novu/shared';
+import { IBulkInviteResponse, IGetInviteResponseDto, IJwtPayload, MemberRoleEnum } from '@novu/shared';
 import { UserSession } from '../shared/framework/user.decorator';
 import { GetInviteCommand } from './usecases/get-invite/get-invite.command';
 import { AcceptInviteCommand } from './usecases/accept-invite/accept-invite.command';
@@ -32,12 +26,8 @@ import { ResendInviteDto } from './dtos/resend-invite.dto';
 import { ResendInviteCommand } from './usecases/resend-invite/resend-invite.command';
 import { ResendInvite } from './usecases/resend-invite/resend-invite.usecase';
 import { ApiExcludeController, ApiTags } from '@nestjs/swagger';
-import { ThrottlerCost } from '../rate-limiting/guards';
-import { ApiCommonResponses } from '../shared/framework/response.decorator';
-import { UserAuthGuard } from '../auth/framework/user.auth.guard';
 
 @UseInterceptors(ClassSerializerInterceptor)
-@ApiCommonResponses()
 @Controller('/invites')
 @ApiTags('Invites')
 @ApiExcludeController()
@@ -60,7 +50,7 @@ export class InvitesController {
   }
 
   @Post('/:inviteToken/accept')
-  @UseGuards(UserAuthGuard)
+  @UseGuards(AuthGuard('jwt'))
   async acceptInviteToken(
     @UserSession() user: IJwtPayload,
     @Param('inviteToken') inviteToken: string
@@ -75,13 +65,13 @@ export class InvitesController {
 
   @Post('/')
   @Roles(MemberRoleEnum.ADMIN)
-  @UseGuards(UserAuthGuard)
+  @UseGuards(AuthGuard('jwt'))
   async inviteMember(@UserSession() user: IJwtPayload, @Body() body: InviteMemberDto): Promise<{ success: boolean }> {
     const command = InviteMemberCommand.create({
       userId: user._id,
       organizationId: user.organizationId,
       email: body.email,
-      role: MemberRoleEnum.ADMIN,
+      role: body.role,
     });
 
     await this.inviteMemberUsecase.execute(command);
@@ -93,7 +83,7 @@ export class InvitesController {
 
   @Post('/resend')
   @Roles(MemberRoleEnum.ADMIN)
-  @UseGuards(UserAuthGuard)
+  @UseGuards(AuthGuard('jwt'))
   async resendInviteMember(
     @UserSession() user: IJwtPayload,
     @Body() body: ResendInviteDto
@@ -111,9 +101,8 @@ export class InvitesController {
     };
   }
 
-  @ThrottlerCost(ApiRateLimitCostEnum.BULK)
   @Post('/bulk')
-  @UseGuards(UserAuthGuard)
+  @UseGuards(AuthGuard('jwt'))
   @Roles(MemberRoleEnum.ADMIN)
   async bulkInviteMembers(
     @UserSession() user: IJwtPayload,

@@ -8,8 +8,6 @@ import {
   IEmailEventBody,
   EmailEventStatusEnum,
 } from '@novu/stateless';
-import { IEmailBody, IEmailResponse } from 'netcore';
-import axios, { AxiosInstance } from 'axios';
 
 export enum NetCoreStatusEnum {
   OPENED = 'open',
@@ -24,88 +22,76 @@ export enum NetCoreStatusEnum {
 
 export class NetCoreProvider implements IEmailProvider {
   id = 'netcore';
+
   channelType = ChannelTypeEnum.EMAIL as ChannelTypeEnum.EMAIL;
-  public readonly BASE_URL = 'https://emailapi.netcorecloud.net/v5.1';
-  private axiosInstance: AxiosInstance;
 
   constructor(
     private config: {
       apiKey: string;
       from: string;
-      senderName: string;
     }
-  ) {
-    this.axiosInstance = axios.create({
-      baseURL: this.BASE_URL,
-    });
-  }
+  ) {}
 
   async sendMessage(
     options: IEmailOptions
   ): Promise<ISendMessageSuccessResponse> {
-    const data: IEmailBody = {
-      from: {
-        email: options.from || this.config.from,
-        name: options.senderName || this.config.senderName,
-      },
-      subject: options.subject,
-      content: [
-        {
-          type: 'html',
-          value: options.html,
-        },
-      ],
-      personalizations: [
-        {
-          to: options.to.map((email) => ({ email })),
-        },
-      ],
-    };
+    const netcoreLib = await import('pepipost/lib');
 
-    if (options.replyTo) {
-      data.reply_to = options.replyTo;
-    }
+    netcoreLib.Configuration.apiKey = this.config.apiKey;
+
+    const controller = netcoreLib.MailSendController;
+    const body = new netcoreLib.Send();
+
+    body.from = new netcoreLib.From();
+    body.from.email = options.from || this.config.from;
+    body.subject = options.subject;
+
+    body.content = [];
+    body.content[0] = new netcoreLib.Content();
+    body.content[0].type = netcoreLib.TypeEnum.HTML;
+    body.content[0].value = options.html;
+
+    body.personalizations = [];
+    body.personalizations[0] = new netcoreLib.Personalizations();
+    body.personalizations[0].to = options.to.map((email) => {
+      const item = new netcoreLib.EmailStruct();
+      item.email = email;
+
+      return item;
+    });
 
     if (options.cc) {
-      data.personalizations[0].cc = options.cc.map((email) => ({
-        email,
-      }));
+      body.personalizations[0].cc = options.cc.map((ccItem, index) => {
+        const email = new netcoreLib.EmailStruct();
+        email.email = ccItem;
+
+        return email;
+      });
     }
 
     if (options.bcc) {
-      data.personalizations[0].bcc = options.bcc.map((email) => ({
-        email,
-      }));
+      body.personalizations[0].bcc = options.bcc.map((ccItem, index) => {
+        const email = new netcoreLib.EmailStruct();
+        email.email = ccItem;
+
+        return email;
+      });
     }
 
-    if (options.attachments) {
-      data.personalizations[0].attachments = options.attachments?.map(
-        (attachment) => {
-          return {
-            name: attachment.name,
-            content: attachment.file.toString('base64'),
-          };
-        }
-      );
-    }
+    body.personalizations[0].attachments = options.attachments?.map(
+      (attachment) => {
+        const attachmentPayload = new netcoreLib.Attachments();
+        attachmentPayload.content = attachment.file.toString('base64');
+        attachmentPayload.filename = attachment.name;
 
-    const emailOptions = {
-      method: 'POST',
-      url: '/mail/send',
-      headers: {
-        api_key: this.config.apiKey,
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      data: JSON.stringify(data),
-    };
-
-    const response = await this.axiosInstance.request<IEmailResponse>(
-      emailOptions
+        return attachment;
+      }
     );
 
+    const response = await controller.createGeneratethemailsendrequest(body);
+
     return {
-      id: response?.data.data?.message_id,
+      id: response?.data?.TRANSID,
       date: new Date().toISOString(),
     };
   }

@@ -1,5 +1,3 @@
-import { JobTitleEnum } from '../../types';
-
 export interface IServicesHashes {
   intercom?: string;
 }
@@ -13,5 +11,16 @@ export interface IUserEntity {
   showOnBoarding?: boolean;
   showOnBoardingTour?: number;
   servicesHashes?: IServicesHashes;
-  jobTitle?: JobTitleEnum;
+}
+
+export interface IJwtPayload {
+  _id: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  profilePicture?: string;
+  organizationId: string;
+  environmentId: string;
+  roles: string[];
+  exp: number;
 }

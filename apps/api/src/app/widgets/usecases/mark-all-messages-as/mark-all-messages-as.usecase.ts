@@ -65,15 +65,15 @@ export class MarkAllMessagesAs {
       countQuery
     );
 
-    this.webSocketsQueueService.add({
-      name: 'sendMessage',
-      data: {
+    this.webSocketsQueueService.add(
+      'sendMessage',
+      {
         event: isUnreadCountChanged ? WebSocketEventEnum.UNREAD : WebSocketEventEnum.UNSEEN,
         userId: subscriber._id,
         _environmentId: command.environmentId,
       },
-      groupId: subscriber._organizationId,
-    });
+      subscriber._organizationId
+    );
 
     this.analyticsService.track(
       `Mark all messages as ${command.markAs}- [Notification Center]`,

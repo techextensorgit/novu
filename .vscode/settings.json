@@ -13,17 +13,11 @@
   "editor.wordWrap": "wordWrapColumn",
   "editor.wordWrapColumn": 120,
   "editor.codeActionsOnSave": {
-    "source.fixAll": "explicit"
+    "source.fixAll": true
   },
   "cSpell.words": ["mantine"],
   "vsicons.presets.nestjs": true,
   "[markdown]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
   }
 }

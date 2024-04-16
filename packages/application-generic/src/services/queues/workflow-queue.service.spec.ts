@@ -1,18 +1,13 @@
 import { Test } from '@nestjs/testing';
 
 import { WorkflowQueueService } from './workflow-queue.service';
-import { BullMqService } from '../bull-mq';
-import { WorkflowInMemoryProviderService } from '../in-memory-provider';
-import { IWorkflowDataDto } from '../../dtos';
 
 let workflowQueueService: WorkflowQueueService;
 
 describe('Workflow Queue service', () => {
   describe('General', () => {
     beforeAll(async () => {
-      workflowQueueService = new WorkflowQueueService(
-        new WorkflowInMemoryProviderService()
-      );
+      workflowQueueService = new WorkflowQueueService();
       await workflowQueueService.queue.obliterate();
     });
 
@@ -36,7 +31,7 @@ describe('Workflow Queue service', () => {
       );
       expect(workflowQueueService.DEFAULT_ATTEMPTS).toEqual(3);
       expect(workflowQueueService.topic).toEqual('trigger-handler');
-      expect(await workflowQueueService.getStatus()).toEqual({
+      expect(await workflowQueueService.bullMqService.getStatus()).toEqual({
         queueIsPaused: false,
         queueName: 'trigger-handler',
         workerName: undefined,
@@ -65,16 +60,12 @@ describe('Workflow Queue service', () => {
       const _userId = 'workflow-user-id';
       const jobData = {
         _id: jobId,
+        test: 'workflow-job-data',
         _environmentId,
         _organizationId,
         _userId,
-      } as unknown as IWorkflowDataDto;
-
-      await workflowQueueService.add({
-        name: jobId,
-        data: jobData,
-        groupId: _organizationId,
-      });
+      };
+      await workflowQueueService.add(jobId, jobData, _organizationId);
 
       expect(await workflowQueueService.queue.getActiveCount()).toEqual(0);
       expect(await workflowQueueService.queue.getWaitingCount()).toEqual(1);
@@ -104,12 +95,7 @@ describe('Workflow Queue service', () => {
         _organizationId,
         _userId,
       };
-
-      await workflowQueueService.add({
-        name: jobId,
-        data: jobData as any,
-        groupId: _organizationId,
-      });
+      await workflowQueueService.addMinimalJob(jobId, jobData, _organizationId);
 
       expect(await workflowQueueService.queue.getActiveCount()).toEqual(0);
       expect(await workflowQueueService.queue.getWaitingCount()).toEqual(1);
@@ -137,9 +123,7 @@ describe('Workflow Queue service', () => {
     beforeAll(async () => {
       process.env.IS_IN_MEMORY_CLUSTER_MODE_ENABLED = 'true';
 
-      workflowQueueService = new WorkflowQueueService(
-        new WorkflowInMemoryProviderService()
-      );
+      workflowQueueService = new WorkflowQueueService();
       await workflowQueueService.queue.obliterate();
     });
 

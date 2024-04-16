@@ -66,19 +66,14 @@ export async function bootstrap(): Promise<INestApplication> {
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
 
+  // Starts listening for shutdown hooks
   app.enableShutdownHooks();
 
   Logger.log('BOOTSTRAPPED SUCCESSFULLY');
 
-  await app.init();
-
-  try {
-    await startAppInfra(app);
-  } catch (e) {
-    process.exit(1);
-  }
-
   await app.listen(process.env.PORT);
+
+  await startAppInfra(app);
 
   Logger.log(`Started application in NODE_ENV=${process.env.NODE_ENV} on port ${process.env.PORT}`);
 

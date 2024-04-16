@@ -1,5 +1,6 @@
 import { UserSession } from '@novu/testing';
 import { expect } from 'chai';
+import * as sinon from 'sinon';
 
 describe('User login - /auth/google (GET)', async () => {
   let session: UserSession;

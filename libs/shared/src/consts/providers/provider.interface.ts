@@ -24,10 +24,6 @@ export interface IConfigCredentials {
     text: string;
     when?: boolean;
   };
-  dropdown?: Array<{
-    name: string;
-    value: string | null;
-  }>;
 }
 
 export interface ILogoFileName {

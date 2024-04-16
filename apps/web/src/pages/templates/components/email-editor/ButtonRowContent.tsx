@@ -7,7 +7,6 @@ import { TextAlignEnum } from '@novu/shared';
 import { colors, shadows, TextAlignment, Wifi } from '@novu/design-system';
 import { useEnvController } from '../../../../hooks';
 import type { IForm } from '../formTypes';
-import { useStepFormPath } from '../../hooks/useStepFormPath';
 
 const usePopoverStyles = createStyles((theme) => ({
   dropdown: {
@@ -27,17 +26,17 @@ const usePopoverStyles = createStyles((theme) => ({
 }));
 
 export function ButtonRowContent({
+  stepIndex,
   blockIndex,
   brandingColor,
 }: {
+  stepIndex: number;
   blockIndex: number;
   brandingColor: string | undefined;
 }) {
   const methods = useFormContext<IForm>();
-  const stepFormPath = useStepFormPath();
-
-  const content = methods.watch(`${stepFormPath}.template.content.${blockIndex}.content`);
-  const textAlign = methods.watch(`${stepFormPath}.template.content.${blockIndex}.styles.textAlign`);
+  const content = methods.watch(`steps.${stepIndex}.template.content.${blockIndex}.content`);
+  const textAlign = methods.watch(`steps.${stepIndex}.template.content.${blockIndex}.styles.textAlign`);
   const { readonly } = useEnvController();
   const [dropDownVisible, setDropDownVisible] = useState<boolean>(false);
   const { classes } = usePopoverStyles();
@@ -83,7 +82,7 @@ export function ButtonRowContent({
         </Popover.Target>
         <Popover.Dropdown>
           <Controller
-            name={`${stepFormPath}.template.content.${blockIndex}.content`}
+            name={`steps.${stepIndex}.template.content.${blockIndex}.content`}
             defaultValue=""
             control={methods.control}
             render={({ field }) => {
@@ -100,7 +99,7 @@ export function ButtonRowContent({
             }}
           />
           <Controller
-            name={`${stepFormPath}.template.content.${blockIndex}.url`}
+            name={`steps.${stepIndex}.template.content.${blockIndex}.url`}
             defaultValue=""
             control={methods.control}
             render={({ field }) => {

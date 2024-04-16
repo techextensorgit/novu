@@ -1,6 +1,5 @@
 import { faker } from '@faker-js/faker';
 import { EnvironmentRepository, EnvironmentEntity } from '@novu/dal';
-import { IApiRateLimitMaximum } from '@novu/shared';
 import { v4 as uuid } from 'uuid';
 
 enum EnvironmentsEnum {
@@ -91,9 +90,5 @@ export class EnvironmentService {
 
   async getProductionEnvironment(organizationId: string): Promise<EnvironmentEntity | undefined> {
     return await this.getEnvironmentByNameAndOrganization(organizationId, EnvironmentsEnum.PRODUCTION);
-  }
-
-  async updateApiRateLimits(environmentId: string, apiRateLimits: Partial<IApiRateLimitMaximum>) {
-    return await this.environmentRepository.updateApiRateLimits(environmentId, apiRateLimits);
   }
 }

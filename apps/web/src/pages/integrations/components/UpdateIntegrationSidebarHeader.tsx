@@ -2,8 +2,8 @@ import { ReactNode, useMemo, useState } from 'react';
 import { Group, useMantineTheme } from '@mantine/core';
 import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { CHANNELS_WITH_PRIMARY } from '@novu/shared';
+
 import {
-  ActionButton,
   Button,
   colors,
   Dropdown,
@@ -15,7 +15,6 @@ import {
   StarEmpty,
   Trash,
 } from '@novu/design-system';
-
 import { useFetchEnvironments } from '../../../hooks/useFetchEnvironments';
 import { ProviderImage } from './multi-provider/SelectProviderSidebar';
 import type { IIntegratedProvider, IntegrationEntity } from '../types';
@@ -144,7 +143,11 @@ export const UpdateIntegrationSidebarHeader = ({
             <Dropdown
               withArrow={false}
               offset={0}
-              control={<ActionButton Icon={DotsHorizontal} />}
+              control={
+                <div style={{ cursor: 'pointer' }}>
+                  <DotsHorizontal color={colors.B40} width={28} height={28} />
+                </div>
+              }
               middlewares={{ flip: false, shift: false }}
               position="bottom-end"
             >

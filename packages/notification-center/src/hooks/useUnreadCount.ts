@@ -66,7 +66,7 @@ export const useUnreadCount = ({ onSuccess, ...restOptions }: UseQueryOptions<IC
     );
 
     return () => {
-      socket.off(WebSocketEventEnum.UNREAD);
+      socket.off(WebSocketEventEnum.UNSEEN);
     };
   }, [socket, queryClient, setQueryKey]);
 
@@ -75,7 +75,7 @@ export const useUnreadCount = ({ onSuccess, ...restOptions }: UseQueryOptions<IC
     () => apiService.getUnreadCount({ limit: 100 }),
     {
       ...restOptions,
-      enabled: isSessionInitialized && fetchingStrategy.fetchUnreadCount,
+      enabled: isSessionInitialized && fetchingStrategy.fetchUnseenCount,
       onSuccess: (data) => {
         dispatchUnreadCountEvent(data.count);
         onSuccess?.(data);

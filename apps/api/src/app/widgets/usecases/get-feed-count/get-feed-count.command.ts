@@ -1,5 +1,6 @@
 import { EnvironmentWithSubscriber } from '../../../shared/commands/project.command';
-import { IsArray, IsOptional, Max, Min } from 'class-validator';
+import { IsDefined,IsArray, IsOptional, Max, Min } from 'class-validator';
+import { ChannelTypeEnum } from '@novu/shared';
 import { Transform } from 'class-transformer';
 
 export class GetFeedCountCommand extends EnvironmentWithSubscriber {
@@ -9,6 +10,9 @@ export class GetFeedCountCommand extends EnvironmentWithSubscriber {
 
   @IsOptional()
   seen?: boolean;
+
+  @IsOptional()
+  channel: ChannelTypeEnum;
 
   @IsOptional()
   read?: boolean;
@@ -21,7 +25,7 @@ export class GetFeedCountCommand extends EnvironmentWithSubscriber {
 
     return value;
   })
-  @Min(1)
-  @Max(1000)
-  limit: number;
+
+  @IsOptional()  
+  limit?: number;
 }

@@ -4,9 +4,7 @@ import { GroupedBlueprintResponse } from './dto/grouped-blueprint.response.dto';
 import { GetBlueprint, GetBlueprintCommand } from './usecases/get-blueprint';
 import { GetGroupedBlueprints } from './usecases/get-grouped-blueprints';
 import { GetBlueprintResponse } from './dto/get-blueprint.response.dto';
-import { ApiCommonResponses } from '../shared/framework/response.decorator';
 
-@ApiCommonResponses()
 @Controller('/blueprints')
 @UseInterceptors(ClassSerializerInterceptor)
 export class BlueprintController {

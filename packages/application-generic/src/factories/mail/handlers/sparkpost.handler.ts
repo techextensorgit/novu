@@ -11,9 +11,13 @@ export class SparkPostHandler extends BaseHandler {
     const config = {
       from: from as string,
       apiKey: credentials.apiKey as string,
-      region: credentials.region as string,
+      eu: false,
       senderName: credentials.senderName as string,
     };
+
+    if (credentials.region?.toLowerCase() === 'eu') {
+      config.eu = true;
+    }
 
     this.provider = new SparkPostEmailProvider(config);
   }

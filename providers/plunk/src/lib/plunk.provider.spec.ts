@@ -2,7 +2,6 @@ import { PlunkEmailProvider } from './plunk.provider';
 
 const mockConfig = {
   apiKey: 'sample-api-key',
-  senderName: "Novu's Team",
 };
 
 const mockNovuMessage = {

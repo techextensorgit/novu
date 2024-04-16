@@ -2,7 +2,6 @@ import { IPartnerConfiguration, OrganizationEntity, OrganizationDBModel } from '
 import { BaseRepository } from '../base-repository';
 import { Organization } from './organization.schema';
 import { MemberRepository } from '../member';
-import { ApiServiceLevelEnum } from '@novu/shared';
 
 export class OrganizationRepository extends BaseRepository<OrganizationDBModel, OrganizationEntity, object> {
   private memberRepository = new MemberRepository();
@@ -54,19 +53,6 @@ export class OrganizationRepository extends BaseRepository<OrganizationDBModel, 
       {
         $set: {
           name: payload.name,
-        },
-      }
-    );
-  }
-
-  async updateServiceLevel(organizationId: string, apiServiceLevel: ApiServiceLevelEnum) {
-    return this.update(
-      {
-        _id: organizationId,
-      },
-      {
-        $set: {
-          apiServiceLevel,
         },
       }
     );

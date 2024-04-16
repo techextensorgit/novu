@@ -4,6 +4,7 @@ import { HealthCheck, HealthCheckResult, HealthCheckService, HealthIndicatorFunc
 import {
   CacheServiceHealthIndicator,
   DalServiceHealthIndicator,
+  StandardQueueServiceHealthIndicator,
   WorkflowQueueServiceHealthIndicator,
 } from '@novu/application-generic';
 
@@ -16,6 +17,7 @@ export class HealthController {
     private healthCheckService: HealthCheckService,
     private cacheHealthIndicator: CacheServiceHealthIndicator,
     private dalHealthIndicator: DalServiceHealthIndicator,
+    private standardQueueHealthIndicator: StandardQueueServiceHealthIndicator,
     private workflowQueueHealthIndicator: WorkflowQueueServiceHealthIndicator
   ) {}
 
@@ -24,6 +26,7 @@ export class HealthController {
   healthCheck(): Promise<HealthCheckResult> {
     const checks: HealthIndicatorFunction[] = [
       async () => this.dalHealthIndicator.isHealthy(),
+      async () => this.standardQueueHealthIndicator.isHealthy(),
       async () => this.workflowQueueHealthIndicator.isHealthy(),
       async () => {
         return {

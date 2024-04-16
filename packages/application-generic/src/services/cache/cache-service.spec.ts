@@ -4,10 +4,14 @@ import {
   ICacheService,
   splitKey,
 } from './cache.service';
-import * as sinon from 'sinon';
 
-import { CacheInMemoryProviderService } from '../in-memory-provider';
-import { MockCacheService } from './cache-service.mock';
+import {
+  InMemoryProviderEnum,
+  InMemoryProviderService,
+} from '../in-memory-provider';
+
+const enableAutoPipelining =
+  process.env.REDIS_CACHE_ENABLE_AUTOPIPELINING === 'true';
 
 /**
  * TODO: Maybe create a Test single Redis instance to be able to run it in the
@@ -15,20 +19,24 @@ import { MockCacheService } from './cache-service.mock';
  */
 describe.skip('Cache Service - Redis Instance - Non Cluster Mode', () => {
   let cacheService: CacheService;
-  let cacheInMemoryProviderService: CacheInMemoryProviderService;
+  let inMemoryProviderService: InMemoryProviderService;
 
   beforeAll(async () => {
     process.env.IS_IN_MEMORY_CLUSTER_MODE_ENABLED = 'false';
 
-    cacheInMemoryProviderService = new CacheInMemoryProviderService();
-    expect(cacheInMemoryProviderService.isCluster).toBe(false);
+    inMemoryProviderService = new InMemoryProviderService(
+      InMemoryProviderEnum.REDIS,
+      enableAutoPipelining
+    );
+    await inMemoryProviderService.delayUntilReadiness();
+    expect(inMemoryProviderService.isClusterMode()).toBe(false);
 
-    cacheService = new CacheService(cacheInMemoryProviderService);
+    cacheService = new CacheService(inMemoryProviderService);
     await cacheService.initialize();
   });
 
   afterAll(async () => {
-    await cacheInMemoryProviderService.shutdown();
+    await inMemoryProviderService.shutdown();
   });
 
   it('should be instantiated properly', async () => {
@@ -72,20 +80,24 @@ describe.skip('Cache Service - Redis Instance - Non Cluster Mode', () => {
 
 describe('Cache Service - Cluster Mode', () => {
   let cacheService: CacheService;
-  let cacheInMemoryProviderService: CacheInMemoryProviderService;
+  let inMemoryProviderService: InMemoryProviderService;
 
   beforeAll(async () => {
     process.env.IS_IN_MEMORY_CLUSTER_MODE_ENABLED = 'true';
 
-    cacheInMemoryProviderService = new CacheInMemoryProviderService();
-    expect(cacheInMemoryProviderService.isCluster).toBe(true);
+    inMemoryProviderService = new InMemoryProviderService(
+      InMemoryProviderEnum.REDIS,
+      enableAutoPipelining
+    );
+    await inMemoryProviderService.delayUntilReadiness();
+    expect(inMemoryProviderService.isClusterMode()).toBe(true);
 
-    cacheService = new CacheService(cacheInMemoryProviderService);
+    cacheService = new CacheService(inMemoryProviderService);
     await cacheService.initialize();
   });
 
   afterAll(async () => {
-    await cacheInMemoryProviderService.shutdown();
+    await inMemoryProviderService.shutdown();
   });
 
   it('should be instantiated properly', async () => {
@@ -174,31 +186,6 @@ describe('cache-service', function () {
     expect(res3).toEqual(undefined);
   });
 
-  it('should invoke the SADD method correctly', async function () {
-    const key = '123:456';
-    const data = [1, 2, 3];
-    const res = await cacheService.sadd(key, ...data);
-    const res2 = await cacheService.sadd(key, ...data);
-
-    expect(res).toEqual(3);
-    expect(res2).toEqual(0);
-  });
-
-  it('should invoke the EVAL function correctly', async function () {
-    const dataString = JSON.stringify({ array: [1, 2, 3] });
-    const evalMock = sinon.mock().resolves(dataString);
-    cacheService = MockCacheService.createClient({ eval: evalMock });
-
-    const script = 'return redis.call("get", KEYS[1])';
-    const key = '123:456';
-    const args = ['arg1', 'arg2'];
-    cacheService.set(key, dataString);
-    const res = await cacheService.eval(script, [key], args);
-
-    expect(res).toEqual(dataString);
-    expect(evalMock.calledWith(script, 1, key, 'arg1', 'arg2')).toEqual(true);
-  });
-
   describe('splitKey', () => {
     it('should split the key into credentials and query parts', () => {
       const key =
@@ -231,3 +218,48 @@ describe('cache-service', function () {
     });
   });
 });
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const MockCacheService = {
+  createClient(): ICacheService {
+    const data = {};
+
+    return {
+      set(key: string, value: string, options?: CachingConfig) {
+        data[key] = value;
+      },
+      get(key: string) {
+        return data[key];
+      },
+      del(key: string) {
+        delete data[key];
+
+        return;
+      },
+      delByPattern(pattern?: string) {
+        const preFixSuffixTuple = pattern?.split('*');
+
+        if (!preFixSuffixTuple) return;
+
+        for (const key in data) {
+          if (
+            key.startsWith(preFixSuffixTuple[0]) &&
+            key.endsWith(preFixSuffixTuple[1])
+          )
+            delete data[key];
+        }
+
+        return;
+      },
+      keys(pattern?: string) {
+        return Object.keys(data);
+      },
+      getStatus() {
+        return 'ready';
+      },
+      cacheEnabled() {
+        return true;
+      },
+    };
+  },
+};

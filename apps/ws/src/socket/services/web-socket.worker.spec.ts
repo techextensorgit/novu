@@ -2,8 +2,7 @@ import { Test } from '@nestjs/testing';
 import { expect } from 'chai';
 import { setTimeout } from 'timers/promises';
 
-import { IWebSocketDataDto, WebSocketsQueueService, WorkflowInMemoryProviderService } from '@novu/application-generic';
-import { WebSocketEventEnum } from '@novu/shared';
+import { WebSocketsQueueService } from '@novu/application-generic';
 
 import { WebSocketWorker } from './web-socket.worker';
 
@@ -23,13 +22,9 @@ describe('WebSocket Worker', () => {
     }).compile();
 
     const externalServicesRoute = moduleRef.get<ExternalServicesRoute>(ExternalServicesRoute);
-    const workflowInMemoryProviderService = moduleRef.get<WorkflowInMemoryProviderService>(
-      WorkflowInMemoryProviderService
-    );
+    webSocketWorker = new WebSocketWorker(externalServicesRoute);
 
-    webSocketWorker = new WebSocketWorker(externalServicesRoute, workflowInMemoryProviderService);
-
-    webSocketsQueueService = new WebSocketsQueueService(workflowInMemoryProviderService);
+    webSocketsQueueService = new WebSocketsQueueService();
     await webSocketsQueueService.queue.obliterate();
   });
 
@@ -40,6 +35,7 @@ describe('WebSocket Worker', () => {
 
   it('should be initialised properly', async () => {
     expect(webSocketWorker).to.be.ok;
+    expect(webSocketWorker).to.have.all.keys('DEFAULT_ATTEMPTS', 'instance', 'externalServicesRoute', 'topic');
     expect(await webSocketWorker.bullMqService.getStatus()).to.deep.equal({
       queueIsPaused: undefined,
       queueName: undefined,
@@ -48,7 +44,7 @@ describe('WebSocket Worker', () => {
       workerIsRunning: true,
     });
     expect(webSocketWorker.worker.opts).to.deep.include({
-      concurrency: 400,
+      concurrency: 200,
       lockDuration: 90000,
     });
   });
@@ -62,13 +58,14 @@ describe('WebSocket Worker', () => {
     const _organizationId = 'web-socket-queue-organization-id';
     const _userId = 'web-socket-queue-user-id';
     const jobData = {
-      event: WebSocketEventEnum.RECEIVED,
+      _id: jobId,
+      test: 'web-socket-queue-job-data',
       _environmentId,
       _organizationId,
-      userId: _userId,
-    } as IWebSocketDataDto;
+      _userId,
+    };
 
-    await webSocketsQueueService.add({ name: jobId, data: jobData, groupId: _organizationId });
+    await webSocketsQueueService.add(jobId, jobData, _organizationId);
 
     expect(await webSocketsQueueService.queue.getActiveCount()).to.equal(1);
     expect(await webSocketsQueueService.queue.getWaitingCount()).to.equal(0);

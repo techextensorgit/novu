@@ -11,7 +11,6 @@ import { ControlBar } from './ControlBar';
 import { ButtonRowContent } from './ButtonRowContent';
 import { TextRowContent } from './TextRowContent';
 import type { IForm, IFormStep, ITemplates } from '../formTypes';
-import { useStepFormPath } from '../../hooks/useStepFormPath';
 
 interface IStepEntityExtended extends IFormStep {
   template: ITemplates & {
@@ -26,15 +25,16 @@ interface IFormExtended extends IForm {
 export function EmailMessageEditor({
   branding,
   readonly,
+  stepIndex,
 }: {
   branding: { color: string; logo: string } | undefined;
   readonly: boolean;
+  stepIndex: number;
 }) {
   const methods = useFormContext<IFormExtended>();
-  const stepFormPath = useStepFormPath();
-  const contentBlocks = useFieldArray<IFormExtended, any, 'id' | 'type'>({
+  const contentBlocks = useFieldArray({
     control: methods.control,
-    name: `${stepFormPath}.template.content` as any,
+    name: `steps.${stepIndex}.template.content`,
   });
   const theme = useMantineTheme();
   const navigate = useNavigate();
@@ -154,12 +154,13 @@ export function EmailMessageEditor({
                 onHoverElement={onHoverElement}
                 onRemove={() => removeBlock(blockIndex)}
                 allowRemove={contentBlocks.fields?.length > 1}
+                stepIndex={stepIndex}
                 blockIndex={blockIndex}
               >
                 {block.type === 'text' ? (
-                  <TextRowContent blockIndex={blockIndex} />
+                  <TextRowContent stepIndex={stepIndex} blockIndex={blockIndex} />
                 ) : (
-                  <ButtonRowContent brandingColor={branding?.color} blockIndex={blockIndex} />
+                  <ButtonRowContent brandingColor={branding?.color} stepIndex={stepIndex} blockIndex={blockIndex} />
                 )}
               </ContentRow>
             );
@@ -180,5 +181,4 @@ const styledCard = (theme) => ({
   borderRadius: '7px',
   borderColor: theme.colorScheme === 'dark' ? colors.B30 : colors.B80,
   padding: '30px',
-  overflow: 'visible',
 });

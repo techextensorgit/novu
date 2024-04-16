@@ -1,19 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import {
   EnvironmentId,
-  FeatureFlagsKeysEnum,
   ISubscribersDefine,
-  ISubscribersSource,
   ITopic,
   OrganizationId,
-  SubscriberSourceEnum,
   TopicSubscribersDto,
-  TriggerRecipient,
   TriggerRecipients,
-  TriggerRecipientsTypeEnum,
   TriggerRecipientSubscriber,
   TriggerRecipientTopics,
+  TriggerRecipientsTypeEnum,
   UserId,
+  TriggerRecipient,
 } from '@novu/shared';
 
 import { MapTriggerRecipientsCommand } from './map-trigger-recipients.command';
@@ -21,7 +18,10 @@ import {
   GetTopicSubscribersCommand,
   GetTopicSubscribersUseCase,
 } from '../get-topic-subscribers';
-import { GetFeatureFlag, GetFeatureFlagCommand } from '../get-feature-flag';
+import {
+  FeatureFlagCommand,
+  GetIsTopicNotificationEnabled,
+} from '../get-feature-flag';
 import { InstrumentUsecase } from '../../instrumentation';
 
 const isNotTopic = (
@@ -36,13 +36,13 @@ const isTopic = (recipient: TriggerRecipient): recipient is ITopic =>
 export class MapTriggerRecipients {
   constructor(
     private getTopicSubscribers: GetTopicSubscribersUseCase,
-    private getFeatureFlag: GetFeatureFlag
+    private getIsTopicNotificationEnabled: GetIsTopicNotificationEnabled
   ) {}
 
   @InstrumentUsecase()
   async execute(
     command: MapTriggerRecipientsCommand
-  ): Promise<ISubscribersSource[]> {
+  ): Promise<ISubscribersDefine[]> {
     const {
       environmentId,
       organizationId,
@@ -51,18 +51,16 @@ export class MapTriggerRecipients {
       userId,
       actor,
     } = command;
-
     const mappedRecipients = Array.isArray(recipients)
       ? recipients
       : [recipients];
 
-    const simpleSubscribers: ISubscribersSource[] = this.findSubscribers(
-      mappedRecipients,
-      SubscriberSourceEnum.SINGLE
-    );
+    const simpleSubscribers: ISubscribersDefine[] =
+      this.findSubscribers(mappedRecipients);
 
-    let topicSubscribers: ISubscribersSource[] =
+    let topicSubscribers: ISubscribersDefine[] =
       await this.getSubscribersFromAllTopics(
+        transactionId,
         environmentId,
         organizationId,
         userId,
@@ -86,8 +84,8 @@ export class MapTriggerRecipients {
    * Time complexity: O(n)
    */
   private deduplicateSubscribers(
-    subscribers: ISubscribersSource[]
-  ): ISubscribersSource[] {
+    subscribers: ISubscribersDefine[]
+  ): ISubscribersDefine[] {
     const uniqueSubscribers = new Set();
 
     return subscribers.filter((el) => {
@@ -99,32 +97,34 @@ export class MapTriggerRecipients {
   }
 
   private excludeActorFromTopicSubscribers(
-    subscribers: ISubscribersSource[],
+    subscribers: ISubscribersDefine[],
     actor: ISubscribersDefine
-  ): ISubscribersSource[] {
+  ): ISubscribersDefine[] {
     return subscribers.filter(
       (subscriber) => subscriber.subscriberId !== actor?.subscriberId
     );
   }
 
   private async getSubscribersFromAllTopics(
+    transactionId: string,
     environmentId: EnvironmentId,
     organizationId: OrganizationId,
     userId: UserId,
     recipients: TriggerRecipients
-  ): Promise<ISubscribersSource[]> {
-    const featureFlagCommand = GetFeatureFlagCommand.create({
+  ): Promise<ISubscribersDefine[]> {
+    const featureFlagCommand = FeatureFlagCommand.create({
       environmentId,
       organizationId,
       userId,
-      key: FeatureFlagsKeysEnum.IS_TOPIC_NOTIFICATION_ENABLED,
     });
-    const isEnabled = await this.getFeatureFlag.execute(featureFlagCommand);
+    const isEnabled = await this.getIsTopicNotificationEnabled.execute(
+      featureFlagCommand
+    );
 
     if (isEnabled) {
       const topics = this.findTopics(recipients);
 
-      const subscribers: ISubscribersSource[] = [];
+      const subscribers: ISubscribersDefine[] = [];
 
       for (const topic of topics) {
         const getTopicSubscribersCommand = GetTopicSubscribersCommand.create({
@@ -137,10 +137,7 @@ export class MapTriggerRecipients {
         );
 
         topicSubscribers.forEach((subscriber: TopicSubscribersDto) =>
-          subscribers.push({
-            subscriberId: subscriber.externalSubscriberId,
-            _subscriberSource: SubscriberSourceEnum.TOPIC,
-          })
+          subscribers.push({ subscriberId: subscriber.externalSubscriberId })
         );
       }
 
@@ -150,11 +147,9 @@ export class MapTriggerRecipients {
     return [];
   }
 
-  public mapActor(
+  public mapSubscriber(
     subscriber: TriggerRecipientSubscriber
-  ): ISubscribersDefine | null {
-    if (!subscriber) return null;
-
+  ): ISubscribersDefine {
     if (typeof subscriber === 'string') {
       return { subscriberId: subscriber };
     }
@@ -162,33 +157,8 @@ export class MapTriggerRecipients {
     return subscriber;
   }
 
-  public mapSubscriber(
-    subscriber: TriggerRecipientSubscriber,
-    source: SubscriberSourceEnum
-  ): ISubscribersSource | null {
-    if (!subscriber) return null;
-
-    let mappedSubscriber: Partial<ISubscribersSource>;
-
-    if (typeof subscriber === 'string') {
-      mappedSubscriber = { subscriberId: subscriber };
-    } else {
-      mappedSubscriber = subscriber;
-    }
-
-    return {
-      ...mappedSubscriber,
-      _subscriberSource: source,
-    } as ISubscribersSource;
-  }
-
-  private findSubscribers(
-    recipients: TriggerRecipients,
-    source: SubscriberSourceEnum
-  ): ISubscribersSource[] {
-    return recipients
-      .filter(isNotTopic)
-      .map((subscriber) => this.mapSubscriber(subscriber, source));
+  private findSubscribers(recipients: TriggerRecipients): ISubscribersDefine[] {
+    return recipients.filter(isNotTopic).map(this.mapSubscriber);
   }
 
   private findTopics(recipients: TriggerRecipients): TriggerRecipientTopics {

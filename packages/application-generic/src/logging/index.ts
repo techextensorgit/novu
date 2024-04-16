@@ -5,7 +5,6 @@ import {
   LoggerModule,
   PinoLogger,
   getLoggerToken,
-  Params,
 } from 'nestjs-pino';
 import { storage, Store } from 'nestjs-pino/storage';
 import { sensitiveFields } from './masking';
@@ -77,9 +76,7 @@ function getLoggingVariables(): ILoggingVariables {
   };
 }
 
-export function createNestLoggingModuleOptions(
-  settings: ILoggerSettings
-): Params {
+export function createNestLoggingModuleOptions(settings: ILoggerSettings) {
   const values = getLoggingVariables();
 
   let redactFields: string[] = sensitiveFields.map((val) => val);
@@ -124,15 +121,6 @@ export function createNestLoggingModuleOptions(
       },
       transport: transport,
       autoLogging: !['test', 'local'].includes(process.env.NODE_ENV),
-      customProps: (req: any, res: any) => ({
-        user: {
-          userId: req?.user?._id || null,
-          environmentId: req?.user?.environmentId || null,
-          organizationId: req?.user?.organizationId || null,
-        },
-        authScheme: req?.authScheme,
-        rateLimitPolicy: res?.rateLimitPolicy,
-      }),
     },
   };
 }

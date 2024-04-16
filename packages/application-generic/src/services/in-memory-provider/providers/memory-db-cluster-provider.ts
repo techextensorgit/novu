@@ -4,8 +4,6 @@ import { Logger } from '@nestjs/common';
 
 export { Cluster, ClusterOptions };
 
-import { convertStringValues } from './variable-mappers';
-
 export const CLIENT_READY = 'ready';
 const DEFAULT_TTL_SECONDS = 60 * 60 * 2;
 const DEFAULT_CONNECT_TIMEOUT = 50000;
@@ -44,32 +42,16 @@ export interface IMemoryDbClusterProviderConfig {
 export const getMemoryDbClusterProviderConfig =
   (): IMemoryDbClusterProviderConfig => {
     const redisClusterConfig: IMemoryDbClusterConfig = {
-      host: convertStringValues(process.env.MEMORY_DB_CLUSTER_SERVICE_HOST),
-      port: convertStringValues(process.env.MEMORY_DB_CLUSTER_SERVICE_PORT),
-      ttl: convertStringValues(process.env.MEMORY_DB_CLUSTER_SERVICE_TTL),
-      username: convertStringValues(
-        process.env.MEMORY_DB_CLUSTER_SERVICE_USERNAME
-      ),
-      password: convertStringValues(
-        process.env.MEMORY_DB_CLUSTER_SERVICE_PASSWORD
-      ),
-      connectTimeout: convertStringValues(
-        process.env.MEMORY_DB_CLUSTER_SERVICE_CONNECTION_TIMEOUT
-      ),
-      keepAlive: convertStringValues(
-        process.env.MEMORY_DB_CLUSTER_SERVICE_KEEP_ALIVE
-      ),
-      family: convertStringValues(process.env.MEMORY_DB_CLUSTER_SERVICE_FAMILY),
-      keyPrefix: convertStringValues(
-        process.env.MEMORY_DB_CLUSTER_SERVICE_KEY_PREFIX
-      ),
-      tls: (process.env.MEMORY_DB_CLUSTER_SERVICE_TLS as ConnectionOptions)
-        ? {
-            servername: convertStringValues(
-              process.env.MEMORY_DB_CLUSTER_SERVICE_HOST
-            ),
-          }
-        : {},
+      host: process.env.MEMORY_DB_CLUSTER_SERVICE_HOST,
+      port: process.env.MEMORY_DB_CLUSTER_SERVICE_PORT,
+      ttl: process.env.MEMORY_DB_CLUSTER_SERVICE_TTL,
+      username: process.env.MEMORY_DB_CLUSTER_SERVICE_USERNAME,
+      password: process.env.MEMORY_DB_CLUSTER_SERVICE_PASSWORD,
+      connectTimeout: process.env.MEMORY_DB_CLUSTER_SERVICE_CONNECTION_TIMEOUT,
+      keepAlive: process.env.MEMORY_DB_CLUSTER_SERVICE_KEEP_ALIVE,
+      family: process.env.MEMORY_DB_CLUSTER_SERVICE_FAMILY,
+      keyPrefix: process.env.MEMORY_DB_CLUSTER_SERVICE_KEY_PREFIX,
+      tls: process.env.MEMORY_DB_CLUSTER_SERVICE_TLS as ConnectionOptions,
     };
 
     const host = redisClusterConfig.host;
@@ -105,32 +87,25 @@ export const getMemoryDbClusterProviderConfig =
       keepAlive,
       keyPrefix,
       ttl,
-      tls: redisClusterConfig.tls,
     };
   };
 
 export const getMemoryDbCluster = (
   enableAutoPipelining?: boolean
 ): Cluster | undefined => {
-  const { instances, password, username, tls } =
-    getMemoryDbClusterProviderConfig();
+  const { instances, password, username } = getMemoryDbClusterProviderConfig();
 
   const options: ClusterOptions = {
     dnsLookup: (address, callback) => callback(null, address),
     enableAutoPipelining: enableAutoPipelining ?? false,
     enableOfflineQueue: false,
     redisOptions: {
-      maxRetriesPerRequest: null,
-      tls,
+      tls: {},
       connectTimeout: 10000,
-
       ...(password && { password }),
       ...(username && { username }),
     },
-    clusterRetryStrategy: (times: number) => {
-      return Math.max(Math.min(Math.exp(times), 20000), 1000);
-    },
-    scaleReads: 'master',
+    scaleReads: 'slave',
     /*
      *  Disabled in Prod as affects performance
      */

@@ -14,10 +14,10 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiExcludeController, ApiOperation, ApiQuery } from '@nestjs/swagger';
+import { ApiExcludeController, ApiNoContentResponse, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { AnalyticsService, GetSubscriberPreference, GetSubscriberPreferenceCommand } from '@novu/application-generic';
 import { MessageEntity, PreferenceLevelEnum, SubscriberEntity } from '@novu/dal';
-import { MarkMessagesAsEnum, ButtonTypeEnum, MessageActionStatusEnum } from '@novu/shared';
+import { MarkMessagesAsEnum, ButtonTypeEnum, MessageActionStatusEnum, ChannelTypeEnum } from '@novu/shared';
 
 import { SubscriberSession } from '../shared/framework/user.decorator';
 import {
@@ -61,12 +61,7 @@ import {
 import { UpdateSubscriberGlobalPreferencesRequestDto } from '../subscribers/dtos/update-subscriber-global-preferences-request.dto';
 import { GetPreferencesByLevel } from '../subscribers/usecases/get-preferences-by-level/get-preferences-by-level.usecase';
 import { GetPreferencesByLevelCommand } from '../subscribers/usecases/get-preferences-by-level/get-preferences-by-level.command';
-import { ApiCommonResponses, ApiNoContentResponse } from '../shared/framework/response.decorator';
-import { RemoveMessagesBulkCommand } from './usecases/remove-messages-bulk/remove-messages-bulk.command';
-import { RemoveMessagesBulk } from './usecases/remove-messages-bulk/remove-messages-bulk.usecase';
-import { RemoveMessagesBulkRequestDto } from './dtos/remove-messages-bulk-request.dto';
 
-@ApiCommonResponses()
 @Controller('/widgets')
 @ApiExcludeController()
 export class WidgetsController {
@@ -77,7 +72,6 @@ export class WidgetsController {
     private markMessageAsUsecase: MarkMessageAs,
     private removeMessageUsecase: RemoveMessage,
     private removeAllMessagesUsecase: RemoveAllMessages,
-    private removeMessagesBulkUsecase: RemoveMessagesBulk,
     private updateMessageActionsUsecase: UpdateMessageActions,
     private getOrganizationUsecase: GetOrganizationData,
     private getSubscriberPreferenceUsecase: GetSubscriberPreference,
@@ -139,6 +133,7 @@ export class WidgetsController {
     @SubscriberSession() subscriberSession: SubscriberEntity,
     @Query('feedIdentifier') feedId: string[] | string,
     @Query('seen') seen: boolean,
+    @Query('channel', new DefaultValuePipe(ChannelTypeEnum.IN_APP)) channel: ChannelTypeEnum,
     @Query('limit', new DefaultValuePipe(100), new LimitPipe(1, 100, true)) limit: number
   ): Promise<UnseenCountResponse> {
     const feedsQuery = this.toArray(feedId);
@@ -152,6 +147,7 @@ export class WidgetsController {
       subscriberId: subscriberSession.subscriberId,
       environmentId: subscriberSession._environmentId,
       feedId: feedsQuery,
+      channel: channel,
       seen,
       limit,
     });
@@ -165,6 +161,7 @@ export class WidgetsController {
     @SubscriberSession() subscriberSession: SubscriberEntity,
     @Query('feedIdentifier') feedId: string[] | string,
     @Query('read') read: boolean,
+    @Query('channel', new DefaultValuePipe(ChannelTypeEnum.IN_APP)) channel: ChannelTypeEnum,
     @Query('limit', new DefaultValuePipe(100), new LimitPipe(1, 100, true)) limit: number
   ): Promise<UnseenCountResponse> {
     const feedsQuery = this.toArray(feedId);
@@ -177,9 +174,9 @@ export class WidgetsController {
       organizationId: subscriberSession._organizationId,
       subscriberId: subscriberSession.subscriberId,
       environmentId: subscriberSession._environmentId,
+      channel:channel,
       feedId: feedsQuery,
-      read,
-      limit,
+      read
     });
 
     return await this.getFeedCountUsecase.execute(command);
@@ -190,6 +187,7 @@ export class WidgetsController {
   async getCount(
     @SubscriberSession() subscriberSession: SubscriberEntity,
     @Query() query: GetCountQuery,
+    @Query('channel', new DefaultValuePipe(ChannelTypeEnum.IN_APP)) channel: ChannelTypeEnum,
     @Query('limit', new DefaultValuePipe(100), new LimitPipe(1, 100, true)) limit: number
   ): Promise<UnseenCountResponse> {
     const feedsQuery = this.toArray(query.feedIdentifier);
@@ -203,6 +201,7 @@ export class WidgetsController {
       subscriberId: subscriberSession.subscriberId,
       environmentId: subscriberSession._environmentId,
       feedId: feedsQuery,
+      channel:channel,
       seen: query.seen,
       read: query.read,
       limit: limit,
@@ -274,26 +273,6 @@ export class WidgetsController {
     });
 
     await this.removeAllMessagesUsecase.execute(command);
-  }
-
-  @ApiOperation({
-    summary: 'Remove subscriber messages in bulk',
-  })
-  @UseGuards(AuthGuard('subscriberJwt'))
-  @Post('/messages/bulk/delete')
-  @HttpCode(HttpStatus.OK)
-  async removeMessagesBulk(
-    @SubscriberSession() subscriberSession: SubscriberEntity,
-    @Body() body: RemoveMessagesBulkRequestDto
-  ) {
-    return await this.removeMessagesBulkUsecase.execute(
-      RemoveMessagesBulkCommand.create({
-        organizationId: subscriberSession._organizationId,
-        subscriberId: subscriberSession.subscriberId,
-        environmentId: subscriberSession._environmentId,
-        messageIds: body.messageIds,
-      })
-    );
   }
 
   @ApiOperation({
@@ -457,7 +436,7 @@ export class WidgetsController {
     let paramArray: string[] | undefined = undefined;
 
     if (param) {
-      paramArray = Array.isArray(param) ? param : String(param).split(',');
+      paramArray = Array.isArray(param) ? param : param.split(',');
     }
 
     return paramArray as string[];

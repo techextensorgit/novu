@@ -1,4 +1,4 @@
-export type Channel = 'inApp' | 'email' | 'sms' | 'chat' | 'push' | 'digest' | 'delay';
+type Channel = 'inApp' | 'email' | 'sms' | 'digest' | 'delay';
 
 export function addAndEditChannel(channel: Channel) {
   cy.waitForNetworkIdle(500);
@@ -21,7 +21,7 @@ export function editChannel(channel: Channel, last = false) {
 }
 
 export function goBack() {
-  cy.getByTestId('sidebar-close').click();
+  cy.getByTestId('close-step-page').click();
   cy.waitForNetworkIdle(500);
 }
 

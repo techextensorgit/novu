@@ -17,7 +17,6 @@ export * from './entities/layout';
 export * from './entities/notification-group';
 export * from './entities/integration';
 export * from './entities/tenant';
-export * from './entities/workflow-override';
 export * from './types';
 export * from './dto';
 export * from './consts';

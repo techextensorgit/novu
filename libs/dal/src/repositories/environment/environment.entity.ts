@@ -1,18 +1,10 @@
 import { Types } from 'mongoose';
 
-import { EncryptedSecret, IApiRateLimitMaximum } from '@novu/shared';
-
 import type { OrganizationId } from '../organization';
 import type { ChangePropsValueType } from '../../types/helpers';
 
 export interface IApiKey {
-  /*
-   * backward compatibility -
-   * remove `string` type after encrypt-api-keys-migration run
-   * remove the optional from hash
-   */
-  key: EncryptedSecret | string;
-  hash?: string;
+  key: string;
   _userId: string;
 }
 
@@ -35,8 +27,6 @@ export class EnvironmentEntity {
   identifier: string;
 
   apiKeys: IApiKey[];
-
-  apiRateLimits?: IApiRateLimitMaximum;
 
   widget: IWidgetSettings;
 

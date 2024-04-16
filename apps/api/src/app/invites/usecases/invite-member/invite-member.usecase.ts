@@ -1,12 +1,14 @@
-import { Injectable, NotFoundException, Scope } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException, Scope } from '@nestjs/common';
 import { OrganizationRepository, UserRepository, MemberRepository, IAddMemberData } from '@novu/dal';
-import { MemberRoleEnum, MemberStatusEnum } from '@novu/shared';
+import { MemberStatusEnum } from '@novu/shared';
 import { Novu } from '@novu/node';
 import { AnalyticsService } from '@novu/application-generic';
 
 import { ApiException } from '../../../shared/exceptions/api.exception';
 import { InviteMemberCommand } from './invite-member.command';
 import { capitalize, createGuid } from '../../../shared/services/helper/helper.service';
+
+import { normalizeEmail } from '../../../shared/helpers/email-normalization.service';
 
 @Injectable({
   scope: Scope.REQUEST,
@@ -52,7 +54,7 @@ export class InviteMember {
     }
 
     const memberPayload: IAddMemberData = {
-      roles: [command.role as MemberRoleEnum],
+      roles: [command.role],
       memberStatus: MemberStatusEnum.INVITED,
       invite: {
         token,

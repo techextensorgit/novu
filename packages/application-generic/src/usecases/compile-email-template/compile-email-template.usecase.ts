@@ -1,15 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { merge } from 'lodash';
 import { readFile } from 'fs/promises';
-import { ModuleRef } from '@nestjs/core';
-
 import { IEmailBlock, OrganizationRepository } from '@novu/dal';
 
-import {
-  CompileTemplate,
-  CompileTemplateCommand,
-  CompileTemplateBase,
-} from '../compile-template';
+import { CompileTemplate } from '../compile-template/compile-template.usecase';
+import { CompileTemplateCommand } from '../compile-template/compile-template.command';
 import { ApiException } from '../../utils/exceptions';
 import { CompileEmailTemplateCommand } from './compile-email-template.command';
 import { LayoutDto, GetLayoutCommand, GetLayoutUseCase } from '../get-layout';
@@ -17,35 +12,24 @@ import { VerifyPayloadService } from '../../services';
 import { GetNovuLayout } from '../get-novu-layout';
 
 @Injectable()
-export class CompileEmailTemplate extends CompileTemplateBase {
+export class CompileEmailTemplate {
   constructor(
     private compileTemplate: CompileTemplate,
-    protected organizationRepository: OrganizationRepository,
+    private organizationRepository: OrganizationRepository,
     private getLayoutUsecase: GetLayoutUseCase,
-    private getNovuLayoutUsecase: GetNovuLayout,
-    protected moduleRef: ModuleRef
-  ) {
-    super(organizationRepository, moduleRef);
-  }
+    private getNovuLayoutUsecase: GetNovuLayout
+  ) {}
 
-  public async execute(
-    command: CompileEmailTemplateCommand,
-    initiateTranslations?: (
-      environmentId: string,
-      organizationId,
-      locale: string
-    ) => Promise<void>
-  ) {
+  public async execute(command: CompileEmailTemplateCommand) {
     const verifyPayloadService = new VerifyPayloadService();
-    const organization = await this.getOrganization(command.organizationId);
-
-    if (initiateTranslations) {
-      await initiateTranslations(
-        command.environmentId,
-        command.organizationId,
-        command.payload.subscriber?.locale || organization.defaultLocale
+    const organization = await this.organizationRepository.findById(
+      command.organizationId,
+      'branding'
+    );
+    if (!organization)
+      throw new NotFoundException(
+        `Organization ${command.organizationId} not found`
       );
-    }
 
     const isEditorMode = command.contentType === 'editor';
 
@@ -78,7 +62,7 @@ export class CompileEmailTemplate extends CompileTemplateBase {
     }
 
     let subject = '';
-    let senderName;
+    let senderName = '';
     const content: string | IEmailBlock[] = command.content;
     let preheader = command.preheader;
 

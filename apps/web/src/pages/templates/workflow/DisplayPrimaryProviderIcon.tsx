@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Avatar, Indicator } from '@mantine/core';
 import { ProvidersIdEnum } from '@novu/shared';
-import { ProviderMissing, colors } from '@novu/design-system';
+import { ProviderMissing } from '@novu/design-system';
 
 type DisplayPrimaryProviderIconProps = {
   isChannelStep: boolean;
@@ -21,11 +21,7 @@ export function DisplayPrimaryProviderIcon({
   if (isChannelStep) {
     return (
       <Indicator
-        label={
-          <StyledBadge>
-            <Icon width="16px" height="16px" {...disabledProp} />
-          </StyledBadge>
-        }
+        label={<Icon width="16px" height="16px" {...disabledProp} />}
         position="bottom-end"
         size={16}
         offset={providerIntegration ? 8 : 4}
@@ -58,12 +54,4 @@ const AvatarWrapper = styled.div`
   justify-content: center;
   align-items: center;
   padding: 4px;
-`;
-
-const StyledBadge = styled.div`
-  color: ${({ theme }) => (theme.colorScheme === 'dark' ? colors.white : colors.B60)};
-  > svg path {
-    stop-color: currentcolor;
-    fill: currentcolor;
-  }
 `;

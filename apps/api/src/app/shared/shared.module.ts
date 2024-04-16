@@ -1,28 +1,27 @@
 import { Module } from '@nestjs/common';
 import {
-  ChangeRepository,
   DalService,
+  UserRepository,
+  OrganizationRepository,
   EnvironmentRepository,
   ExecutionDetailsRepository,
-  FeedRepository,
-  IntegrationRepository,
-  JobRepository,
+  NotificationTemplateRepository,
+  SubscriberRepository,
+  NotificationRepository,
+  MessageRepository,
+  NotificationGroupRepository,
+  MessageTemplateRepository,
+  MemberRepository,
   LayoutRepository,
   LogRepository,
-  MemberRepository,
-  MessageRepository,
-  MessageTemplateRepository,
-  NotificationGroupRepository,
-  NotificationRepository,
-  NotificationTemplateRepository,
-  OrganizationRepository,
+  IntegrationRepository,
+  ChangeRepository,
+  JobRepository,
+  FeedRepository,
   SubscriberPreferenceRepository,
-  SubscriberRepository,
-  TenantRepository,
   TopicRepository,
   TopicSubscribersRepository,
-  UserRepository,
-  WorkflowOverrideRepository,
+  TenantRepository,
 } from '@novu/dal';
 import {
   analyticsService,
@@ -33,17 +32,14 @@ import {
   DalServiceHealthIndicator,
   distributedLockService,
   featureFlagsService,
-  getFeatureFlag,
+  getIsTopicNotificationEnabled,
   InvalidateCacheService,
   LoggerModule,
   QueuesModule,
   storageService,
-  ExecutionLogRoute,
-  CreateExecutionDetails,
 } from '@novu/application-generic';
 
 import * as packageJson from '../../../package.json';
-import { JobTopicNameEnum } from '@novu/shared';
 
 const DAL_MODELS = [
   UserRepository,
@@ -67,7 +63,6 @@ const DAL_MODELS = [
   TopicRepository,
   TopicSubscribersRepository,
   TenantRepository,
-  WorkflowOverrideRepository,
 ];
 
 const dalService = {
@@ -89,28 +84,21 @@ const PROVIDERS = [
   DalServiceHealthIndicator,
   distributedLockService,
   featureFlagsService,
+  getIsTopicNotificationEnabled,
   InvalidateCacheService,
   storageService,
   ...DAL_MODELS,
-  ExecutionLogRoute,
-  CreateExecutionDetails,
-  getFeatureFlag,
 ];
 
 @Module({
   imports: [
-    QueuesModule.forRoot([
-      JobTopicNameEnum.EXECUTION_LOG,
-      JobTopicNameEnum.WEB_SOCKETS,
-      JobTopicNameEnum.WORKFLOW,
-      JobTopicNameEnum.INBOUND_PARSE_MAIL,
-    ]),
     LoggerModule.forRoot(
       createNestLoggingModuleOptions({
         serviceName: packageJson.name,
         version: packageJson.version,
       })
     ),
+    QueuesModule,
   ],
   providers: [...PROVIDERS],
   exports: [...PROVIDERS, LoggerModule, QueuesModule],

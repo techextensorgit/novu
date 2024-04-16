@@ -53,8 +53,6 @@ export interface IAttachmentOptions {
   file: Buffer | null;
   name?: string;
   channels?: ChannelTypeEnum[];
-  cid?: string;
-  disposition?: string;
 }
 
 export interface IAttachmentOptionsExtended extends IAttachmentOptions {

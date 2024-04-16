@@ -1,12 +1,6 @@
 export interface IChanges {
-  get(data: IChangesPayload);
+  get();
   getCount();
   applyOne(changeId: string);
   applyMany(changeIds: string[]);
-}
-
-export interface IChangesPayload {
-  page?: number;
-  limit?: number;
-  promoted: boolean;
 }

@@ -1,7 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-import { JobTitleEnum } from '@novu/shared';
-
 export class ServicesHashesDto {
   @ApiProperty()
   intercom?: string;
@@ -37,7 +35,4 @@ export class UserResponseDto {
 
   @ApiProperty()
   servicesHashes?: ServicesHashesDto;
-
-  @ApiPropertyOptional()
-  jobTitle?: JobTitleEnum;
 }

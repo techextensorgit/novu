@@ -39,7 +39,6 @@ export function NotificationCenterWidget(props: INotificationCenterWidgetProps) 
   const [colorScheme, setColorScheme] = useState<ColorScheme>('light');
   const [doLogout, setDoLogout] = useState(false);
   const [preferenceFilter, setPreferenceFilter] = useState<(userPreference: IUserPreferenceSettings) => boolean>();
-  const [showUserPreferences, setShowUserPreferences] = useState<boolean>(true);
 
   useEffect(() => {
     if (fontFamily !== DEFAULT_FONT_FAMILY) {
@@ -95,10 +94,6 @@ export function NotificationCenterWidget(props: INotificationCenterWidgetProps) 
           setPreferenceFilter(() => data.value.preferenceFilter);
         }
 
-        if (data.value.showUserPreferences) {
-          setShowUserPreferences(data.value.showUserPreferences);
-        }
-
         setFrameInitialized(true);
       }
 
@@ -150,7 +145,6 @@ export function NotificationCenterWidget(props: INotificationCenterWidgetProps) 
               preferenceFilter={preferenceFilter}
               theme={theme}
               tabs={tabs}
-              showUserPreferences={showUserPreferences}
             />
           </NovuNotificationCenterWrapper>
         </NovuProvider>

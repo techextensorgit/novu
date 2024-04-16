@@ -20,8 +20,6 @@ export interface ITemplates extends IMessageTemplate {
   layoutId?: string;
 }
 
-export type IVariantStep = Omit<IFormStep, 'variants'>;
-
 export interface IFormStep {
   id?: string;
   _id?: string;
@@ -41,7 +39,6 @@ export interface IFormStep {
     active: boolean;
     url?: string;
   };
-  variants?: IVariantStep[];
   digestMetadata?: {
     type: DigestTypeEnum;
     digestKey?: string;

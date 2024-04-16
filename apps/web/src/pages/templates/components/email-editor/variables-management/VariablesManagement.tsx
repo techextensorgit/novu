@@ -1,118 +1,40 @@
 import { useWatch } from 'react-hook-form';
 import { UnstyledButton } from '@mantine/core';
-import { useQuery } from '@tanstack/react-query';
-import React, { useEffect, useState } from 'react';
-import * as set from 'lodash.set';
-import styled from '@emotion/styled';
+import { SystemVariablesWithTypes } from '@novu/shared';
 
-import {
-  Text,
-  Tooltip,
-  EditGradient,
-  Translation,
-  colors,
-  NovuIcon,
-  Search,
-  Input,
-  Workflow,
-  shadows,
-  EmptySearch,
-} from '@novu/design-system';
-
+import { Text, Tooltip, EditGradient } from '@novu/design-system';
 import { VarItemsDropdown } from './VarItemsDropdown';
 import { VarLabel } from './VarLabel';
-import { useDebounce, useProcessVariables } from '../../../../../hooks';
+import { useProcessVariables } from '../../../../../hooks';
 import { VarItemTooltip } from './VarItemTooltip';
 import { When } from '../../../../../components/utils/When';
-import { getWorkflowVariables } from '../../../../../api/notification-templates';
-import { useWorkflowVariables } from '../../../../../api/hooks';
-
-interface IVariablesList {
-  translations: Record<string, any>;
-  step: Record<string, any>;
-  system: Record<string, any>;
-}
-
-function searchByKey(object, searchString) {
-  const varsObj: Record<string, any> = {};
-
-  Object.keys(object).forEach((key) => {
-    if (key.toLowerCase().includes(searchString.toLowerCase())) {
-      set(varsObj, key, object[key]);
-    }
-  });
-
-  return varsObj;
-}
-
-function flattenObject(obj, parentKey = '') {
-  return Object.keys(obj).reduce((acc, key) => {
-    const newKey = parentKey ? `${parentKey}.${key}` : key;
-
-    if (typeof obj[key] === 'object' && obj[key] !== null) {
-      Object.assign(acc, flattenObject(obj[key], newKey));
-    } else {
-      acc[newKey] = obj[key];
-    }
-
-    return acc;
-  }, {});
-}
-
-const searchVariables = (list, search: string) => {
-  const flatten = flattenObject(list);
-
-  return searchByKey(flatten, search);
-};
 
 export const VariablesManagement = ({
+  index,
   openVariablesModal,
   control,
   path,
 }: {
+  index: number;
   openVariablesModal?: () => void;
   control?: any;
-  path: string;
+  path?: string;
 }) => {
   const variableArray = useWatch({
-    name: path,
+    name: path ?? `steps.${index}.template.variables`,
     control,
   });
-
-  const { variables } = useWorkflowVariables();
-
   const processedVariables = useProcessVariables(variableArray, false);
-  const [variablesList, setVariablesList] = useState<IVariablesList>({
-    ...variables,
-    step: processedVariables,
-  });
-  const [searchVal, setSearchVal] = useState('');
-
-  const debouncedSearchChange = useDebounce((args: { search: string; list: IVariablesList }) => {
-    const { search, list } = args;
-    const { system, translations, step } = list;
-    setSearchVal(search);
-    setVariablesList({
-      system: searchVariables(system, search),
-      translations: searchVariables(translations, search),
-      step: searchVariables(step, search),
-    });
-  }, 500);
-
-  useEffect(() => {
-    if (variables) {
-      setVariablesList({ ...variables, step: processedVariables });
-    }
-  }, [variables, processedVariables, setVariablesList]);
-
-  const emptyVariablesList = Object.values(variablesList).every((list) => Object.keys(list).length === 0);
-
-  const handleSearchVariable = (e) => {
-    debouncedSearchChange({ search: e.target.value, list: { ...variables, step: processedVariables } });
-  };
 
   return (
-    <VariablesContainer>
+    <div
+      style={{
+        width: '100%',
+        height: '100%',
+        borderRadius: 7,
+        padding: 15,
+      }}
+    >
       <When truthy={openVariablesModal !== undefined}>
         <div
           style={{
@@ -145,107 +67,32 @@ export const VariablesManagement = ({
           </Tooltip>
         </div>
       </When>
-      <Input
-        type={'search'}
-        onChange={handleSearchVariable}
-        mb={20}
-        placeholder={'Search variables...'}
-        rightSection={<Search />}
-      />
-      <When truthy={emptyVariablesList}>
-        <EmptySearchContainer>
-          <EmptySearch style={{ maxWidth: 200, marginBottom: 15 }} />
-          <span style={{ color: colors.B40, fontSize: 16, fontWeight: 600, lineHeight: '20px' }}>No matches found</span>
-          <span style={{ color: colors.B40, fontSize: 14, fontWeight: 400, lineHeight: '20px' }}>
-            Try being less specific or using different keywords.
-          </span>
-        </EmptySearchContainer>
-      </When>
-      <When truthy={!emptyVariablesList}>
-        <VariablesSection variablesList={variablesList} searchVal={searchVal} />
-      </When>
-    </VariablesContainer>
-  );
-};
+      <VarLabel label="System Variables">
+        {Object.keys(SystemVariablesWithTypes).map((name, ind) => {
+          const type = SystemVariablesWithTypes[name];
 
-const VariablesSection = ({ variablesList, searchVal }: { variablesList: IVariablesList; searchVal: string }) => {
-  const { translations, system, step } = variablesList;
-
-  return (
-    <>
-      <VariableSectionItem variableList={system} search={searchVal} sectionName="System Variables" Icon={NovuIcon} />
-      <VariableSectionItem variableList={step} search={searchVal} sectionName="Step Variables" Icon={Workflow} />
-      <VariableSectionItem
-        withFolders
-        variableList={translations}
-        search={searchVal}
-        sectionName={'Translation Variables'}
-        Icon={Translation}
-      />
-    </>
-  );
-};
-
-const VariableSectionItem = ({
-  variableList,
-  search,
-  sectionName,
-  Icon,
-  withFolders = false,
-}: {
-  variableList: Record<string, any>;
-  search: string;
-  sectionName: string;
-  Icon: React.FC<any>;
-  withFolders?: boolean;
-}) => {
-  const keys = variableList && Object.keys(variableList);
-
-  return (
-    <When truthy={keys?.length}>
-      <VarLabel label={sectionName} Icon={Icon}>
-        {keys?.map((name, ind) => {
-          if (typeof variableList[name] === 'object') {
-            return (
-              <VarItemsDropdown
-                withFolders={withFolders}
-                path={name}
-                highlight={search}
-                key={ind}
-                name={name}
-                type={variableList[name]}
-              />
-            );
+          if (typeof type === 'object') {
+            return <VarItemsDropdown name={name} key={ind} type={type} />;
           }
 
-          return (
-            <VarItemTooltip
-              highlight={search}
-              pathToCopy={name}
-              name={name}
-              type={typeof variableList[name]}
-              key={ind}
-            />
-          );
+          return <VarItemTooltip pathToCopy={name} name={name} type={type} key={ind} />;
         })}
       </VarLabel>
-    </When>
+      <div
+        style={{
+          marginTop: '20px',
+        }}
+      >
+        <VarLabel label="Step Variables">
+          {Object.keys(processedVariables).map((name, ind) => {
+            if (typeof processedVariables[name] === 'object') {
+              return <VarItemsDropdown key={ind} name={name} type={processedVariables[name]} />;
+            }
+
+            return <VarItemTooltip pathToCopy={name} name={name} type={typeof processedVariables[name]} key={ind} />;
+          })}
+        </VarLabel>
+      </div>
+    </div>
   );
 };
-
-const VariablesContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  border-radius: 8px;
-  padding: 15px;
-  box-shadow: ${shadows.dark};
-`;
-
-const EmptySearchContainer = styled.div`
-  text-align: center;
-  flex-direction: column;
-  min-height: 350px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;

@@ -5,7 +5,7 @@ export const AZ: ITranslationEntry = {
     notifications: 'Bildirişlər',
     markAllAsRead: 'Hamısını oxunmuş olaraq işarələ',
     poweredBy: 'tərəfindən təchiz edilmişdir',
-    settings: 'Parametrlər',
+    settings: 'Qəbulu',
     noNewNotification: 'Hələ burada görmək üçün yeni heç nə yoxdur',
   },
   lang: 'az',

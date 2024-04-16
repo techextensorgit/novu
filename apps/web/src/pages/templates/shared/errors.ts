@@ -9,11 +9,7 @@ export function getExplicitErrors(errors: FieldErrors<IForm>, mode: 'settings' |
   if (['steps', 'all'].includes(mode) && errors?.steps) {
     const errorIndexes = Object.keys(errors?.steps);
     errorIndexes.forEach((index) => {
-      errorsArray.push(...getStepErrors(index, errors.steps));
-      const variantErrors = getVariantErrors(index, errors.steps)?.map((err) => err.errorMsg);
-      if (variantErrors?.length) {
-        errorsArray.push(...variantErrors);
-      }
+      errorsArray.push(...getStepErrors(index, errors));
     });
   }
 
@@ -48,9 +44,9 @@ function findMessages(obj: object): string[] {
   return messages;
 }
 
-export function getStepErrors(index: number | string, stepsErrors?: FieldErrors<IForm>['steps']): string[] {
-  if (stepsErrors) {
-    const stepErrors = stepsErrors[index]?.template;
+export function getStepErrors(index: number | string, errors?: FieldErrors<IForm>): string[] {
+  if (errors?.steps) {
+    const stepErrors = errors.steps[index]?.template;
 
     if (stepErrors) {
       const keys = Object.keys(stepErrors);
@@ -58,12 +54,12 @@ export function getStepErrors(index: number | string, stepsErrors?: FieldErrors<
       return keys.map((key) => stepErrors[key]?.message);
     }
 
-    const digestMetadataErrors = stepsErrors[index]?.digestMetadata;
+    const digestMetadataErrors = errors.steps[index]?.digestMetadata;
     if (digestMetadataErrors) {
       return findMessages(digestMetadataErrors);
     }
 
-    const delayMetadataErrors = stepsErrors[index]?.delayMetadata;
+    const delayMetadataErrors = errors.steps[index]?.delayMetadata;
 
     if (delayMetadataErrors) {
       return findMessages(delayMetadataErrors);
@@ -73,32 +69,8 @@ export function getStepErrors(index: number | string, stepsErrors?: FieldErrors<
   return [];
 }
 
-export function getVariantErrors(
-  stepIndex: number | string,
-  stepsErrors?: FieldErrors<IForm>['steps']
-): undefined | { errorMsg: string; variantIndex: number }[] {
-  if (stepsErrors) {
-    const variantsErrors = stepsErrors[stepIndex]?.variants?.reduce((acc, variant, variantIndex) => {
-      const variantErrors = variant?.template;
-      if (variantErrors) {
-        const keys = Object.keys(variantErrors);
-
-        const errorMsg = keys.map((key) => variantErrors[key]?.message);
-
-        acc.push(...errorMsg.map((msg) => ({ errorMsg: msg, variantIndex })));
-      }
-
-      return acc;
-    }, []);
-
-    return variantsErrors;
-  }
-
-  return [];
-}
-
 export function getFormattedStepErrors(index: number, errors?: FieldErrors<IForm>): string {
-  return formatErrorMessage(getStepErrors(index, errors?.steps));
+  return formatErrorMessage(getStepErrors(index, errors));
 }
 
 export function formatErrorMessage(errorsArray: string[]): string {
@@ -110,11 +82,4 @@ export function formatErrorMessage(errorsArray: string[]): string {
   }
 
   return uniqueErrors.join('');
-}
-
-export function hasGroupError(stepIndex: number, errors?: FieldErrors<IForm>): boolean {
-  const stepErrors = getStepErrors(stepIndex, errors?.steps);
-  const variantErrors = getVariantErrors(stepIndex, errors?.steps);
-
-  return stepErrors?.length > 0 || (!!variantErrors && variantErrors?.length > 0);
 }

@@ -4,14 +4,8 @@ import {
   IsOptional,
   ValidateNested,
   IsMongoId,
-  IsEnum,
 } from 'class-validator';
-import {
-  ISubscribersDefine,
-  ITenantDefine,
-  SubscriberSourceEnum,
-  TriggerRequestCategoryEnum,
-} from '@novu/shared';
+import { ISubscribersDefine, ITenantDefine } from '@novu/shared';
 import { SubscriberEntity } from '@novu/dal';
 
 import { EnvironmentWithUserCommand } from '../../commands';
@@ -33,10 +27,13 @@ export class SubscriberJobBoundCommand extends EnvironmentWithUserCommand {
 
   @IsOptional()
   @ValidateNested()
-  tenant?: ITenantDefine;
+  tenant?: ITenantDefine | null;
 
   @IsOptional()
-  actor?: SubscriberEntity;
+  actor?: SubscriberEntity | undefined;
+
+  @IsDefined()
+  to: ISubscribersDefine[];
 
   @IsDefined()
   @IsMongoId()
@@ -44,12 +41,4 @@ export class SubscriberJobBoundCommand extends EnvironmentWithUserCommand {
 
   @IsDefined()
   subscriber: ISubscribersDefine;
-
-  @IsDefined()
-  @IsEnum(SubscriberSourceEnum)
-  _subscriberSource: SubscriberSourceEnum;
-
-  @IsOptional()
-  @IsEnum(TriggerRequestCategoryEnum)
-  requestCategory?: TriggerRequestCategoryEnum;
 }

@@ -55,19 +55,19 @@ export function NodeErrorPopover({
   );
 }
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   dropdown: {
     padding: '16px',
     color: colors.error,
     border: 'none',
     maxWidth: '300px',
-    background: theme.colorScheme === 'dark' ? `${colors.errorGradient}, ${colors.B17}` : colors.white,
+    background: 'linear-gradient(0deg, rgba(229, 69, 69, 0.20) 0%, rgba(229, 69, 69, 0.20) 100%), #23232B',
   },
   arrow: {
     width: '7px',
     height: '7px',
     margin: '0px',
-    background: theme.colorScheme === 'dark' ? `${colors.errorGradient}, ${colors.B17}` : colors.white,
+    background: 'linear-gradient(0deg, rgba(229, 69, 69, 0.20) 0%, rgba(229, 69, 69, 0.20) 100%), #23232B',
   },
 }));
 

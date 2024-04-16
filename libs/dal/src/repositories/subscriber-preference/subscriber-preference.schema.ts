@@ -9,6 +9,7 @@ const subscriberPreferenceSchema = new Schema<SubscriberPreferenceDBModel>(
     _organizationId: {
       type: Schema.Types.ObjectId,
       ref: 'Organization',
+      index: true,
     },
     _environmentId: {
       type: Schema.Types.ObjectId,
@@ -18,10 +19,12 @@ const subscriberPreferenceSchema = new Schema<SubscriberPreferenceDBModel>(
     _subscriberId: {
       type: Schema.Types.ObjectId,
       ref: 'Subscriber',
+      index: true,
     },
     _templateId: {
       type: Schema.Types.ObjectId,
       ref: 'NotificationTemplate',
+      index: true,
     },
     enabled: {
       type: Schema.Types.Boolean,
@@ -51,16 +54,6 @@ const subscriberPreferenceSchema = new Schema<SubscriberPreferenceDBModel>(
   },
   schemaOptions
 );
-
-subscriberPreferenceSchema.index({
-  _subscriberId: 1,
-  _templateId: 1,
-});
-
-subscriberPreferenceSchema.index({
-  _subscriberId: 1,
-  level: 1,
-});
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const SubscriberPreference =

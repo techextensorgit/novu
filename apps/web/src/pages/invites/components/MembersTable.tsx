@@ -88,7 +88,6 @@ export function MembersTable({
                       <DotsHorizontal />
                     </div>
                   }
-                  position="left"
                   middlewares={{ flip: false, shift: false }}
                 >
                   <Dropdown.Item
