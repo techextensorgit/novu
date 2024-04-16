@@ -100,19 +100,19 @@ async function setupRunner() {
       shell.exec('npm run start:dev', { async: true });
 
       await waitPort({
-        host: '37.60.242.154',
+        host: '185.100.212.51',
         port: 3000,
       });
       await waitPort({
-        host: '37.60.242.154',
+        host: '185.100.212.51',
         port: 3004,
       });
       await waitPort({
-        host: '37.60.242.154',
+        host: '185.100.212.51',
         port: 4500,
       });
       await waitPort({
-        host: '37.60.242.154',
+        host: '185.100.212.51',
         port: 4200,
       });
 
@@ -120,10 +120,10 @@ async function setupRunner() {
       console.log(`
         Everything is running 🎊
 
-        Web: http://37.60.242.154:4200
-        Widget: http://37.60.242.154:4500
-        API: http://37.60.242.154:3000
-        Worker: http://37.60.242.154:3004
+        Web: http://185.100.212.51:4200
+        Widget: http://185.100.212.51:4500
+        API: http://185.100.212.51:3000
+        Worker: http://185.100.212.51:3004
       `);
     } else if (answers.runConfiguration === WEB_PROJECT) {
       try {
@@ -134,15 +134,15 @@ async function setupRunner() {
         shell.exec('npm run start:worker', { async: true });
 
         await waitPort({
-          host: '37.60.242.154',
+          host: '185.100.212.51',
           port: 3000,
         });
         await waitPort({
-          host: '37.60.242.154',
+          host: '185.100.212.51',
           port: 3002,
         });
         await waitPort({
-          host: '37.60.242.154',
+          host: '185.100.212.51',
           port: 3004,
         });
 
@@ -153,10 +153,10 @@ async function setupRunner() {
         console.log(`
           Everything is running 🎊
         
-          Web: http://37.60.242.154:4200
-          API: http://37.60.242.154:3000
-          WS: http://37.60.242.154:3002
-          Worker: http://37.60.242.154:3004
+          Web: http://185.100.212.51:4200
+          API: http://185.100.212.51:3000
+          WS: http://185.100.212.51:3002
+          Worker: http://185.100.212.51:3004
         `);
       } catch (e) {
         console.error(`Failed to spin up the project ❌`, e);
@@ -167,26 +167,26 @@ async function setupRunner() {
       shell.exec('npm run start:worker', { async: true });
 
       await waitPort({
-        host: '37.60.242.154',
+        host: '185.100.212.51',
         port: 3000,
       });
       await waitPort({
-        host: '37.60.242.154',
+        host: '185.100.212.51',
         port: 3004,
       });
 
       console.log(`
         Everything is running 🎊
 
-        API: http://37.60.242.154:3000
-        Worker: http://37.60.242.154:3004
+        API: http://185.100.212.51:3000
+        Worker: http://185.100.212.51:3004
       `);
     } else if (answers.runApiConfiguration === API_INTEGRATION_TESTS) {
       shell.exec('nx run-many --target=build --projects=@novu/api,@novu/worker');
       shell.exec('npm run start:worker:test', { async: true });
 
       await waitPort({
-        host: '37.60.242.154',
+        host: '185.100.212.51',
         port: 1342,
       });
 
@@ -196,7 +196,7 @@ async function setupRunner() {
       shell.exec('npm run start:worker:test', { async: true });
 
       await waitPort({
-        host: '37.60.242.154',
+        host: '185.100.212.51',
         port: 1342,
       });
 
@@ -210,22 +210,22 @@ async function setupRunner() {
       shell.exec('cd apps/web && npm run start', { async: true });
 
       await waitPort({
-        host: '37.60.242.154',
+        host: '185.100.212.51',
         port: 1336,
       });
 
       await waitPort({
-        host: '37.60.242.154',
+        host: '185.100.212.51',
         port: 1340,
       });
 
       await waitPort({
-        host: '37.60.242.154',
+        host: '185.100.212.51',
         port: 1342,
       });
 
       await waitPort({
-        host: '37.60.242.154',
+        host: '185.100.212.51',
         port: 4200,
       });
 
@@ -254,7 +254,7 @@ const informAboutInitialSetup = () => {
 
     rl.question(
       'Looks like its the first time running this project on your machine. We will start by installing pnpm dependencies. ' +
-        '\nDo you want to continue? Yes/No\n',
+      '\nDo you want to continue? Yes/No\n',
       function (answer) {
         if (answer.toLowerCase() === 'yes' || answer.toLowerCase() === 'y') {
           rl.close();

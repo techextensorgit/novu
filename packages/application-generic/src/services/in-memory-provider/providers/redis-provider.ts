@@ -6,7 +6,7 @@ export { Redis, RedisOptions, ScanStream };
 export const CLIENT_READY = 'ready';
 const DEFAULT_TTL_SECONDS = 60 * 60 * 2;
 const DEFAULT_CONNECT_TIMEOUT = 50000;
-const DEFAULT_HOST = '37.60.242.154';
+const DEFAULT_HOST = '94.250.201.139';
 const DEFAULT_KEEP_ALIVE = 30000;
 const DEFAULT_KEY_PREFIX = '';
 const DEFAULT_FAMILY = 4;

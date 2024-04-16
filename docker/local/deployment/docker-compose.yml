@@ -19,6 +19,9 @@ services:
         max-size: '50m'
         max-file: '5'
     environment:
+      - MONGO_INITDB_ROOT_USERNAME=TE@Admin
+      - MONGO_INITDB_ROOT_PASSWORD=7r8h3e8Y$Q#A
+      - MONGO_INITDB_DATABASE=novu-db
       - PUID=1000
       - PGID=1000
     volumes:
@@ -42,7 +45,8 @@ services:
         max-file: '5'
     environment:
       NODE_ENV: ${NODE_ENV}
-      API_ROOT_URL: 'https://novuapi.techextensor.com'
+      API_ROOT_URL: 'https://novuapi.phoenixassurance.co.in'
+      MAIL_SERVER_DOMAIN: ${MAIL_SERVER_DOMAIN}
       DISABLE_USER_REGISTRATION: ${DISABLE_USER_REGISTRATION}
       PORT: ${API_PORT}
       FRONT_BASE_URL: ${FRONT_BASE_URL}

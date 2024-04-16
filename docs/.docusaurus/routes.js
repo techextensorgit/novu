@@ -4,17 +4,17 @@ import ComponentCreator from '@docusaurus/ComponentCreator';
 export default [
   {
     path: '/markdown-page',
-    component: ComponentCreator('/markdown-page', 'e9e'),
+    component: ComponentCreator('/markdown-page', 'aa6'),
     exact: true
   },
   {
     path: '/search',
-    component: ComponentCreator('/search', '0e9'),
+    component: ComponentCreator('/search', '11c'),
     exact: true
   },
   {
     path: '/',
-    component: ComponentCreator('/', 'eaa'),
+    component: ComponentCreator('/', '87d'),
     routes: [
       {
         path: '/',

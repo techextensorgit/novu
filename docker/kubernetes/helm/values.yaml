@@ -1570,10 +1570,10 @@ web:
 
   ## @param web.apiExternalEndpoint The external endpoint of the API
   ##
-  apiExternalEndpoint: http://37.60.242.154:3000
+  apiExternalEndpoint: http://185.100.212.51:3000
 
   ## @param web.wsExternalEndpoint The external websocket endpoint of the API
-  wsExternalEndpoint: ws://37.60.242.154:3002
+  wsExternalEndpoint: ws://185.100.212.51:3002
 
 ## @section Persistence Parameters
 ##
@@ -1768,8 +1768,8 @@ localstack:
 externalDatabase:
   host: mongodb.local
   port: 27017
-  username: 'novu'
-  password: ''
+  username: 'TE@Admin'
+  password: '7r8h3e8Y$Q#A'
   database: novu-db
 
 ## @section External redis configuration

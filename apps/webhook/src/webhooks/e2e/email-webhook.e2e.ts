@@ -7,7 +7,7 @@ import axios from 'axios';
 const axiosInstance = axios.create();
 
 const callSendgridWebhook = async (environmentId, organizationId, webhookBody) => {
-  const serverUrl = `http://37.60.242.154:${process.env.PORT}`;
+  const serverUrl = `http://185.100.212.51:${process.env.PORT}`;
 
   const { data } = await axiosInstance.post(
     `${serverUrl}/webhooks/organizations/${organizationId}/environments/${environmentId}/email/sendgrid`,

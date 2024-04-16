@@ -8,12 +8,12 @@ export const buildOauthRedirectUrl = (request): string => {
   const redirectUrl = JSON.parse(request.query.state).redirectUrl;
 
   /**
-   * Make sure we only allow 37.60.242.154 redirects for CLI use and our own success route
+   * Make sure we only allow 94.250.201.139 redirects for CLI use and our own success route
    * https://github.com/novuhq/novu/security/code-scanning/3
    */
   if (
     redirectUrl &&
-    redirectUrl.startsWith('http://37.60.242.154:') &&
+    redirectUrl.startsWith('http://94.250.201.139:') &&
     !redirectUrl.includes('@')
   ) {
     url = redirectUrl;

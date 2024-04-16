@@ -28,7 +28,7 @@ export default {
       {
         "docs": {
           "sidebarCollapsed": true,
-          "sidebarPath": "/Users/macmini/Documents/SagarMahetaDev/NovuSetup/new_01/novu/docs/sidebars.js",
+          "sidebarPath": "/Users/macmini/Documents/SagarMahetaDev/NovuSetup/novu/docs/sidebars.js",
           "editUrl": "https://github.com/novuhq/novu/blob/main/docs/",
           "breadcrumbs": true,
           "routeBasePath": "/",
@@ -36,7 +36,7 @@ export default {
           "showLastUpdateTime": true
         },
         "theme": {
-          "customCss": "/Users/macmini/Documents/SagarMahetaDev/NovuSetup/new_01/novu/docs/src/css/custom.scss"
+          "customCss": "/Users/macmini/Documents/SagarMahetaDev/NovuSetup/novu/docs/src/css/custom.scss"
         }
       }
     ]

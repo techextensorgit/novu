@@ -54,7 +54,7 @@ describe('Remove all messages - /widgets/messages (DELETE)', function () {
     });
 
     expect(messagesBefore.length).to.equal(3);
-    await axios.delete(`http://37.60.242.154:${process.env.PORT}/v1/widgets/messages`, {
+    await axios.delete(`http://185.100.212.51:${process.env.PORT}/v1/widgets/messages`, {
       headers: {
         Authorization: `Bearer ${subscriberToken}`,
       },
@@ -91,7 +91,7 @@ describe('Remove all messages - /widgets/messages (DELETE)', function () {
 
     expect(messagesBefore.length).to.equal(5);
 
-    await axios.delete(`http://37.60.242.154:${process.env.PORT}/v1/widgets/messages?feedId=${_feedId}`, {
+    await axios.delete(`http://185.100.212.51:${process.env.PORT}/v1/widgets/messages?feedId=${_feedId}`, {
       headers: {
         Authorization: `Bearer ${subscriberToken}`,
       },

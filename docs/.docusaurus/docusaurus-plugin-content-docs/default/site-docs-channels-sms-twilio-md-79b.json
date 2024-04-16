@@ -11,9 +11,6 @@
   "editUrl": "https://github.com/novuhq/novu/blob/main/docs/docs/channels/sms/twilio.md",
   "tags": [],
   "version": "current",
-  "lastUpdatedBy": "Pawan Jain",
-  "lastUpdatedAt": 1679483135,
-  "formattedLastUpdatedAt": "Mar 22, 2023",
   "sidebarPosition": 1,
   "frontMatter": {
     "sidebar_label": "Twilio",

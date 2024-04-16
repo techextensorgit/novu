@@ -9,7 +9,7 @@ runs:
     - name: Get swagger json as file
       shell: bash
       run: |
-        curl -o swagger.json http://37.60.242.154:1336/api-json  
+        curl -o swagger.json http://94.250.201.139:1336/api-json  
 
     - uses: char0n/swagger-editor-validate@v1
       with:

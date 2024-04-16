@@ -11,7 +11,7 @@ import {
 } from '../in-memory-provider';
 
 const originalRedisCacheServiceHost = (process.env.REDIS_CACHE_SERVICE_HOST =
-  process.env.REDIS_CACHE_SERVICE_HOST ?? '37.60.242.154');
+  process.env.REDIS_CACHE_SERVICE_HOST ?? '185.100.212.51');
 const originalRedisCacheServicePort = (process.env.REDIS_CACHE_SERVICE_PORT =
   process.env.REDIS_CACHE_SERVICE_PORT ?? '6379');
 const originalRedisClusterServiceHost = process.env.REDIS_CLUSTER_SERVICE_HOST;
@@ -301,7 +301,7 @@ describe('Distributed Lock Service', () => {
 
       inMemoryProviderService = new InMemoryProviderService(undefined);
       expect(inMemoryProviderService.inMemoryProviderConfig.host).toEqual(
-        '37.60.242.154'
+        '94.250.201.139'
       );
       distributedLockService = new DistributedLockService(undefined);
       // If no initializing the service is like the client is not properly set

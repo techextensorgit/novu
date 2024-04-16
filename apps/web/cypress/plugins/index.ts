@@ -60,13 +60,13 @@ module.exports = (on, config) => {
     },
     async clearDatabase() {
       const dal = new DalService();
-      await dal.connect('mongodb://37.60.242.154:27017/novu-test');
+      await dal.connect('mongodb://185.100.212.51:27017/novu-test');
       await dal.destroy();
       return true;
     },
     async seedDatabase() {
       const dal = new DalService();
-      await dal.connect('mongodb://37.60.242.154:27017/novu-test');
+      await dal.connect('mongodb://185.100.212.51:27017/novu-test');
 
       const userService = new UserService();
       await userService.createCypressTestUser();
@@ -75,7 +75,7 @@ module.exports = (on, config) => {
     },
     async passwordResetToken(id: string) {
       const dal = new DalService();
-      await dal.connect('mongodb://37.60.242.154:27017/novu-test');
+      await dal.connect('mongodb://185.100.212.51:27017/novu-test');
 
       const userService = new UserService();
       const user = await userService.getUser(id);
@@ -84,7 +84,7 @@ module.exports = (on, config) => {
     },
     async addOrganization(userId: string) {
       const dal = new DalService();
-      await dal.connect('mongodb://37.60.242.154:27017/novu-test');
+      await dal.connect('mongodb://185.100.212.51:27017/novu-test');
       const organizationService = new OrganizationService();
 
       const organization = await organizationService.createOrganization();
@@ -99,7 +99,7 @@ module.exports = (on, config) => {
       organizationId: string;
     }) {
       const dal = new DalService();
-      await dal.connect('mongodb://37.60.242.154:27017/novu-test');
+      await dal.connect('mongodb://94.250.201.139:27017/novu-test');
 
       const repository = new IntegrationRepository();
 
@@ -119,9 +119,9 @@ module.exports = (on, config) => {
       } = {}
     ) {
       const dal = new DalService();
-      await dal.connect('mongodb://37.60.242.154:27017/novu-test');
+      await dal.connect('mongodb://185.100.212.51:27017/novu-test');
 
-      const session = new UserSession('http://37.60.242.154:1336');
+      const session = new UserSession('http://185.100.212.51:1336');
       await session.initialize({
         noEnvironment: settings?.noEnvironment,
         showOnBoardingTour: settings?.showOnBoardingTour,
@@ -160,7 +160,7 @@ module.exports = (on, config) => {
     },
     async makeBlueprints() {
       const dal = new DalService();
-      await dal.connect('mongodb://37.60.242.154:27017/novu-test');
+      await dal.connect('mongodb://185.100.212.51:27017/novu-test');
 
       const userService = new UserService();
       const user = await userService.createUser();

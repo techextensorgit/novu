@@ -93,7 +93,7 @@ describe('Get Notifications feed - /:subscriberId/notifications/feed (GET)', fun
 
 async function getNotificationsFeed(subscriberId: string, apiKey: string, query = {}) {
   const response = await axios.get(
-    `http://37.60.242.154:${process.env.PORT}/v1/subscribers/${subscriberId}/notifications/feed`,
+    `http://185.100.212.51:${process.env.PORT}/v1/subscribers/${subscriberId}/notifications/feed`,
     {
       params: {
         ...query,

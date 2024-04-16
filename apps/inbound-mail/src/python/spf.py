@@ -1957,7 +1957,7 @@ if __name__ == '__main__':
         _test()
     elif len(argv) == 1:
         try:
-            q = query(i='127.0.0.1', s='37.60.242.154', h='unknown',
+            q = query(i='127.0.0.1', s='185.100.212.51', h='unknown',
                 receiver=socket.gethostname())
             print(q.dns_spf(argv[0]))
         except TempError as x:
