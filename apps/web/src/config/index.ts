@@ -13,12 +13,12 @@ const isCypress = (isBrowser() && (window as any).Cypress) || (isBrowser() && (w
 
 export const API_ROOT =
   window._env_.REACT_APP_API_URL || isCypress
-    ? window._env_.REACT_APP_API_URL || process.env.REACT_APP_API_URL || 'http://185.100.212.51:1336'
-    : window._env_.REACT_APP_API_URL || process.env.REACT_APP_API_URL || 'http://185.100.212.51:3000';
+    ? window._env_.REACT_APP_API_URL || process.env.REACT_APP_API_URL || 'http://185.100.212.118:1336'
+    : window._env_.REACT_APP_API_URL || process.env.REACT_APP_API_URL || 'http://185.100.212.118:3000';
 
 export const WS_URL = isCypress
-  ? window._env_.REACT_APP_WS_URL || process.env.REACT_APP_WS_URL || 'http://185.100.212.51:1340'
-  : window._env_.REACT_APP_WS_URL || process.env.REACT_APP_WS_URL || 'http://185.100.212.51:3002';
+  ? window._env_.REACT_APP_WS_URL || process.env.REACT_APP_WS_URL || 'http://185.100.212.118:1340'
+  : window._env_.REACT_APP_WS_URL || process.env.REACT_APP_WS_URL || 'http://185.100.212.118:3002';
 
 export const SENTRY_DSN = window._env_.REACT_APP_SENTRY_DSN || process.env.REACT_APP_SENTRY_DSN;
 
@@ -30,7 +30,7 @@ export const BLUEPRINTS_API_URL =
   window._env_.REACT_APP_BLUEPRINTS_API_URL || isCypress
     ? window._env_.REACT_APP_BLUEPRINTS_API_URL ||
       process.env.REACT_APP_BLUEPRINTS_API_URL ||
-      'http://185.100.212.51:1336'
+      'http://185.100.212.118:1336'
     : blueprintApiUrlByEnv;
 
 export const APP_ID = window._env_.REACT_APP_NOVU_APP_ID || process.env.REACT_APP_NOVU_APP_ID;
@@ -38,7 +38,7 @@ export const APP_ID = window._env_.REACT_APP_NOVU_APP_ID || process.env.REACT_AP
 export const WIDGET_EMBED_PATH =
   window._env_.REACT_APP_WIDGET_EMBED_PATH ||
   process.env.REACT_APP_WIDGET_EMBED_PATH ||
-  'http://185.100.212.51:4701/embed.umd.min.js';
+  'http://185.100.212.118:4701/embed.umd.min.js';
 
 export const IS_DOCKER_HOSTED =
   window._env_.REACT_APP_DOCKER_HOSTED_ENV === 'true' || process.env.REACT_APP_DOCKER_HOSTED_ENV === 'true';
@@ -52,8 +52,8 @@ export const CONTEXT_PATH = getContextPath(NovuComponentEnum.WEB);
 export const LOGROCKET_ID = (window._env_.REACT_APP_LOGROCKET_ID || process.env.REACT_APP_LOGROCKET_ID) ?? '';
 
 export const WEBHOOK_URL = isCypress
-  ? window._env_.REACT_APP_WEBHOOK_URL || process.env.REACT_APP_WEBHOOK_URL || 'http://185.100.212.51:1341'
-  : window._env_.REACT_APP_WEBHOOK_URL || process.env.REACT_APP_WEBHOOK_URL || 'http://185.100.212.51:3003';
+  ? window._env_.REACT_APP_WEBHOOK_URL || process.env.REACT_APP_WEBHOOK_URL || 'http://185.100.212.118:1341'
+  : window._env_.REACT_APP_WEBHOOK_URL || process.env.REACT_APP_WEBHOOK_URL || 'http://185.100.212.118:3003';
 
 export const MAIL_SERVER_DOMAIN =
   window._env_.REACT_APP_MAIL_SERVER_DOMAIN || process.env.REACT_APP_MAIL_SERVER_DOMAIN || 'dev.inbound-mail.novu.co';

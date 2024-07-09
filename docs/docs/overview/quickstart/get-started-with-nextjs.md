@@ -139,7 +139,7 @@ We’ve exported this function so that we can use this in the route that we’ll
 
 Now, create a `pages` directory in the root of the project and create a file in it. Give it a name and remember that it will automatically become a route.
 
-In our case, we’re creating a directory called `api` in our pages directory, and inside `api` we’re creating a file called `sub.js`. In this case, our path will be: `http://185.100.212.51:3000/api/sub`
+In our case, we’re creating a directory called `api` in our pages directory, and inside `api` we’re creating a file called `sub.js`. In this case, our path will be: `http://185.100.212.118:3000/api/sub`
 
 In this file, we simply need to define a function that will handle a POST request to our API. It’ll extract the ‘description’ and ‘email’ variables from the ‘request’ body that will be generated every time we make a POST request and call the function to send an email notification with those plugged in.
 
@@ -170,7 +170,7 @@ We can now start our local server and test our backend app on Postman. To start 
 npm run dev
 ```
 
-Now, open Postman and send a POST request to the route you created earlier. The exact route depends on the file structure you have followed in the pages directory, but in our case, it is - `http://185.100.212.51:3000/api/sub`
+Now, open Postman and send a POST request to the route you created earlier. The exact route depends on the file structure you have followed in the pages directory, but in our case, it is - `http://185.100.212.118:3000/api/sub`
 
 Also, make sure that in the body, you’re passing the two variables we’re extracting above, namely - email and description, as follows:
 ![passing the variables email and description in the body in Postman](https://res.cloudinary.com/dxc6bnman/image/upload/v1686777937/guides/Screenshot_2023-05-23_at_3.17.12_AM_s8itiv.png)
