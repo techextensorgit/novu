@@ -97,8 +97,8 @@ fabric.properties
 # Module directory
 .terraform/
 
-.env
-docker/.env
+# .env
+# docker/.env
 .vercel
 
 .pnpm-store/
