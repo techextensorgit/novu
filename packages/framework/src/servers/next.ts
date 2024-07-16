@@ -86,7 +86,7 @@ export const serve = (
              * `req.url` here should may be the full URL, including query string.
              * There are some caveats, however, where Next.js will obfuscate
              * the host. For example, in the case of `host.docker.internal`,
-             * Next.js will instead set the host here to `localhost`.
+             * Next.js will instead set the host here to `37.60.242.154`.
              *
              * To avoid this, we'll try to parse the URL from `req.url`, but
              * also use the `host` header if it's available.

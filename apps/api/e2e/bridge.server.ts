@@ -15,7 +15,7 @@ export class BridgeServer {
   public client = new Client({ strictAuthentication: false });
 
   get serverPath() {
-    return `http://localhost:${this.port}`;
+    return `http://37.60.242.154:${this.port}`;
   }
 
   async start(options: ServerStartOptions) {

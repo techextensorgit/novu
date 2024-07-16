@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 dotenv.config();
 // CLI Server
-export const SERVER_HOST = 'localhost';
+export const SERVER_HOST = '37.60.242.154';
 
 // segment analytics
 export const ANALYTICS_ENABLED = process.env.ANALYTICS_ENABLED === 'false' ? false : true;

@@ -16,7 +16,7 @@ pnpm dev
 bun dev
 ```
 
-By default, the [Next.js](https://nextjs.org/) server will start and your state can be synchronized with Novu Cloud via the Bridge Endpoint (default is `/api/novu`). Your server will by default run on [http://localhost:4000](http://localhost:4000).
+By default, the [Next.js](https://nextjs.org/) server will start and your state can be synchronized with Novu Cloud via the Bridge Endpoint (default is `/api/novu`). Your server will by default run on [http://37.60.242.154:4000](http://37.60.242.154:4000).
 
 ## Your first workflow
 

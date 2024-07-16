@@ -74,7 +74,7 @@ export const NovuWelcomeEmail = ({
                   {component.type === "button" ? (
                     <Column className={`text-${component.align}`}>
                       <Button
-                        href={"http://localhost:2022"}
+                        href={"http://37.60.242.154:2022"}
                         className="bg-[#000000] rounded text-white text-[12px] font-semibold no-underline text-center px-5 py-3"
                       >
                         {component.text}
