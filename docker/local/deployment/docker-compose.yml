@@ -9,8 +9,11 @@ services:
       driver: 'none'
   mongodb:
     image: mongo
-    container_name: mongodb
+    container_name: novu-mongodb
     restart: unless-stopped
+    env_file:
+      - mongo.env
+    command: [ --auth ]
     logging:
       driver: 'json-file'
       options:
@@ -19,10 +22,13 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_ROOT_USERNAME=TE@Admin
+      - MONGO_INITDB_ROOT_PASSWORD=7r8h3e8Y$Q#A
+      - MONGO_INITDB_DATABASE=novu-db
     volumes:
-      - mongodb:/data/db
+      - mongodb:/data/db      
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./mongod.conf.orig:/etc/mongod.conf
     ports:
       - 27017:27017
   api:
@@ -39,7 +45,7 @@ services:
         max-file: '5'
     environment:
       NODE_ENV: ${NODE_ENV}
-      API_ROOT_URL: ${API_ROOT_URL}
+      API_ROOT_URL: 'https://novuapi.techextensor.com'
       DISABLE_USER_REGISTRATION: ${DISABLE_USER_REGISTRATION}
       PORT: ${API_PORT}
       FRONT_BASE_URL: ${FRONT_BASE_URL}
