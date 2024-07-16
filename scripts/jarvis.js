@@ -100,19 +100,19 @@ async function setupRunner() {
       shell.exec('npm run start:dev', { async: true });
 
       await waitPort({
-        host: 'localhost',
+        host: '37.60.242.154',
         port: 3000,
       });
       await waitPort({
-        host: 'localhost',
+        host: '37.60.242.154',
         port: 3004,
       });
       await waitPort({
-        host: 'localhost',
+        host: '37.60.242.154',
         port: 4500,
       });
       await waitPort({
-        host: 'localhost',
+        host: '37.60.242.154',
         port: 4200,
       });
 
@@ -134,15 +134,15 @@ async function setupRunner() {
         shell.exec('npm run start:worker', { async: true });
 
         await waitPort({
-          host: 'localhost',
+          host: '37.60.242.154',
           port: 3000,
         });
         await waitPort({
-          host: 'localhost',
+          host: '37.60.242.154',
           port: 3002,
         });
         await waitPort({
-          host: 'localhost',
+          host: '37.60.242.154',
           port: 3004,
         });
 
@@ -167,11 +167,11 @@ async function setupRunner() {
       shell.exec('npm run start:worker', { async: true });
 
       await waitPort({
-        host: 'localhost',
+        host: '37.60.242.154',
         port: 3000,
       });
       await waitPort({
-        host: 'localhost',
+        host: '37.60.242.154',
         port: 3004,
       });
 
@@ -186,7 +186,7 @@ async function setupRunner() {
       shell.exec('npm run start:worker:test', { async: true });
 
       await waitPort({
-        host: 'localhost',
+        host: '37.60.242.154',
         port: 1342,
       });
 
@@ -196,7 +196,7 @@ async function setupRunner() {
       shell.exec('npm run start:worker:test', { async: true });
 
       await waitPort({
-        host: 'localhost',
+        host: '37.60.242.154',
         port: 1342,
       });
 
@@ -210,22 +210,22 @@ async function setupRunner() {
       shell.exec('cd apps/web && npm run start', { async: true });
 
       await waitPort({
-        host: 'localhost',
+        host: '37.60.242.154',
         port: 1336,
       });
 
       await waitPort({
-        host: 'localhost',
+        host: '37.60.242.154',
         port: 1340,
       });
 
       await waitPort({
-        host: 'localhost',
+        host: '37.60.242.154',
         port: 1342,
       });
 
       await waitPort({
-        host: 'localhost',
+        host: '37.60.242.154',
         port: 4200,
       });
 
@@ -254,7 +254,7 @@ const informAboutInitialSetup = () => {
 
     rl.question(
       'Looks like its the first time running this project on your machine. We will start by installing pnpm dependencies. ' +
-        '\nDo you want to continue? Yes/No\n',
+      '\nDo you want to continue? Yes/No\n',
       function (answer) {
         if (answer.toLowerCase() === 'yes' || answer.toLowerCase() === 'y') {
           rl.close();
