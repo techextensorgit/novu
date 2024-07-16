@@ -8,7 +8,7 @@ on:
         required: true
         type: string
       react_app_api_url:
-        required: true
+        required: false
         type: string
       react_app_ws_url:
         required: true
@@ -45,7 +45,6 @@ on:
         required: true
         type: string
 
-
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   reusable_web_deploy:
@@ -58,7 +57,7 @@ jobs:
       deployments: write
       id-token: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Checkout with submodules
         with:
           submodules: true
@@ -85,7 +84,9 @@ jobs:
           echo REACT_APP_MAIL_SERVER_DOMAIN=${{ inputs.react_app_mail_server_domain }} >> .env
           echo REACT_APP_LAUNCH_DARKLY_CLIENT_SIDE_ID=${{ secrets.LAUNCH_DARKLY_CLIENT_SIDE_ID }} >> .env
           echo REACT_APP_HUBSPOT_EMBED=${{ inputs.react_app_hubspot_embed }} >> .env
-
+          echo REACT_APP_STRIPE_CLIENT_KEY=${{ secrets.STRIPE_CLIENT_KEY }} >> .env
+          echo REACT_APP_NOVU_GTM_ID=${{ secrets.REACT_APP_NOVU_GTM_ID }} >> .env
+          echo REACT_APP_MIXPANEL_KEY=${{ secrets.MIXPANEL_TOKEN }} >> .env
       - name: Envsetup
         working-directory: apps/web
         run: npm run envsetup

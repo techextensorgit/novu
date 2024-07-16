@@ -1,13 +1,14 @@
-import { UserRepository } from '@novu/dal';
+import { CommunityUserRepository } from '@novu/dal';
 import { UserSession } from '@novu/testing';
 import { v4 as uuidv4 } from 'uuid';
 import { expect } from 'chai';
 import { stub, SinonStubbedMember } from 'sinon';
 import { subDays, subMinutes } from 'date-fns';
+import { PasswordResetFlowEnum } from '@novu/shared';
 
-describe('Password reset - /auth/reset (POST)', async () => {
+describe('Password reset - /auth/reset (POST) @skip-in-ee', async () => {
   let session: UserSession;
-  const userRepository = new UserRepository();
+  const userRepository = new CommunityUserRepository();
 
   const requestResetToken = async (payload) => {
     let plainToken: string;
@@ -15,11 +16,11 @@ describe('Password reset - /auth/reset (POST)', async () => {
      * Wrapper for method to obtain plain reset token before hashing.
      * Stub is created on Prototype because API and tests use different UserRepository instances.
      */
-    stub(UserRepository.prototype, 'updatePasswordResetToken').callsFake((...args) => {
+    stub(CommunityUserRepository.prototype, 'updatePasswordResetToken').callsFake((...args) => {
       plainToken = args[1];
       (
-        UserRepository.prototype.updatePasswordResetToken as SinonStubbedMember<
-          typeof UserRepository.prototype.updatePasswordResetToken
+        CommunityUserRepository.prototype.updatePasswordResetToken as SinonStubbedMember<
+          typeof CommunityUserRepository.prototype.updatePasswordResetToken
         >
       ).restore();
 
@@ -37,7 +38,7 @@ describe('Password reset - /auth/reset (POST)', async () => {
     await session.initialize();
   });
 
-  it('should request a password reset for existing user', async () => {
+  it('should request a password reset for existing user with no query param', async () => {
     const { body } = await session.testAgent.post('/v1/auth/reset/request').send({
       email: session.user.email,
     });
@@ -47,6 +48,22 @@ describe('Password reset - /auth/reset (POST)', async () => {
 
     expect(found.resetToken).to.be.ok;
   });
+
+  Object.values(PasswordResetFlowEnum)
+    .map(String)
+    .forEach((src) => {
+      it(`should request a password reset for existing user with a src query param specified: ${src}`, async () => {
+        const url = `/v1/auth/reset/request?src=${src}`;
+        const { body } = await session.testAgent.post(url).send({
+          email: session.user.email,
+        });
+
+        expect(body.data.success).to.equal(true);
+        const found = await userRepository.findById(session.user._id);
+
+        expect(found.resetToken).to.be.ok;
+      });
+    });
 
   it('should request a password reset for existing user with uppercase email', async () => {
     const { body } = await session.testAgent.post('/v1/auth/reset/request').send({

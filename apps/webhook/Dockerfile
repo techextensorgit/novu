@@ -3,7 +3,7 @@ RUN apk add g++ make py3-pip
 ENV NX_DAEMON=false
 
 RUN npm i pm2 -g
-RUN npm --no-update-notifier --no-fund --global install pnpm@8.9.0
+RUN npm --no-update-notifier --no-fund --global install pnpm@9.1.4
 RUN pnpm --version
 
 USER 1000
@@ -28,10 +28,10 @@ RUN NODE_ENV=production pnpm build:webhook
 
 WORKDIR /usr/src/app/apps/webhook
 
-RUN cp src/.example.env dist/src/.env
-RUN cp src/.env.test dist/src/.env.test
-RUN cp src/.env.development dist/src/.env.development
-RUN cp src/.env.production dist/src/.env.production
+RUN cp src/.example.env dist/.env
+RUN cp src/.env.test dist/.env.test
+RUN cp src/.env.development dist/.env.development
+RUN cp src/.env.production dist/.env.production
 
 WORKDIR /usr/src/app
 

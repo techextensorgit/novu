@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import * as Sentry from '@sentry/node';
+import { addBreadcrumb } from '@sentry/node';
 import { ModuleRef } from '@nestjs/core';
 
 import {
@@ -16,6 +16,8 @@ import {
   ChatProviderIdEnum,
   ExecutionDetailsSourceEnum,
   ExecutionDetailsStatusEnum,
+  ProvidersIdEnum,
+  ITenantDefine,
 } from '@novu/shared';
 import {
   InstrumentUsecase,
@@ -28,6 +30,12 @@ import {
   SelectVariant,
   ExecutionLogRoute,
   ExecutionLogRouteCommand,
+  IProviderOverride,
+  IProvidersOverride,
+  ExecuteOutput,
+  IBridgeChannelResponse,
+  IBlock,
+  SelectIntegrationCommand,
 } from '@novu/application-generic';
 
 import { CreateLog } from '../../../shared/logs';
@@ -66,14 +74,18 @@ export class SendMessageChat extends SendMessageBase {
 
   @InstrumentUsecase()
   public async execute(command: SendMessageCommand) {
-    Sentry.addBreadcrumb({
+    addBreadcrumb({
       message: 'Sending Chat',
     });
     const step: NotificationStepEntity = command.step;
     if (!step?.template) throw new PlatformException('Chat channel template not found');
 
     const { subscriber } = command.compileContext;
-    await this.initiateTranslations(command.environmentId, command.organizationId, subscriber.locale);
+    const i18nInstance = await this.initiateTranslations(
+      command.environmentId,
+      command.organizationId,
+      subscriber.locale
+    );
 
     const template = await this.processVariants(command);
 
@@ -84,12 +96,15 @@ export class SendMessageChat extends SendMessageBase {
     let content = '';
 
     try {
-      content = await this.compileTemplate.execute(
-        CompileTemplateCommand.create({
-          template: step.template.content as string,
-          data: this.getCompilePayload(command.compileContext),
-        })
-      );
+      if (!command.bridgeData) {
+        content = await this.compileTemplate.execute(
+          CompileTemplateCommand.create({
+            template: step.template.content as string,
+            data: this.getCompilePayload(command.compileContext),
+          }),
+          i18nInstance
+        );
+      }
     } catch (e) {
       await this.sendErrorHandlebars(command.job, e.message);
 
@@ -100,6 +115,14 @@ export class SendMessageChat extends SendMessageBase {
       subscriber.channels?.filter((chan) =>
         Object.values(ChatProviderIdEnum).includes(chan.providerId as ChatProviderIdEnum)
       ) || [];
+
+    const phone = subscriber.phone;
+    chatChannels.push({
+      providerId: ChatProviderIdEnum.WhatsAppBusiness,
+      credentials: {
+        phoneNumber: phone,
+      },
+    });
 
     if (chatChannels.length === 0) {
       await this.executionLogRoute.execute(
@@ -150,8 +173,18 @@ export class SendMessageChat extends SendMessageBase {
     chatChannel: NotificationStepEntity,
     content: string
   ) {
-    const integration = await this.getIntegration({
-      id: subscriberChannel._integrationId,
+    const getIntegrationParams: {
+      id?: string;
+      providerId?: ProvidersIdEnum;
+      identifier?: string;
+      organizationId: string;
+      environmentId: string;
+      channelType: ChannelTypeEnum;
+      userId: string;
+      filterData: {
+        tenant: ITenantDefine | undefined;
+      };
+    } = {
       organizationId: command.organizationId,
       environmentId: command.environmentId,
       providerId: subscriberChannel.providerId,
@@ -160,26 +193,48 @@ export class SendMessageChat extends SendMessageBase {
       filterData: {
         tenant: command.job.tenant,
       },
-    });
+    };
 
-    const chatWebhookUrl = command.payload.webhookUrl || subscriberChannel.credentials?.webhookUrl;
-    const channelSpecification = subscriberChannel.credentials?.channel;
-
-    if (!chatWebhookUrl) {
-      await this.executionLogRoute.execute(
-        ExecutionLogRouteCommand.create({
-          ...ExecutionLogRouteCommand.getDetailsFromJob(command.job),
-          detail: DetailEnum.CHAT_WEBHOOK_URL_MISSING,
-          source: ExecutionDetailsSourceEnum.INTERNAL,
-          status: ExecutionDetailsStatusEnum.FAILED,
-          isTest: false,
-          isRetry: false,
-          raw: JSON.stringify({
-            reason: `webhookUrl for integrationId: ${subscriberChannel?._integrationId} is missing`,
-          }),
-        })
-      );
+    /**
+     * Current a workaround as chat providers for whatsapp is more similar to sms than to our chat implementation
+     */
+    if (subscriberChannel.providerId !== ChatProviderIdEnum.WhatsAppBusiness) {
+      getIntegrationParams.id = subscriberChannel._integrationId;
     }
+
+    const integration = await this.getIntegration(getIntegrationParams);
+
+    if (subscriberChannel.providerId !== ChatProviderIdEnum.WhatsAppBusiness) {
+      if (!integration) {
+        await this.executionLogRoute.execute(
+          ExecutionLogRouteCommand.create({
+            ...ExecutionLogRouteCommand.getDetailsFromJob(command.job),
+            detail: DetailEnum.SUBSCRIBER_NO_ACTIVE_INTEGRATION,
+            source: ExecutionDetailsSourceEnum.INTERNAL,
+            status: ExecutionDetailsStatusEnum.FAILED,
+            isTest: false,
+            isRetry: false,
+            raw: JSON.stringify({
+              reason: `Integration with integrationId: ${subscriberChannel?._integrationId} is either deleted or not active`,
+            }),
+          })
+        );
+
+        return;
+      }
+    } else if (!integration) {
+      /**
+       * TODO: Need to handle a proper execution log error for this case
+       */
+      return;
+    }
+
+    const bridgeOverride = this.getBridgeOverride(command.bridgeData?.providers, integration);
+
+    const chatWebhookUrl =
+      bridgeOverride?.webhookUrl || command.payload.webhookUrl || subscriberChannel.credentials?.webhookUrl;
+    const phoneNumber = subscriberChannel.credentials?.phoneNumber;
+    const channelSpecification = subscriberChannel.credentials?.channel;
 
     const message: MessageEntity = await this.messageRepository.create({
       _notificationId: command.notificationId,
@@ -191,28 +246,12 @@ export class SendMessageChat extends SendMessageBase {
       channel: ChannelTypeEnum.CHAT,
       transactionId: command.transactionId,
       chatWebhookUrl: chatWebhookUrl,
+      phone: phoneNumber,
       content: this.storeContent() ? content : null,
       providerId: subscriberChannel.providerId,
       _jobId: command.jobId,
+      tags: command.tags,
     });
-
-    if (!integration) {
-      await this.executionLogRoute.execute(
-        ExecutionLogRouteCommand.create({
-          ...ExecutionLogRouteCommand.getDetailsFromJob(command.job),
-          detail: DetailEnum.SUBSCRIBER_NO_ACTIVE_INTEGRATION,
-          source: ExecutionDetailsSourceEnum.INTERNAL,
-          status: ExecutionDetailsStatusEnum.FAILED,
-          isTest: false,
-          isRetry: false,
-          raw: JSON.stringify({
-            reason: `Integration with integrationId: ${subscriberChannel?._integrationId} is either deleted or not active`,
-          }),
-        })
-      );
-
-      return;
-    }
 
     await this.sendSelectedIntegrationExecution(command.job, integration);
 
@@ -229,22 +268,64 @@ export class SendMessageChat extends SendMessageBase {
       })
     );
 
-    if (chatWebhookUrl && integration) {
-      await this.sendMessage(chatWebhookUrl, integration, content, message, command, channelSpecification);
+    if ((chatWebhookUrl && integration) || (phoneNumber && integration)) {
+      await this.sendMessage(chatWebhookUrl, integration, content, message, command, channelSpecification, phoneNumber);
 
       return;
     }
 
-    await this.sendErrors(chatWebhookUrl, integration, message, command);
+    await this.sendErrors(chatWebhookUrl, integration, message, command, phoneNumber);
+  }
+
+  private getBridgeOverride(
+    providersOverrides: IProvidersOverride | undefined,
+    integration: IntegrationEntity
+  ): IProviderOverride | null {
+    if (!providersOverrides) {
+      return null;
+    }
+
+    const providerExists = Object.keys(providersOverrides).includes(integration.providerId);
+
+    if (!providerExists) {
+      return null;
+    }
+
+    return providersOverrides[integration.providerId];
   }
 
   private async sendErrors(
     chatWebhookUrl: string,
     integration: IntegrationEntity,
     message: MessageEntity,
-    command: SendMessageCommand
+    command: SendMessageCommand,
+    phoneNumber?: string
   ) {
-    if (!chatWebhookUrl) {
+    if (integration?.providerId === ChatProviderIdEnum.WhatsAppBusiness && !phoneNumber) {
+      await this.messageRepository.updateMessageStatus(
+        command.environmentId,
+        message._id,
+        'warning',
+        null,
+        'no_subscriber_chat_phone_number',
+        'Subscriber does not have phone number specified'
+      );
+
+      await this.executionLogRoute.execute(
+        ExecutionLogRouteCommand.create({
+          ...ExecutionLogRouteCommand.getDetailsFromJob(command.job),
+          messageId: message._id,
+          detail: DetailEnum.CHAT_MISSING_PHONE_NUMBER,
+          source: ExecutionDetailsSourceEnum.INTERNAL,
+          status: ExecutionDetailsStatusEnum.FAILED,
+          isTest: false,
+          isRetry: false,
+          raw: JSON.stringify({
+            reason: `Subscriber does not have a phone number for selected integration`,
+          }),
+        })
+      );
+    } else if (!chatWebhookUrl) {
       await this.messageRepository.updateMessageStatus(
         command.environmentId,
         message._id,
@@ -306,7 +387,8 @@ export class SendMessageChat extends SendMessageBase {
     content: string,
     message: MessageEntity,
     command: SendMessageCommand,
-    channelSpecification?: string | undefined
+    channelSpecification?: string | undefined,
+    phoneNumber?: string | undefined
   ) {
     try {
       const chatFactory = new ChatFactory();
@@ -315,10 +397,18 @@ export class SendMessageChat extends SendMessageBase {
         throw new PlatformException(`Chat handler for provider ${integration.providerId} is  not found`);
       }
 
+      const bridgeContent = this.getOverrideContent(command.bridgeData, integration);
+      const overrides = {
+        ...(command.overrides[integration?.channel] || {}),
+        ...(command.overrides[integration?.providerId] || {}),
+      };
+
       const result = await chatHandler.send({
+        phoneNumber,
+        customData: overrides,
         webhookUrl: chatWebhookUrl,
         channel: channelSpecification,
-        content,
+        ...(bridgeContent?.content ? (bridgeContent as DefinedContent) : { content }),
       });
 
       await this.executionLogRoute.execute(
@@ -358,4 +448,22 @@ export class SendMessageChat extends SendMessageBase {
       );
     }
   }
+
+  private getOverrideContent(
+    bridgeData: ExecuteOutput<IBridgeChannelResponse> | undefined | null,
+    integration: IntegrationEntity
+  ): { content: string | undefined; blocks: IBlock[] | undefined } | { content: string | undefined } {
+    const bridgeProviderOverride = this.getBridgeOverride(bridgeData?.providers, integration);
+
+    let bridgeContent: { content: string | undefined; blocks: IBlock[] | undefined } | { content: string | undefined };
+    if (bridgeProviderOverride) {
+      bridgeContent = { content: bridgeProviderOverride.text, blocks: bridgeProviderOverride.blocks };
+    } else {
+      bridgeContent = { content: bridgeData?.outputs.body };
+    }
+
+    return bridgeContent;
+  }
 }
+
+type DefinedContent = { content: string; blocks: IBlock[] | undefined } | { content: string };

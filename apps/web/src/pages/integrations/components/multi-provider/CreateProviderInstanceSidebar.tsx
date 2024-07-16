@@ -4,7 +4,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Controller, useForm } from 'react-hook-form';
 import styled from '@emotion/styled';
 import { useDisclosure } from '@mantine/hooks';
-import { ChannelTypeEnum, ICreateIntegrationBodyDto, NOVU_PROVIDERS, providers } from '@novu/shared';
+import { ChannelTypeEnum, NOVU_PROVIDERS, providers } from '@novu/shared';
+import type { IResponseError, ICreateIntegrationBodyDto } from '@novu/shared';
 import {
   ActionButton,
   Button,
@@ -17,7 +18,7 @@ import {
   inputStyles,
 } from '@novu/design-system';
 
-import { useFetchEnvironments } from '../../../../hooks/useFetchEnvironments';
+import { useEnvironment } from '../../../../hooks';
 import { useSegment } from '../../../../components/providers/SegmentProvider';
 import { createIntegration } from '../../../../api/integration';
 import { defaultIntegrationConditionsProps, IntegrationsStoreModalAnalytics } from '../../constants';
@@ -53,7 +54,7 @@ export function CreateProviderInstanceSidebar({
   onIntegrationCreated: (id: string) => void;
 }) {
   const { colorScheme } = useMantineTheme();
-  const { environments, isLoading: areEnvironmentsLoading } = useFetchEnvironments();
+  const { environments, isLoading: areEnvironmentsLoading } = useEnvironment();
   const { isLoading: areIntegrationsLoading, providers: integrations } = useProviders();
   const isLoading = areEnvironmentsLoading || areIntegrationsLoading;
   const queryClient = useQueryClient();
@@ -67,7 +68,7 @@ export function CreateProviderInstanceSidebar({
 
   const { mutateAsync: createIntegrationApi, isLoading: isLoadingCreate } = useMutation<
     IntegrationEntity,
-    { error: string; message: string; statusCode: number },
+    IResponseError,
     ICreateIntegrationBodyDto
   >(createIntegration);
 

@@ -1,25 +1,27 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useNavigate, useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { ReactFlowProvider } from 'react-flow-renderer';
 import { useFormContext } from 'react-hook-form';
 
 import PageContainer from '../../../components/layout/components/PageContainer';
 import type { IForm } from '../components/formTypes';
 import WorkflowEditor from '../workflow/WorkflowEditor';
-import { useEnvController, usePrompt } from '../../../hooks';
+import { useEnvironment, usePrompt } from '../../../hooks';
 import { BlueprintModal } from '../components/BlueprintModal';
 import { TemplateEditorFormProvider, useTemplateEditorForm } from '../components/TemplateEditorFormProvider';
-import { ROUTES } from '../../../constants/routes.enum';
+import { ROUTES } from '../../../constants/routes';
 import { TourProvider } from './TourProvider';
 import { NavigateValidatorModal } from '../components/NavigateValidatorModal';
 import { useTourStorage } from '../hooks/useTourStorage';
 import { useBasePath } from '../hooks/useBasePath';
+import { TemplateDetailsPageV2 } from '../editor_v2/TemplateDetailsPageV2';
+import { isBridgeWorkflow, WorkflowTypeEnum } from '@novu/shared';
 
 function BaseTemplateEditorPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { environment } = useEnvController();
   const { template, isCreating, onSubmit, onInvalid } = useTemplateEditorForm();
+  const { environment, bridge } = useEnvironment({ bridge: template?.bridge });
   const methods = useFormContext<IForm>();
   const { handleSubmit } = methods;
   const tourStorage = useTourStorage();
@@ -31,7 +33,7 @@ function BaseTemplateEditorPage() {
   const isCreateTemplatePage = location.pathname === ROUTES.WORKFLOWS_CREATE;
 
   const [showNavigateValidatorModal, confirmNavigate, cancelNavigate] = usePrompt(
-    !methods.formState.isValid && location.pathname !== ROUTES.WORKFLOWS_CREATE && !isTouring,
+    !methods.formState.isValid && !bridge && location.pathname !== ROUTES.WORKFLOWS_CREATE && !isTouring,
     (nextLocation) => {
       if (nextLocation.location.pathname.includes(basePath)) {
         nextLocation.retry();
@@ -48,7 +50,7 @@ function BaseTemplateEditorPage() {
   };
 
   useEffect(() => {
-    if (environment && template) {
+    if (environment && template && template._environmentId) {
       if (environment._id !== template._environmentId) {
         navigate(ROUTES.WORKFLOWS);
       }
@@ -68,7 +70,8 @@ function BaseTemplateEditorPage() {
 
   return (
     <>
-      <TourProvider />
+      {!bridge && <TourProvider />}
+
       <PageContainer title={template?.name ?? 'Create Template'}>
         <form
           name="template-form"
@@ -92,9 +95,16 @@ function BaseTemplateEditorPage() {
 }
 
 export default function TemplateEditorPage() {
-  return (
-    <TemplateEditorFormProvider>
-      <BaseTemplateEditorPage />
-    </TemplateEditorFormProvider>
-  );
+  const [searchParams] = useSearchParams();
+  const type = searchParams.get('type');
+
+  if (!type || !isBridgeWorkflow(type as WorkflowTypeEnum)) {
+    return (
+      <TemplateEditorFormProvider>
+        <BaseTemplateEditorPage />
+      </TemplateEditorFormProvider>
+    );
+  } else {
+    return <TemplateDetailsPageV2 />;
+  }
 }

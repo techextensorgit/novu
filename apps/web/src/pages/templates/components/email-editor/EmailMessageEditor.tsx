@@ -12,6 +12,9 @@ import { ButtonRowContent } from './ButtonRowContent';
 import { TextRowContent } from './TextRowContent';
 import type { IForm, IFormStep, ITemplates } from '../formTypes';
 import { useStepFormPath } from '../../hooks/useStepFormPath';
+import { FeatureFlagsKeysEnum } from '@novu/shared';
+import { ROUTES } from '../../../../constants/routes';
+import { useFeatureFlag } from '../../../../hooks/useFeatureFlag';
 
 interface IStepEntityExtended extends IFormStep {
   template: ITemplates & {
@@ -82,14 +85,10 @@ export function EmailMessageEditor({
     return null;
   }
 
-  function getBrandSettingsUrl(): string {
-    return '/brand';
-  }
-
   return (
     <Card withBorder sx={styledCard}>
       <Container pl={0} pr={0}>
-        <div onClick={() => !branding?.logo && navigate(getBrandSettingsUrl())} role="link">
+        <div onClick={() => !branding?.logo && navigate(ROUTES.BRAND_SETTINGS)} role="link">
           <Dropzone
             styles={{
               inner: {

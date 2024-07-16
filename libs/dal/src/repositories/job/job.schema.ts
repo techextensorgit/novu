@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { Schema } from 'mongoose';
 
 import { schemaOptions } from '../schema-default.options';
@@ -97,6 +97,9 @@ const jobSchema = new Schema<JobDBModel>(
         type: Schema.Types.Boolean,
       },
       timed: {
+        cronExpression: {
+          type: Schema.Types.String,
+        },
         atTime: {
           type: Schema.Types.String,
         },
@@ -127,6 +130,7 @@ const jobSchema = new Schema<JobDBModel>(
       type: Schema.Types.String,
     },
     expireAt: Schema.Types.Date,
+    stepOutput: Schema.Types.Mixed,
   },
   schemaOptions
 );

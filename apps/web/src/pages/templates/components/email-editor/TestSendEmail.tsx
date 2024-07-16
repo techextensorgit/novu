@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 import { ChannelTypeEnum, MemberStatusEnum } from '@novu/shared';
 
 import { errorMessage, successMessage } from '../../../../utils/notifications';
-import { useAuthContext } from '../../../../components/providers/AuthProvider';
+import { useAuth } from '../../../../hooks';
 import {
   Button,
   Text,
@@ -25,11 +25,20 @@ import { useProcessVariables, useIntegrationLimit } from '../../../../hooks';
 import { testSendEmailMessage } from '../../../../api/notification-templates';
 import { useStepFormPath } from '../../hooks/useStepFormPath';
 import type { IForm } from '../formTypes';
+import { useTemplateEditorForm } from '../TemplateEditorFormProvider';
 
-export function TestSendEmail({ isIntegrationActive }: { isIntegrationActive: boolean }) {
-  const { currentUser } = useAuthContext();
-  const { control } = useFormContext<IForm>();
+export function TestSendEmail({
+  isIntegrationActive,
+  bridge = false,
+}: {
+  isIntegrationActive: boolean;
+  bridge?: boolean;
+}) {
+  const { currentUser } = useAuth();
+  const { control, watch } = useFormContext<IForm>();
   const path = useStepFormPath();
+  const stepId = watch(`${path}.uuid`);
+  const { template: workflow } = useTemplateEditorForm();
 
   const clipboardJson = useClipboard({ timeout: 1000 });
   const { classes } = useSelectStyles();
@@ -59,6 +68,7 @@ export function TestSendEmail({ isIntegrationActive }: { isIntegrationActive: bo
 
   const processedVariables = useProcessVariables(template.variables);
   const [payloadValue, setPayloadValue] = useState('{}');
+  const [stepControls, setStepControls] = useState('{}');
 
   useEffect(() => {
     setPayloadValue(processedVariables);
@@ -66,13 +76,25 @@ export function TestSendEmail({ isIntegrationActive }: { isIntegrationActive: bo
 
   const onTestEmail = async () => {
     const payload = JSON.parse(payloadValue);
+    const controls = JSON.parse(stepControls);
 
     try {
       await testSendEmailEvent({
+        stepId,
+        workflowId: workflow?.triggers[0].identifier,
+        contentType: 'customHtml',
+        subject: '',
         ...template,
         payload,
+        inputs: controls,
+        controls,
         to: sendTo,
-        content: template.contentType === 'customHtml' ? (template.htmlContent as string) : template.content,
+        bridge,
+        content: bridge
+          ? ''
+          : template.contentType === 'customHtml'
+          ? (template.htmlContent as string)
+          : template.content,
         layoutId: template.layoutId,
       });
       successMessage('Test sent successfully!');
@@ -121,7 +143,7 @@ export function TestSendEmail({ isIntegrationActive }: { isIntegrationActive: bo
           mt={20}
           autosize
           styles={inputStyles}
-          label="Variables"
+          label={bridge ? 'Trigger Data' : 'Variables'}
           value={payloadValue}
           onChange={setPayloadValue}
           minRows={12}
@@ -136,6 +158,30 @@ export function TestSendEmail({ isIntegrationActive }: { isIntegrationActive: bo
             </Tooltip>
           }
         />
+
+        {bridge ? (
+          <JsonInput
+            data-test-id="test-email-json-controls"
+            formatOnBlur
+            mt={20}
+            autosize
+            styles={inputStyles}
+            label="Step Controls"
+            value={stepControls}
+            onChange={setStepControls}
+            minRows={12}
+            validationError="Invalid JSON"
+            rightSectionWidth={50}
+            rightSectionProps={{ style: { alignItems: 'start', padding: '5px' } }}
+            rightSection={
+              <Tooltip label={clipboardJson.copied ? 'Copied!' : 'Copy Json'}>
+                <ActionIcon variant="transparent" onClick={() => clipboardJson.copy(payloadValue)}>
+                  {clipboardJson.copied ? <Check /> : <Copy />}
+                </ActionIcon>
+              </Tooltip>
+            }
+          />
+        ) : null}
 
         <span
           style={{

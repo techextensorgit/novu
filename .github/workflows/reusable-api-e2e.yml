@@ -19,15 +19,19 @@ on:
         required: false
         default: false
         type: boolean
+      ee-clerk:
+        description: 'use the clerk ee version of api'
+        required: false
+        default: false
+        type: boolean
       job-name:
-        description: 'job name [options: novu/api-ee, novu/api]'
+        description: 'job name [options: novu/api-ee, novu/api, novu/api-ee-clerk]'
         required: true
         type: string
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   check_submodule_token:
-    if: ${{ inputs.ee }}
     name: Check if the secret exists or not.
     runs-on: ubuntu-latest
     outputs:
@@ -45,8 +49,8 @@ jobs:
   # This workflow contains a single job called "build"
   e2e_api:
     name: Test E2E
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    if: ${{ (contains(inputs.job-name, '-ee') && inputs.test-e2e-ee-affected) || (!contains(inputs.job-name, '-ee') && inputs.test-e2e-affected) }}
+    runs-on: ubuntu-latest-medium
     timeout-minutes: 80
     permissions:
       contents: read
@@ -54,13 +58,9 @@ jobs:
       deployments: write
       id-token: write
     needs: [check_submodule_token]
-    if: |
-      ${{ contains (inputs.job-name,'-ee') && inputs.test-e2e-ee-affected == 'true' }} ||
-      ${{ !contains (inputs.job-name,'-ee') && inputs.test-e2e-affected == 'true' }}
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # checkout with submodules if token is provided
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Checkout with submodules
         if: ${{ needs.check_submodule_token.outputs.has_token == 'true' && inputs.ee }}
         with:
@@ -68,7 +68,7 @@ jobs:
           token: ${{ secrets.SUBMODULES_TOKEN }}
 
       # else checkout without submodules if the token is not provided
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Checkout
         if: ${{ needs.check_submodule_token.outputs.has_token != 'true' || !contains (inputs.job-name,'-ee') }}
 
@@ -80,12 +80,6 @@ jobs:
       - uses: ./.github/actions/setup-redis-cluster
         name: Setup redis cluster
 
-      - uses: mansagroup/nrwl-nx-action@v3
-        name: Run Lint
-        with:
-          targets: lint
-          projects: '@novu/api'
-
       - uses: ./.github/actions/start-localstack
         name: Start localstack
 
@@ -94,19 +88,21 @@ jobs:
         name: Run worker
         with:
           launch_darkly_sdk_key: ${{ secrets.LAUNCH_DARKLY_SDK_KEY }}
+          ee: ${{ needs.check_submodule_token.outputs.has_token == 'true' && inputs.ee }}
 
         # Runs a single command using the runners shell
       - name: Build API
         run: CI='' pnpm build:api --skip-nx-cache
 
       - name: Run E2E tests
+        if: ${{ !inputs.ee }}
         env:
           LAUNCH_DARKLY_SDK_KEY: ${{ secrets.LAUNCH_DARKLY_SDK_KEY }}
         run: |
           cd apps/api && pnpm test:e2e
 
       - name: Run E2E EE tests
-        if: ${{ needs.check_submodule_token.outputs.has_token == 'true' && inputs.ee }}
+        if: ${{ needs.check_submodule_token.outputs.has_token == 'true' && inputs.ee && !inputs.ee-clerk }}
         env:
           LAUNCH_DARKLY_SDK_KEY: ${{ secrets.LAUNCH_DARKLY_SDK_KEY }}
           GOOGLE_OAUTH_CLIENT_ID: ${{ secrets.GOOGLE_OAUTH_CLIENT_ID }}
@@ -115,9 +111,34 @@ jobs:
         run: |
           cd apps/api && pnpm test:e2e:ee
 
+      - name: Run E2E EE Clerk tests
+        if: ${{ needs.check_submodule_token.outputs.has_token == 'true' && inputs.ee && inputs.ee-clerk }}
+        env:
+          LAUNCH_DARKLY_SDK_KEY: ${{ secrets.LAUNCH_DARKLY_SDK_KEY }}
+          GOOGLE_OAUTH_CLIENT_ID: ${{ secrets.GOOGLE_OAUTH_CLIENT_ID }}
+          GOOGLE_OAUTH_CLIENT_SECRET: ${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }}
+          CI_EE_TEST: true
+          CLERK_ENABLED: true
+          CLERK_ISSUER_URL: ${{ vars.CLERK_ISSUER_URL }}
+          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+          CLERK_PRIVATE_KEY_BASE64: ${{ secrets.CLERK_PRIVATE_KEY_BASE64 }}
+          CLERK_PEM_PUBLIC_KEY_BASE64: ${{ secrets.CLERK_PEM_PUBLIC_KEY_BASE64 }}
+          CLERK_WEBHOOK_SECRET: ${{ secrets.CLERK_WEBHOOK_SECRET }}
+          CLERK_LONG_LIVED_TOKEN: ${{ secrets.CLERK_LONG_LIVED_TOKEN }}
+        run: |
+          export CLERK_PEM_PUBLIC_KEY=$(echo $CLERK_PEM_PUBLIC_KEY_BASE64 | base64 -d)
+          export CLERK_PRIVATE_KEY=$(echo $CLERK_PRIVATE_KEY_BASE64 | base64 -d)
+          cd apps/api && pnpm test:e2e:clerk
+
       - name: Kill port for worker 1342 for unit tests
         run: sudo kill -9 $(sudo lsof -t -i:1342)
 
       - name: Run unit tests
         run: |
           cd apps/api && pnpm test
+
+      - name: Send Slack notifications
+        uses: ./.github/actions/slack-notify-on-failure
+        if: failure()
+        with:
+          slackWebhookURL: ${{ secrets.SLACK_WEBHOOK_URL_ENG_FEED_GITHUB }}

@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { Schema } from 'mongoose';
 
 import { schemaOptions } from '../schema-default.options';
@@ -23,7 +23,7 @@ const changeSchema = new Schema<ChangeDBModel>(
       type: Schema.Types.ObjectId,
       ref: 'Organization',
     },
-    _entityId: Schema.Types.ObjectId,
+    _entityId: { type: Schema.Types.ObjectId, index: true },
     _creatorId: {
       type: Schema.Types.ObjectId,
       ref: 'User',

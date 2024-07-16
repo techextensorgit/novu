@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { Schema } from 'mongoose';
 import { ApiRateLimitCategoryEnum } from '@novu/shared';
 
@@ -15,7 +15,6 @@ const environmentSchema = new Schema<EnvironmentDBModel>(
     _organizationId: {
       type: Schema.Types.ObjectId,
       ref: 'Organization',
-      index: true,
     },
     apiKeys: [
       {
@@ -49,6 +48,12 @@ const environmentSchema = new Schema<EnvironmentDBModel>(
         type: Schema.Types.String,
       },
     },
+    echo: {
+      url: Schema.Types.String,
+    },
+    bridge: {
+      url: Schema.Types.String,
+    },
     _parentId: {
       type: Schema.Types.ObjectId,
       ref: 'Environment',
@@ -56,6 +61,22 @@ const environmentSchema = new Schema<EnvironmentDBModel>(
   },
   schemaOptions
 );
+
+/*
+ * Path: ./get-platform-notification-usage.usecase.ts
+ *    Context: execute()
+ *        Query: organizationRepository.aggregate(
+ *                $lookup:
+ *        {
+ *          from: 'environments',
+ *          localField: '_id',
+ *          foreignField: '_organizationId',
+ *          as: 'environments',
+ *        }
+ */
+environmentSchema.index({
+  _organizationId: 1,
+});
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const Environment =

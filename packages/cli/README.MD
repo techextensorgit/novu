@@ -1,20 +1,13 @@
 <div align="center">
-  
-  ![Logo Dark](https://user-images.githubusercontent.com/8872447/165779319-34962ccc-3149-466c-b1da-97fd93254520.png#gh-dark-mode-only)
-
+  <a href="https://novu.co?utm_source=github" target="_blank">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/2233092/213641039-220ac15f-f367-4d13-9eaf-56e79433b8c1.png">
+    <img alt="Novu Logo" src="https://user-images.githubusercontent.com/2233092/213641043-3bbb3f21-3c53-4e67-afe5-755aeb222159.png" width="280"/>
+  </picture>
+  </a>
 </div>
 
-<div align="center">
-  
-  ![Logo Light](https://user-images.githubusercontent.com/8872447/165779274-22a190da-3284-487e-bd1e-14983df12cbb.png#gh-light-mode-only)
-  
-</div>
-
-<h1 align="center">Notification management simplified.</h1>
-
-<div align="center">
-The ultimate service for managing multi-channel notifications with a single API. 
-</div>
+# Code-First Notifications Workflow Platform
 
   <p align="center">
     <br />
@@ -32,6 +25,12 @@ The ultimate service for managing multi-channel notifications with a single API.
     ·
     <a href="https://twitter.com/novuhq">X</a>
   </p>
+
+## 🚀 Quickstart
+
+```bash
+npx novu@latest dev
+```
   
 ## ⭐️ Why
 Building a notification system is hard, at first it seems like just sending an email but in reality it's just the beginning. In today's world users expect multichannel communication experience over email, sms, push, chat and more... An ever-growing list of providers are popping up each day, and notifications are spread around the code. Novu's goal is to simplify notifications and provide developers the tools to create meaningful communication between the system and its users.
@@ -49,9 +48,9 @@ Building a notification system is hard, at first it seems like just sending an e
 
 ## 🚀 Getting Started
 
-We are excited to launch the complete Novu API and admin panel. Want to give it a test before the official release? here is how:
+To start using Novu, run the following command. You'll be guided through the setup process.
 
-```
+```bash
 npx novu init
 ```
 
@@ -89,7 +88,7 @@ Using the Novu API and admin panel you can easily add real-time notification cen
 <div align="center">
 <img width="762" alt="notification-center-912bb96e009fb3a69bafec23bcde00b0" src="https://github.com/iampearceman/Design-assets/blob/main/Untitled%20design%20(8).gif?raw=true">
   
-  Read more about how to add a notification center to your app with the Novu API [here](https://docs.novu.co/notification-center/introduction)
+  Read more about how to add a notification center to your app with the Novu API [here](https://docs.novu.co/notification-center/introduction?utm_campaign=inapp-cli-readme)
 
 </div>
 
@@ -140,7 +139,7 @@ Novu provides a single API to manage providers across multiple channels with a s
 
 #### 📱 In-App
 
-- [x] [Novu](https://docs.novu.co/notification-center/introduction)
+- [x] [Novu](https://docs.novu.co/notification-center/introduction?utm_campaign=inapp-cli-readme)
 - [ ] MagicBell
 
 #### Other (Coming Soon...)

@@ -1,4 +1,4 @@
-import * as capitalize from 'lodash.capitalize';
+import capitalize from 'lodash.capitalize';
 import { format } from 'date-fns';
 import { useMantineColorScheme } from '@mantine/core';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -54,7 +54,7 @@ export const ChangesTable = ({
       Cell: withCellLoading(
         ({
           row: {
-            original: { type, templateName, messageType, previousDefaultLayout },
+            original: { type, templateName, messageType, previousDefaultLayout, translationGroup },
           },
         }) => (
           <div data-test-id="change-type">
@@ -88,6 +88,7 @@ export const ChangesTable = ({
               </Text>
             )}
             <Text data-test-id="change-content" rows={1} mt={5}>
+              {translationGroup ? `${translationGroup}, ` : null}
               {templateName}
               {messageType ? `, ${messageType}` : null}
             </Text>
@@ -100,7 +101,7 @@ export const ChangesTable = ({
       Header: 'Changed By',
       Cell: withCellLoading(({ row: { original } }) => (
         <Text data-test-id="subscriber-name" rows={1}>
-          {capitalize(original.user.firstName)} {capitalize(original.user.lastName)}
+          {capitalize(original.user?.firstName)} {capitalize(original.user?.lastName)}
         </Text>
       )),
     },

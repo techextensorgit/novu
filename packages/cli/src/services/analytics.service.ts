@@ -1,5 +1,5 @@
 import { Analytics } from '@segment/analytics-node';
-import { IJwtPayload } from '@novu/shared';
+import { UserSessionData } from '@novu/shared';
 import { ANALYTICS_ENABLED, SEGMENTS_WRITE_KEY } from '../constants';
 
 export enum AnalyticsEventEnum {
@@ -44,7 +44,7 @@ export class AnalyticService {
     });
   }
 
-  identify(user: IJwtPayload) {
+  identify(user: UserSessionData & { createdAt: string }) {
     if (!this.isAnalyticsEnabled()) {
       return;
     }
@@ -55,7 +55,7 @@ export class AnalyticService {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        created: (user as any).createdAt,
+        created: user.createdAt,
       },
     });
   }

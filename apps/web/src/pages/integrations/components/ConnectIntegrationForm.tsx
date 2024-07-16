@@ -5,21 +5,16 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { showNotification } from '@mantine/notifications';
 import { useClipboard } from '@mantine/hooks';
 import { Image, useMantineColorScheme, Stack, Alert } from '@mantine/core';
-import { WarningOutlined } from '@ant-design/icons';
-import {
-  ChannelTypeEnum,
-  ICredentialsDto,
-  IConfigCredentials,
-  ICreateIntegrationBodyDto,
-  CredentialsKeyEnum,
-} from '@novu/shared';
+import { ChannelTypeEnum, CredentialsKeyEnum } from '@novu/shared';
+import { useAuth } from '../../../hooks/useAuth';
+import type { IResponseError, ICredentialsDto, IConfigCredentials, ICreateIntegrationBodyDto } from '@novu/shared';
 
-import { Button, colors, Input, Switch, Text, Close, Check, Copy } from '@novu/design-system';
+import { Button, colors, Input, Switch, Text, Close, Check, Copy, IconOutlineWarning } from '@novu/design-system';
 import type { IIntegratedProvider } from '../types';
 import { createIntegration, getWebhookSupportStatus, updateIntegration } from '../../../api/integration';
 import { IntegrationInput } from './IntegrationInput';
 import { IS_DOCKER_HOSTED, WEBHOOK_URL } from '../../../config';
-import { useEnvController, useAuthController } from '../../../hooks';
+import { useEnvironment } from '../../../hooks';
 import { CONTEXT_PATH } from '../../../config';
 import { ShareableUrl } from './Modal/ConnectIntegrationForm';
 
@@ -98,20 +93,20 @@ export function ConnectIntegrationForm({
 
   const { colorScheme } = useMantineColorScheme();
   const [isActive, setIsActive] = useState<boolean>(!!provider?.active);
-  const { environment } = useEnvController();
-  const { organization } = useAuthController();
+  const { environment } = useEnvironment();
+  const { currentOrganization } = useAuth();
   const webhookUrlClipboard = useClipboard({ timeout: 1000 });
   const [checkIntegrationState, dispatch] = useReducer(checkIntegrationReducer, checkIntegrationInitialState);
 
   const { mutateAsync: createIntegrationApi, isLoading: isLoadingCreate } = useMutation<
     { res: string },
-    { error: string; message: string; statusCode: number },
+    IResponseError,
     ICreateIntegrationBodyDto
   >(createIntegration);
 
   const { mutateAsync: updateIntegrationApi, isLoading: isLoadingUpdate } = useMutation<
     { res: string },
-    { error: string; message: string; statusCode: number },
+    IResponseError,
     {
       integrationId: string;
       data: { credentials: ICredentialsDto; active: boolean; check: boolean };
@@ -209,7 +204,7 @@ export function ConnectIntegrationForm({
     : '';
 
   // eslint-disable-next-line max-len
-  const webhookUrl = `${WEBHOOK_URL}/webhooks/organizations/${organization?._id}/environments/${environment?._id}/${provider?.channel}/${provider?.providerId}`;
+  const webhookUrl = `${WEBHOOK_URL}/webhooks/organizations/${currentOrganization?._id}/environments/${environment?._id}/${provider?.channel}/${provider?.providerId}`;
 
   const isWebhookEnabled =
     !IS_DOCKER_HOSTED &&
@@ -307,7 +302,7 @@ export function ConnectIntegrationForm({
             )}
 
             {checkIntegrationState.isShowAlert && (
-              <Alert icon={<WarningOutlined size={16} />} title="An error occurred!" color="red" mb={30}>
+              <Alert icon={<IconOutlineWarning size={'16'} />} title="An error occurred!" color="red" mb={30}>
                 {checkIntegrationState.errorMsg}
               </Alert>
             )}

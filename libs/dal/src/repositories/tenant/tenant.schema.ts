@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { Schema } from 'mongoose';
 
 import { schemaOptions } from '../schema-default.options';
@@ -56,8 +56,8 @@ tenantSchema.index({
  */
 tenantSchema.index(
   {
-    identifier: 1,
     _environmentId: 1,
+    identifier: 1,
   },
   { unique: true }
 );

@@ -18,10 +18,14 @@ export enum ProductUseCasesEnum {
 
 export enum JobTitleEnum {
   ENGINEER = 'engineer',
+  ENGINEERING_MANAGER = 'engineering_manager',
   ARCHITECT = 'architect',
   PRODUCT_MANAGER = 'product_manager',
   DESIGNER = 'designer',
-  ENGINEERING_MANAGER = 'engineering_manager',
+  FOUNDER = 'cxo_founder',
+  MARKETING_MANAGER = 'marketing_manager',
+  STUDENT = 'student',
+  CXO = 'cxo',
   OTHER = 'other',
 }
 
@@ -31,5 +35,9 @@ export const jobTitleToLabelMapper = {
   [JobTitleEnum.PRODUCT_MANAGER]: 'Product Manager',
   [JobTitleEnum.DESIGNER]: 'Designer',
   [JobTitleEnum.ENGINEERING_MANAGER]: 'Engineering Manager',
+  [JobTitleEnum.FOUNDER]: 'Founder',
+  [JobTitleEnum.STUDENT]: 'Student',
+  [JobTitleEnum.CXO]: 'CXO (CTO/CEO/other...)',
+  [JobTitleEnum.MARKETING_MANAGER]: 'Marketing Manager',
   [JobTitleEnum.OTHER]: 'Other',
 };

@@ -1,41 +1,119 @@
-import { useMemo } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
-import * as Sentry from '@sentry/react';
+import { captureException } from '@sentry/react';
 import { Center } from '@mantine/core';
-
 import { PasswordInput, Button, colors, Input, Text } from '@novu/design-system';
-
-import { useAuthContext } from '../../../components/providers/AuthProvider';
+import type { IResponseError } from '@novu/shared';
+import { useAuth, useRedirectURL, useVercelIntegration, useVercelParams } from '../../../hooks';
+import { useSegment } from '../../../components/providers/SegmentProvider';
 import { api } from '../../../api/api.client';
-import { useVercelParams } from '../../../hooks';
 import { useAcceptInvite } from './useAcceptInvite';
-import { ROUTES } from '../../../constants/routes.enum';
+import { ROUTES } from '../../../constants/routes';
 import { OAuth } from './OAuth';
+import { parseServerErrorMessage } from '../../../utils/errors';
 
 type LoginFormProps = {
   invitationToken?: string;
   email?: string;
 };
 
+export interface LocationState {
+  redirectTo?: {
+    pathname?: string;
+  };
+}
+
 export function LoginForm({ email, invitationToken }: LoginFormProps) {
+  const segment = useSegment();
+
+  const { setRedirectURL } = useRedirectURL();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => setRedirectURL(), []);
+
+  const { login, currentUser, currentOrganization } = useAuth();
+  const { startVercelSetup } = useVercelIntegration();
+  const { isFromVercel, params: vercelParams } = useVercelParams();
+  const [params] = useSearchParams();
+  const tokenInQuery = params.get('token');
+  const source = params.get('source');
+  const sourceWidget = params.get('source_widget');
+  // TODO: Deprecate the legacy cameCased format in search param
+  const invitationTokenFromGithub = params.get('invitationToken') || params.get('invitation_token') || '';
+  const isRedirectedFromLoginPage = params.get('isLoginPage') || params.get('is_login_page') || '';
+
+  const { isLoading: isLoadingAcceptInvite, acceptInvite } = useAcceptInvite();
   const navigate = useNavigate();
-  const { setToken } = useAuthContext();
+  const location = useLocation();
+  const state = location.state as LocationState;
   const { isLoading, mutateAsync, isError, error } = useMutation<
     { token: string },
-    { error: string; message: string; statusCode: number },
+    IResponseError,
     {
       email: string;
       password: string;
     }
   >((data) => api.post('/v1/auth/login', data));
-  const { isLoading: isLoadingAcceptInvite, submitToken } = useAcceptInvite();
 
-  const { isFromVercel, code, next, configurationId } = useVercelParams();
-  const vercelQueryParams = `code=${code}&next=${next}&configurationId=${configurationId}`;
-  const signupLink = isFromVercel ? `/auth/signup?${vercelQueryParams}` : ROUTES.AUTH_SIGNUP;
-  const resetPasswordLink = isFromVercel ? `/auth/reset/request?${vercelQueryParams}` : ROUTES.AUTH_RESET_REQUEST;
+  const handleLoginInUseEffect = async () => {
+    // if currentUser is true, it means user exists, then while accepting invitation, InvitationPage will handle accept this case
+    if (currentUser) {
+      return;
+    }
+
+    // if token from OAuth or CLI is not present
+    if (!tokenInQuery) {
+      return;
+    }
+
+    // handle github login after invitation
+    if (invitationTokenFromGithub) {
+      await login(tokenInQuery);
+      const updatedToken = await acceptInvite(invitationTokenFromGithub);
+
+      if (updatedToken) {
+        await login(updatedToken, isRedirectedFromLoginPage === 'true' ? ROUTES.WORKFLOWS : ROUTES.AUTH_APPLICATION);
+
+        return;
+      }
+    }
+
+    if (currentOrganization) {
+      navigate(ROUTES.WORKFLOWS);
+    } else {
+      await login(tokenInQuery, ROUTES.AUTH_APPLICATION);
+    }
+
+    if (isFromVercel) {
+      await login(tokenInQuery);
+      startVercelSetup();
+
+      return;
+    }
+
+    if (source === 'cli') {
+      segment.track('Dashboard Visit', {
+        widget: sourceWidget || 'unknown',
+        source: 'cli',
+      });
+      await login(tokenInQuery, ROUTES.GET_STARTED);
+
+      return;
+    }
+
+    await login(tokenInQuery, ROUTES.WORKFLOWS);
+  };
+
+  useEffect(() => {
+    handleLoginInUseEffect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [login]);
+
+  const signupLink = isFromVercel ? `${ROUTES.AUTH_SIGNUP}?${params.toString()}` : ROUTES.AUTH_SIGNUP;
+  const resetPasswordLink = isFromVercel
+    ? `${ROUTES.AUTH_RESET_REQUEST}?${params.toString()}`
+    : ROUTES.AUTH_RESET_REQUEST;
 
   const {
     register,
@@ -57,50 +135,51 @@ export function LoginForm({ email, invitationToken }: LoginFormProps) {
     try {
       const response = await mutateAsync(itemData);
       const token = (response as any).token;
+      await login(token);
+
       if (isFromVercel) {
-        setToken(token);
+        startVercelSetup();
 
         return;
       }
 
       if (invitationToken) {
-        submitToken(token, invitationToken);
-
-        return;
+        const updatedToken = await acceptInvite(invitationToken);
+        if (updatedToken) {
+          await login(updatedToken);
+        }
       }
 
-      setToken(token);
-      navigate(ROUTES.WORKFLOWS);
+      navigate(state?.redirectTo?.pathname || ROUTES.WORKFLOWS);
     } catch (e: any) {
       if (e.statusCode !== 400) {
-        Sentry.captureException(e);
+        captureException(e);
       }
     }
   };
 
-  const serverErrorString = useMemo<string>(() => {
-    return Array.isArray(error?.message) ? error?.message[0] : error?.message;
-  }, [error]);
+  const emailClientError = errors.email?.message;
+  let emailServerError = parseServerErrorMessage(error);
 
-  const emailServerError = useMemo<string>(() => {
-    if (serverErrorString === 'email must be an email') return 'Please provide a valid email';
-
-    return '';
-  }, [serverErrorString]);
+  // TODO: Use a more human-friendly message in the IsEmail validator and remove this patch
+  if (emailServerError === 'email must be an email') {
+    emailServerError = 'Please provide a valid email address';
+  }
 
   return (
     <>
-      <OAuth />
+      <OAuth invitationToken={invitationToken} isLoginPage={true} />
       <form noValidate onSubmit={handleSubmit(onLogin)}>
         <Input
-          error={errors.email?.message || emailServerError}
+          error={emailClientError || emailServerError}
           {...register('email', {
-            required: 'Please provide an email',
-            pattern: { value: /^\S+@\S+\.\S+$/, message: 'Please provide a valid email' },
+            required: 'Please provide an email address',
+            pattern: { value: /^\S+@\S+\.\S+$/, message: 'Please provide a valid email address' },
           })}
           required
           label="Email"
-          placeholder="Type your email..."
+          type="email"
+          placeholder="Type your email address..."
           disabled={!!invitationToken}
           data-test-id="email"
           mt={5}
@@ -142,12 +221,6 @@ export function LoginForm({ email, invitationToken }: LoginFormProps) {
           </Link>
         </Center>
       </form>
-      {isError && !emailServerError && (
-        <Text data-test-id="error-alert-banner" mt={20} size="lg" weight="bold" align="center" color={colors.error}>
-          {' '}
-          {error?.message}
-        </Text>
-      )}
     </>
   );
 }

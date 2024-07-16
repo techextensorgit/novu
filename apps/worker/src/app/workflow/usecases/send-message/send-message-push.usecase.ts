@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import * as Sentry from '@sentry/node';
+import { addBreadcrumb } from '@sentry/node';
 import { ModuleRef } from '@nestjs/core';
 
 import {
@@ -32,7 +32,8 @@ import {
   ExecutionLogRoute,
   ExecutionLogRouteCommand,
 } from '@novu/application-generic';
-import type { IPushOptions } from '@novu/stateless';
+import { IPushOptions } from '@novu/stateless';
+import { PushOutput } from '@novu/framework';
 
 import { SendMessageCommand } from './send-message.command';
 import { SendMessageBase } from './send-message.base';
@@ -71,7 +72,7 @@ export class SendMessagePush extends SendMessageBase {
 
   @InstrumentUsecase()
   public async execute(command: SendMessageCommand) {
-    Sentry.addBreadcrumb({
+    addBreadcrumb({
       message: 'Sending Push',
     });
 
@@ -79,7 +80,11 @@ export class SendMessagePush extends SendMessageBase {
     const { subscriber, step: stepData } = command.compileContext;
 
     const template = await this.processVariants(command);
-    await this.initiateTranslations(command.environmentId, command.organizationId, subscriber.locale);
+    const i18nInstance = await this.initiateTranslations(
+      command.environmentId,
+      command.organizationId,
+      subscriber.locale
+    );
 
     if (template) {
       step.template = template;
@@ -90,19 +95,23 @@ export class SendMessagePush extends SendMessageBase {
     let title = '';
 
     try {
-      content = await this.compileTemplate.execute(
-        CompileTemplateCommand.create({
-          template: step.template?.content as string,
-          data,
-        })
-      );
+      if (!command.bridgeData) {
+        content = await this.compileTemplate.execute(
+          CompileTemplateCommand.create({
+            template: step.template?.content as string,
+            data,
+          }),
+          i18nInstance
+        );
 
-      title = await this.compileTemplate.execute(
-        CompileTemplateCommand.create({
-          template: step.template?.title as string,
-          data,
-        })
-      );
+        title = await this.compileTemplate.execute(
+          CompileTemplateCommand.create({
+            template: step.template?.title as string,
+            data,
+          }),
+          i18nInstance
+        );
+      }
     } catch (e) {
       await this.sendErrorHandlebars(command.job, e.message);
 
@@ -284,11 +293,12 @@ export class SendMessagePush extends SendMessageBase {
   ): Promise<boolean> {
     try {
       const pushHandler = this.getIntegrationHandler(integration);
+      const bridgeOutputs = command.bridgeData?.outputs;
 
       const result = await pushHandler.send({
         target: [deviceToken],
-        title,
-        content,
+        title: (bridgeOutputs as PushOutput)?.subject || title,
+        content: (bridgeOutputs as PushOutput)?.body || content,
         payload: command.payload,
         overrides,
         subscriber,
@@ -316,8 +326,7 @@ export class SendMessagePush extends SendMessageBase {
         'unexpected_push_error',
         e.message || e.name || 'Un-expect Push provider error',
         command,
-        LogCodeEnum.PUSH_ERROR,
-        e
+        LogCodeEnum.PUSH_ERROR
       );
 
       const raw = JSON.stringify(e) !== JSON.stringify({}) ? JSON.stringify(e) : JSON.stringify(e.message);
@@ -352,6 +361,7 @@ export class SendMessagePush extends SendMessageBase {
       overrides: overrides as never,
       providerId: integration.providerId,
       _jobId: command.jobId,
+      tags: command.tags,
     });
 
     await this.executionLogRoute.execute(

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import * as Sentry from '@sentry/node';
+import { addBreadcrumb } from '@sentry/node';
 import { ModuleRef } from '@nestjs/core';
 
 import {
@@ -70,7 +70,7 @@ export class SendMessageSms extends SendMessageBase {
       },
     });
 
-    Sentry.addBreadcrumb({
+    addBreadcrumb({
       message: 'Sending SMS',
     });
 
@@ -80,29 +80,37 @@ export class SendMessageSms extends SendMessageBase {
 
     const { subscriber } = command.compileContext;
     const template = await this.processVariants(command);
-    await this.initiateTranslations(command.environmentId, command.organizationId, subscriber.locale);
+    const i18nInstance = await this.initiateTranslations(
+      command.environmentId,
+      command.organizationId,
+      subscriber.locale
+    );
 
     if (template) {
       step.template = template;
     }
 
-    let content: string | null = '';
+    const bridgeBody = command.bridgeData?.outputs.body;
+    let content: string = bridgeBody || '';
 
     try {
-      content = await this.compileTemplate.execute(
-        CompileTemplateCommand.create({
-          template: step.template.content as string,
-          data: this.getCompilePayload(command.compileContext),
-        })
-      );
+      if (!command.bridgeData) {
+        content = await this.compileTemplate.execute(
+          CompileTemplateCommand.create({
+            template: step.template.content as string,
+            data: this.getCompilePayload(command.compileContext),
+          }),
+          i18nInstance
+        );
+
+        if (!content) {
+          throw new PlatformException(`Unexpected error: SMS content is missing`);
+        }
+      }
     } catch (e) {
       await this.sendErrorHandlebars(command.job, e.message);
 
       return;
-    }
-
-    if (!content) {
-      throw new PlatformException(`Unexpected error: SMS content is missing`);
     }
 
     const phone = command.payload.phone || subscriber.phone;
@@ -155,6 +163,7 @@ export class SendMessageSms extends SendMessageBase {
       overrides,
       templateIdentifier: command.identifier,
       _jobId: command.jobId,
+      tags: command.tags,
     });
 
     await this.executionLogRoute.execute(
@@ -263,6 +272,8 @@ export class SendMessageSms extends SendMessageBase {
     overrides: Record<string, any> = {}
   ) {
     try {
+      const bridgeBody = command.bridgeData?.outputs.body;
+
       const smsFactory = new SmsFactory();
       const smsHandler = smsFactory.getHandler(this.buildFactoryIntegration(integration));
       if (!smsHandler) {
@@ -272,7 +283,7 @@ export class SendMessageSms extends SendMessageBase {
       const result = await smsHandler.send({
         to: overrides.to || phone,
         from: overrides.from || integration.credentials.from,
-        content: overrides.content || content,
+        content: bridgeBody || overrides.content || content,
         id: message._id,
         customData: overrides.customData || {},
       });
@@ -309,8 +320,7 @@ export class SendMessageSms extends SendMessageBase {
         'unexpected_sms_error',
         e.message || e.name || 'Un-expect SMS provider error',
         command,
-        LogCodeEnum.SMS_ERROR,
-        e
+        LogCodeEnum.SMS_ERROR
       );
 
       await this.executionLogRoute.execute(
@@ -322,7 +332,7 @@ export class SendMessageSms extends SendMessageBase {
           status: ExecutionDetailsStatusEnum.FAILED,
           isTest: false,
           isRetry: false,
-          raw: JSON.stringify({ message: e.message, name: e.name }),
+          raw: JSON.stringify({ message: e?.response?.data || e.message, name: e.name }),
         })
       );
     }

@@ -18,3 +18,21 @@ export function formatNumber(num: number, digits: number) {
 
   return item ? (num / item.value).toFixed(digits).replace(rx, '$1') + item.symbol : '0';
 }
+
+export function parsePayload(payload: string) {
+  try {
+    return JSON.parse(payload);
+  } catch (e) {
+    return {};
+  }
+}
+
+const DOUBLE_QUOTE_REGEX = /^\"(.*)\"$/;
+export function cleanDoubleQuotedString(str?: string | null) {
+  if (!str) {
+    return str;
+  }
+  const match = DOUBLE_QUOTE_REGEX.exec(str);
+
+  return match ? match[1] : str;
+}

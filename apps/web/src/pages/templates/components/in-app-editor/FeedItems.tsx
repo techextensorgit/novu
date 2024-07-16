@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { Popover, useMantineTheme, Grid, ColorScheme, createStyles } from '@mantine/core';
 import { useClipboard } from '@mantine/hooks';
 import styled from '@emotion/styled';
-import * as Sentry from '@sentry/react';
+import { captureException } from '@sentry/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { showNotification } from '@mantine/notifications';
 import type { UseFormSetValue } from 'react-hook-form';
-import { IFeedEntity } from '@novu/shared';
+import type { IResponseError, IFeedEntity } from '@novu/shared';
 
 import { FeedChip } from './FeedChip';
 import { colors, shadows, Text, Tooltip, Button, Copy, Trash } from '@novu/design-system';
@@ -154,15 +154,14 @@ function DeleteBlock({
   const { colorScheme } = useMantineTheme();
   const queryClient = useQueryClient();
 
-  const { mutateAsync: deleteFeedById } = useMutation<
-    IFeedEntity[],
-    { error: string; message: string; statusCode: number },
-    string
-  >((feedId) => deleteFeed(feedId), {
-    onSuccess: (data) => {
-      queryClient.refetchQueries([QueryKeys.getFeeds]);
-    },
-  });
+  const { mutateAsync: deleteFeedById } = useMutation<IFeedEntity[], IResponseError, string>(
+    (feedId) => deleteFeed(feedId),
+    {
+      onSuccess: (data) => {
+        queryClient.refetchQueries([QueryKeys.getFeeds]);
+      },
+    }
+  );
 
   async function deleteFeedHandler(feedId: string) {
     try {
@@ -173,7 +172,7 @@ function DeleteBlock({
         color: 'green',
       });
     } catch (e: any) {
-      Sentry.captureException(e);
+      captureException(e);
 
       showNotification({
         message: e.message || 'Un-expected error occurred',

@@ -20,8 +20,13 @@ export class UpdateEnvironment {
       updatePayload.identifier = command.identifier;
     }
 
-    if (command.dns && command.dns.inboundParseDomain !== '') {
+    if (command.dns && command.dns.inboundParseDomain && command.dns.inboundParseDomain !== '') {
       updatePayload[`dns.inboundParseDomain`] = command.dns.inboundParseDomain;
+    }
+
+    if (command.bridge) {
+      updatePayload['echo.url'] = command.bridge?.url || '';
+      updatePayload['bridge.url'] = command.bridge?.url || '';
     }
 
     return await this.environmentRepository.update(

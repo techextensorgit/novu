@@ -2,12 +2,13 @@ import { FunctionComponent } from 'react';
 import { Group, Input, InputWrapperProps, Text } from '@mantine/core';
 import { useFormContext, Controller } from 'react-hook-form';
 
-import { useEnvController } from '../../../../hooks';
+import { useEnvironment } from '../../../../hooks';
 import { Checkbox, colors, Switch } from '@novu/design-system';
 import type { IForm } from '../formTypes';
 import { LabelWithTooltip } from '../../workflow/LabelWithTooltip';
 import { ChannelTitle } from '../ChannelTitle';
 import { ChannelTypeEnum } from '@novu/shared';
+import { useTemplateEditorForm } from '../TemplateEditorFormProvider';
 
 export function TemplatePreference() {
   return (
@@ -20,7 +21,8 @@ export function TemplatePreference() {
 
 export function ChannelPreference() {
   const { control } = useFormContext();
-  const { readonly } = useEnvController();
+  const { template } = useTemplateEditorForm();
+  const { readonly } = useEnvironment({ bridge: template?.bridge });
 
   return (
     <Controller
@@ -72,7 +74,8 @@ export function ChannelPreference() {
 
 export function CriticalPreference() {
   const { control } = useFormContext();
-  const { readonly } = useEnvController();
+  const { template } = useTemplateEditorForm();
+  const { readonly } = useEnvironment({ bridge: template?.bridge });
 
   return (
     <Controller

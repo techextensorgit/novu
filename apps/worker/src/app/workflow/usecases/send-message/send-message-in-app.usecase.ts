@@ -1,8 +1,15 @@
-import { Injectable } from '@nestjs/common';
-import * as Sentry from '@sentry/node';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { addBreadcrumb } from '@sentry/node';
 import { ModuleRef } from '@nestjs/core';
 
-import { MessageRepository, NotificationStepEntity, SubscriberRepository, MessageEntity } from '@novu/dal';
+import {
+  MessageRepository,
+  NotificationStepEntity,
+  SubscriberRepository,
+  MessageEntity,
+  OrganizationEntity,
+  OrganizationRepository,
+} from '@novu/dal';
 import {
   ChannelTypeEnum,
   ExecutionDetailsSourceEnum,
@@ -38,6 +45,7 @@ export class SendMessageInApp extends SendMessageBase {
   constructor(
     private invalidateCache: InvalidateCacheService,
     protected messageRepository: MessageRepository,
+    protected organizationRepository: OrganizationRepository,
     private webSocketsQueueService: WebSocketsQueueService,
     protected createLogUsecase: CreateLog,
     protected executionLogRoute: ExecutionLogRoute,
@@ -64,7 +72,7 @@ export class SendMessageInApp extends SendMessageBase {
   public async execute(command: SendMessageCommand) {
     if (!command.step.template) throw new PlatformException('Template not found');
 
-    Sentry.addBreadcrumb({
+    addBreadcrumb({
       message: 'Sending In App',
     });
 
@@ -107,25 +115,35 @@ export class SendMessageInApp extends SendMessageBase {
     }
 
     try {
-      const compiled = await this.compileInAppTemplate.execute(
-        CompileInAppTemplateCommand.create({
-          organizationId: command.organizationId,
-          environmentId: command.environmentId,
-          payload: this.getCompilePayload(command.compileContext),
-          content: step.template.content as string,
-          cta: step.template.cta,
-          userId: command.userId,
-        }),
-        this.initiateTranslations.bind(this)
-      );
-      content = compiled.content;
+      if (!command.bridgeData) {
+        const organization = await this.getOrganization(command.organizationId);
 
-      if (step.template.cta?.data?.url) {
-        step.template.cta.data.url = compiled.url;
-      }
+        const i18nInstance = await this.initiateTranslations(
+          command.environmentId,
+          command.organizationId,
+          command.payload.subscriber?.locale || organization?.defaultLocale
+        );
 
-      if (step.template.cta?.action?.buttons) {
-        step.template.cta.action.buttons = compiled.ctaButtons;
+        const compiled = await this.compileInAppTemplate.execute(
+          CompileInAppTemplateCommand.create({
+            organizationId: command.organizationId,
+            environmentId: command.environmentId,
+            payload: this.getCompilePayload(command.compileContext),
+            content: step.template.content as string,
+            cta: step.template.cta,
+            userId: command.userId,
+          }),
+          i18nInstance
+        );
+        content = compiled.content;
+
+        if (step.template.cta?.data?.url) {
+          step.template.cta.data.url = compiled.url;
+        }
+
+        if (step.template.cta?.action?.buttons) {
+          step.template.cta.action.buttons = compiled.ctaButtons;
+        }
       }
     } catch (e) {
       await this.sendErrorHandlebars(command.job, e.message);
@@ -164,6 +182,8 @@ export class SendMessageInApp extends SendMessageBase {
       }),
     });
 
+    const bridgeBody = command.bridgeData?.outputs.body;
+
     if (!oldMessage) {
       message = await this.messageRepository.create({
         _notificationId: command.notificationId,
@@ -176,7 +196,7 @@ export class SendMessageInApp extends SendMessageBase {
         cta: step.template.cta,
         _feedId: step.template._feedId,
         transactionId: command.transactionId,
-        content: this.storeContent() ? content : null,
+        content: this.storeContent() ? bridgeBody || content : null,
         payload: messagePayload,
         providerId: integration.providerId,
         templateIdentifier: command.identifier,
@@ -186,6 +206,7 @@ export class SendMessageInApp extends SendMessageBase {
             actor,
             _actorId: command.job?._actorId,
           }),
+        tags: command.tags,
       });
     }
 
@@ -249,5 +270,15 @@ export class SendMessageInApp extends SendMessageBase {
         isRetry: false,
       })
     );
+  }
+
+  protected async getOrganization(organizationId: string): Promise<OrganizationEntity | undefined> {
+    const organization = await this.organizationRepository.findById(organizationId, 'branding defaultLocale');
+
+    if (!organization) {
+      throw new NotFoundException(`Organization ${organizationId} not found`);
+    }
+
+    return organization;
   }
 }

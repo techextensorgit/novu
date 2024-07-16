@@ -1,6 +1,7 @@
-import * as mongoose from 'mongoose';
+import { WorkflowTypeEnum } from '@novu/shared';
+import mongoose from 'mongoose';
 import { Schema } from 'mongoose';
-import * as mongooseDelete from 'mongoose-delete';
+const mongooseDelete = require('mongoose-delete');
 
 import { schemaOptions } from '../schema-default.options';
 import { NotificationTemplateDBModel } from './notification-template.entity';
@@ -19,7 +20,12 @@ const variantSchemePart = {
     default: false,
   },
   uuid: Schema.Types.String,
+  stepId: Schema.Types.String,
   name: Schema.Types.String,
+  type: {
+    type: Schema.Types.String,
+    default: WorkflowTypeEnum.REGULAR,
+  },
   filters: [
     {
       isNegated: Schema.Types.Boolean,
@@ -102,6 +108,10 @@ const notificationTemplateSchema = new Schema<NotificationTemplateDBModel>(
     active: {
       type: Schema.Types.Boolean,
       default: false,
+    },
+    type: {
+      type: Schema.Types.String,
+      default: WorkflowTypeEnum.REGULAR,
     },
     draft: {
       type: Schema.Types.Boolean,
@@ -204,8 +214,10 @@ const notificationTemplateSchema = new Schema<NotificationTemplateDBModel>(
       ref: 'NotificationTemplate',
     },
     data: Schema.Types.Mixed,
+    rawData: Schema.Types.Mixed,
+    payloadSchema: Schema.Types.Mixed,
   },
-  schemaOptions
+  { ...schemaOptions, minimize: false }
 );
 
 notificationTemplateSchema.virtual('steps.template', {
@@ -238,6 +250,17 @@ notificationTemplateSchema.virtual('notificationGroup', {
 notificationTemplateSchema.index({
   _organizationId: 1,
   'triggers.identifier': 1,
+});
+
+notificationTemplateSchema.index({
+  _environmentId: 1,
+  name: 1,
+});
+
+notificationTemplateSchema.index({
+  _environmentId: 1,
+  'triggers.identifier': 1,
+  name: 1,
 });
 
 notificationTemplateSchema.plugin(mongooseDelete, { deletedAt: true, deletedBy: true, overrideMethods: 'all' });

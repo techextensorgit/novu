@@ -8,7 +8,15 @@ import { Dropdown, PlusButton, Popover } from '@novu/design-system';
 import { IBlueprintTemplate } from '../../../api/types';
 import { useSegment } from '../../../components/providers/SegmentProvider';
 import { TemplateCreationSourceEnum } from '../shared';
-import { useHoverOverItem } from '../../../hooks';
+import { useFeatureFlag, useHoverOverItem } from '../../../hooks';
+import { FrameworkProjectDropDownItem } from './FrameworkProjectWaitList';
+import { FeatureFlagsKeysEnum } from '@novu/shared';
+import { Button } from '@novu/novui';
+import { IconOutlineAdd } from '@novu/novui/icons';
+import { useDocsModal } from '../../../components/docs/useDocsModal';
+import { useEffect } from 'react';
+import { PATHS } from '../../../components/docs/docs.const';
+import { ROUTES } from '../../../constants/routes';
 
 const WIDTH = 172;
 
@@ -37,8 +45,29 @@ export const CreateWorkflowDropdown = ({
   onTemplateClick: (template: IBlueprintTemplate) => void;
   onAllTemplatesClick: React.MouseEventHandler<HTMLButtonElement>;
 }) => {
+  const isV2Enabled = useFeatureFlag(FeatureFlagsKeysEnum.IS_V2_ENABLED);
   const segment = useSegment();
   const { item: templateId, onMouseEnter, onMouseLeave } = useHoverOverItem<string>();
+  const { toggle, setPath, Component } = useDocsModal();
+
+  useEffect(() => {
+    if (!isV2Enabled) {
+      return;
+    }
+    setPath(PATHS[ROUTES.STUDIO_FLOWS] as string);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isV2Enabled]);
+
+  if (isV2Enabled) {
+    return (
+      <>
+        <Button onClick={toggle} Icon={IconOutlineAdd} variant="transparent">
+          Add workflow
+        </Button>
+        <Component />
+      </>
+    );
+  }
 
   return (
     <Dropdown
@@ -56,6 +85,22 @@ export const CreateWorkflowDropdown = ({
       }
       data-test-id="create-workflow-dropdown"
     >
+      <Dropdown.Item
+        icon={<FontAwesomeIcon icon={faFile} />}
+        onClick={(event) => {
+          segment.track('[Template Store] Click Create Notification Template', {
+            templateIdentifier: 'Blank Workflow',
+            location: TemplateCreationSourceEnum.DROPDOWN,
+          });
+
+          onBlankWorkflowClick(event);
+        }}
+        data-test-id="create-workflow-blank"
+      >
+        Blank workflow
+      </Dropdown.Item>
+      <FrameworkProjectDropDownItem />
+      <Dropdown.Divider />
       {isLoading
         ? Array.from({ length: 3 }).map((_, index) => <DropdownItemSkeleton key={index} />)
         : blueprints?.map((template, index) => (
@@ -106,21 +151,6 @@ export const CreateWorkflowDropdown = ({
         data-test-id="create-workflow-all-templates"
       >
         All templates
-      </Dropdown.Item>
-      <Dropdown.Divider />
-      <Dropdown.Item
-        icon={<FontAwesomeIcon icon={faFile} />}
-        onClick={(event) => {
-          segment.track('[Template Store] Click Create Notification Template', {
-            templateIdentifier: 'Blank Workflow',
-            location: TemplateCreationSourceEnum.DROPDOWN,
-          });
-
-          onBlankWorkflowClick(event);
-        }}
-        data-test-id="create-workflow-blank"
-      >
-        Blank workflow
       </Dropdown.Item>
     </Dropdown>
   );

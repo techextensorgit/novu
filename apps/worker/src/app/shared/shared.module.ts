@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import {
   ChangeRepository,
+  ControlVariablesRepository,
   DalService,
   EnvironmentRepository,
   ExecutionDetailsRepository,
@@ -28,7 +29,7 @@ import {
   analyticsService,
   BulkCreateExecutionDetails,
   cacheService,
-  CalculateDelayService,
+  ComputeJobWaitDurationService,
   CreateExecutionDetails,
   createNestLoggingModuleOptions,
   CreateNotificationJobs,
@@ -49,10 +50,13 @@ import {
   StorageHelperService,
   storageService,
   UpdateSubscriber,
+  UpdateSubscriberChannel,
   UpdateTenant,
+  injectRepositories,
+  ExecuteBridgeRequest,
 } from '@novu/application-generic';
 
-import * as packageJson from '../../../package.json';
+import packageJson from '../../../package.json';
 import { CreateLog } from './logs';
 import { JobTopicNameEnum } from '@novu/shared';
 import { ActiveJobsMetricService } from '../workflow/services';
@@ -81,6 +85,8 @@ const DAL_MODELS = [
   TopicSubscribersRepository,
   TenantRepository,
   WorkflowOverrideRepository,
+  ControlVariablesRepository,
+  ...injectRepositories(),
 ];
 
 const dalService = {
@@ -98,7 +104,7 @@ const PROVIDERS = [
   analyticsService,
   BulkCreateExecutionDetails,
   cacheService,
-  CalculateDelayService,
+  ComputeJobWaitDurationService,
   CreateExecutionDetails,
   CreateLog,
   CreateNotificationJobs,
@@ -114,12 +120,14 @@ const PROVIDERS = [
   StorageHelperService,
   storageService,
   UpdateSubscriber,
+  UpdateSubscriberChannel,
   UpdateTenant,
   GetTenant,
   CreateTenant,
   ProcessTenant,
   ...DAL_MODELS,
   ActiveJobsMetricService,
+  ExecuteBridgeRequest,
 ];
 
 @Module({

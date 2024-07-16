@@ -1,7 +1,7 @@
 /**
  * The required format for a boolean flag key.
  */
-export type IFlagKey = `IS_${Uppercase<string>}_ENABLED`;
+export type IFlagKey = `IS_${Uppercase<string>}_ENABLED` | `IS_${Uppercase<string>}_DISABLED`;
 
 /**
  * Helper function to test that enum keys and values match correct format.
@@ -16,5 +16,5 @@ export type IFlagKey = `IS_${Uppercase<string>}_ENABLED`;
  * @param testEnum - the Enum to type check
  */
 export function testFlagEnumValidity<TEnum extends IFlags, IFlags = Record<IFlagKey, IFlagKey>>(
-  testEnum: TEnum & Record<Exclude<keyof TEnum, keyof IFlags>, ['Key must follow `IFlagKey` format']>
+  _: TEnum & Record<Exclude<keyof TEnum, keyof IFlags>, ['Key must follow `IFlagKey` format']>
 ) {}

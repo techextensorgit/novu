@@ -12,8 +12,6 @@ import { UserSession } from '@novu/testing';
 
 const axiosInstance = axios.create();
 
-const ORIGINAL_IS_MULTI_PROVIDER_CONFIGURATION_ENABLED = process.env.IS_MULTI_PROVIDER_CONFIGURATION_ENABLED;
-
 describe('Trigger event - Send Push Notification - /v1/events/trigger (POST)', () => {
   let session: UserSession;
   let template: NotificationTemplateEntity;
@@ -23,8 +21,6 @@ describe('Trigger event - Send Push Notification - /v1/events/trigger (POST)', (
   const messageRepository = new MessageRepository();
 
   before(async () => {
-    process.env.IS_MULTI_PROVIDER_CONFIGURATION_ENABLED = 'true';
-
     session = new UserSession();
     await session.initialize();
 
@@ -38,10 +34,6 @@ describe('Trigger event - Send Push Notification - /v1/events/trigger (POST)', (
         },
       ],
     });
-  });
-
-  after(() => {
-    process.env.IS_MULTI_PROVIDER_CONFIGURATION_ENABLED = ORIGINAL_IS_MULTI_PROVIDER_CONFIGURATION_ENABLED;
   });
 
   describe('Multiple providers active', () => {
@@ -87,7 +79,7 @@ describe('Trigger event - Send Push Notification - /v1/events/trigger (POST)', (
         _environmentId: session.environment._id,
       });
 
-      expect(executionDetails.length).to.equal(5);
+      expect(executionDetails.length).to.equal(8);
       const noActiveChannel = executionDetails.find((ex) => ex.detail === DetailEnum.SUBSCRIBER_NO_ACTIVE_CHANNEL);
       expect(noActiveChannel).to.be.ok;
       expect(noActiveChannel?.providerId).to.equal('fcm');
@@ -115,7 +107,7 @@ describe('Trigger event - Send Push Notification - /v1/events/trigger (POST)', (
         _environmentId: session.environment._id,
       });
 
-      expect(executionDetails.length).to.equal(6);
+      expect(executionDetails.length).to.equal(9);
       const fcm = executionDetails.find(
         (ex) => ex.detail === DetailEnum.PUSH_MISSING_DEVICE_TOKENS && ex.providerId === PushProviderIdEnum.FCM
       );
@@ -148,7 +140,7 @@ describe('Trigger event - Send Push Notification - /v1/events/trigger (POST)', (
         _environmentId: session.environment._id,
       });
 
-      expect(executionDetails.length).to.equal(8);
+      expect(executionDetails.length).to.equal(11);
       const fcmMessageCreated = executionDetails.find(
         (ex) =>
           ex.detail === `${DetailEnum.MESSAGE_CREATED}: ${PushProviderIdEnum.FCM}` &&

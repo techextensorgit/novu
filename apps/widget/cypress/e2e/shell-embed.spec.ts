@@ -13,6 +13,8 @@ describe('Shell Embed', function () {
       token: this.session.token,
       subscriberId: this.session.subscriber.subscriberId,
       count: 5,
+      organizationId: this.session.organization._id,
+      environmentId: this.session.environment._id,
     });
 
     cy.get('#notification-bell').click();
@@ -58,6 +60,8 @@ describe('Shell Embed', function () {
       token: this.session.token,
       subscriberId: this.session.subscriber.subscriberId,
       count: 5,
+      organizationId: this.session.organization._id,
+      environmentId: this.session.environment._id,
     });
     cy.get('#notification-bell .ntf-counter').should('be.visible');
   });
@@ -68,6 +72,8 @@ describe('Shell Embed', function () {
       token: this.session.token,
       subscriberId: this.session.subscriber.subscriberId,
       count: 5,
+      organizationId: this.session.organization._id,
+      environmentId: this.session.environment._id,
     });
 
     cy.get('#notification-bell').click();
@@ -88,6 +94,8 @@ describe('Shell Embed', function () {
       token: this.session.token,
       subscriberId: this.session.subscriber.subscriberId,
       count: 5,
+      organizationId: this.session.organization._id,
+      environmentId: this.session.environment._id,
     });
 
     cy.get('#notification-bell').click();
@@ -101,11 +109,7 @@ describe('Shell Embed', function () {
           .first()
           .find('[data-test-id="notification-dots-button"]')
           .click();
-        cy.wrap(body)
-          .find('[data-test-id="notification-list-item"]')
-          .first()
-          .find('[data-test-id="notification-mark-as-read"]')
-          .click();
+        cy.wrap(body).find('[data-test-id="notification-mark-as-read"]').first().click();
         cy.wait('@fetchUnseenCount');
       });
 
@@ -126,6 +130,8 @@ describe('Shell Embed', function () {
       token: this.session.token,
       subscriberId: this.session.subscriber.subscriberId,
       count: 5,
+      organizationId: this.session.organization._id,
+      environmentId: this.session.environment._id,
     });
 
     cy.get('#notification-bell').click();
@@ -161,6 +167,7 @@ describe('Shell Embed - Seen Read', function () {
       count: 5,
       organizationId: this.session.organization._id,
       templateId: this.session.templates[0]._id,
+      environmentId: this.session.environment._id,
     });
 
     cy.waitForNetworkIdle(500);
@@ -190,6 +197,7 @@ describe('Shell Embed - Seen Read', function () {
       subscriberId: this.session.subscriber.subscriberId,
       count: 5,
       organizationId: this.session.organization._id,
+      environmentId: this.session.environment._id,
     });
     cy.intercept('**/notifications/feed?page=0&seen=true').as('seen');
     cy.intercept('**/notifications/feed?page=0&seen=false').as('unseen');
@@ -217,6 +225,7 @@ describe('Shell Embed - Seen Read', function () {
       count: 5,
       organizationId: this.session.organization._id,
       templateId: this.session.templates[0]._id,
+      environmentId: this.session.environment._id,
     });
 
     cy.get('#notification-bell').click();

@@ -18,4 +18,6 @@ export interface IOrganizationEntity {
   productUseCases?: ProductUseCases;
   createdAt: string;
   updatedAt: string;
+  externalId?: string;
+  createdBy?: string;
 }

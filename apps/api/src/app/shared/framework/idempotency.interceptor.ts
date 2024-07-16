@@ -1,22 +1,21 @@
 import {
-  Injectable,
-  NestInterceptor,
-  ExecutionContext,
+  BadRequestException,
   CallHandler,
-  Logger,
+  ConflictException,
+  ExecutionContext,
   HttpException,
+  Injectable,
   InternalServerErrorException,
+  Logger,
+  NestInterceptor,
   ServiceUnavailableException,
   UnprocessableEntityException,
-  BadRequestException,
-  ConflictException,
 } from '@nestjs/common';
-import { CacheService, GetFeatureFlagCommand, GetFeatureFlag, Instrument } from '@novu/application-generic';
+import { CacheService, GetFeatureFlag, GetFeatureFlagCommand, Instrument } from '@novu/application-generic';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { createHash } from 'crypto';
-import { ApiAuthSchemeEnum, FeatureFlagsKeysEnum, IJwtPayload } from '@novu/shared';
-import { HttpResponseHeaderKeysEnum } from './types';
+import { ApiAuthSchemeEnum, HttpResponseHeaderKeysEnum, FeatureFlagsKeysEnum, UserSessionData } from '@novu/shared';
 
 const LOG_CONTEXT = 'IdempotencyInterceptor';
 const IDEMPOTENCY_CACHE_TTL = 60 * 60 * 24; //24h
@@ -112,7 +111,7 @@ export class IdempotencyInterceptor implements NestInterceptor {
     return request.headers[HttpResponseHeaderKeysEnum.IDEMPOTENCY_KEY.toLocaleLowerCase()];
   }
 
-  private getReqUser(context: ExecutionContext): IJwtPayload {
+  private getReqUser(context: ExecutionContext): UserSessionData {
     const req = context.switchToHttp().getRequest();
 
     return req.user;

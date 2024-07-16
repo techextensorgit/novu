@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { EmailContentCard } from './EmailContentCard';
-import { useAuthContext } from '../../../../components/providers/AuthProvider';
+import { useAuth } from '../../../../hooks/useAuth';
 import { When } from '../../../../components/utils/When';
-import { Preview } from '../../editor/Preview';
+import { EmailPreview } from '../../../../components/workflow/preview';
 import { EditorPreviewSwitch } from '../EditorPreviewSwitch';
 import { Grid, SegmentedControl, useMantineTheme } from '@mantine/core';
 import { TestSendEmail } from './TestSendEmail';
 import { colors } from '@novu/design-system';
-import { MobileIcon } from '../../editor/PreviewSegment/MobileIcon';
-import { WebIcon } from '../../editor/PreviewSegment/WebIcon';
+import { MobileIcon } from '../../../../components/workflow/preview/email/PreviewSegment/MobileIcon';
+import { WebIcon } from '../../../../components/workflow/preview/email/PreviewSegment/WebIcon';
 import { useHotkeys } from '@mantine/hooks';
 import { VariablesManagement } from './variables-management/VariablesManagement';
 import {
@@ -16,25 +16,29 @@ import {
   useGetPrimaryIntegration,
   useIntegrationLimit,
   useVariablesManager,
-  useEnvController,
+  useEnvironment,
 } from '../../../../hooks';
-import { VariableManagerModal } from '../VariableManagerModal';
+import { EditVariablesModal } from '../EditVariablesModal';
 import { StepSettings } from '../../workflow/SideBar/StepSettings';
-import { TranslateProductLead } from '../TranslateProductLead';
 import { ChannelTypeEnum } from '@novu/shared';
 import { LackIntegrationAlert } from '../LackIntegrationAlert';
 import { useStepFormPath } from '../../hooks/useStepFormPath';
+import { useTemplateEditorForm } from '../TemplateEditorFormProvider';
 
 export enum ViewEnum {
   EDIT = 'Edit',
   PREVIEW = 'Preview',
+  CODE = 'Code',
+  CONTROLS = 'Controls',
   TEST = 'Test',
 }
 const templateFields = ['content', 'htmlContent', 'subject', 'preheader', 'senderName'];
 
 export function EmailMessagesCards() {
-  const { currentOrganization } = useAuthContext();
-  const [view, setView] = useState<ViewEnum>(ViewEnum.EDIT);
+  const { currentOrganization } = useAuth();
+  const { template } = useTemplateEditorForm();
+  const { environment, bridge } = useEnvironment({ bridge: template?.bridge });
+  const [view, setView] = useState<ViewEnum>(bridge ? ViewEnum.PREVIEW : ViewEnum.EDIT);
   const [preview, setPreview] = useState<'mobile' | 'web'>('web');
   const theme = useMantineTheme();
   const [modalOpen, setModalOpen] = useState(false);
@@ -46,7 +50,6 @@ export function EmailMessagesCards() {
   const { primaryIntegration } = useGetPrimaryIntegration({
     channelType: ChannelTypeEnum.EMAIL,
   });
-  const { environment } = useEnvController();
   const stepFormPath = useStepFormPath();
 
   useHotkeys([
@@ -89,7 +92,7 @@ export function EmailMessagesCards() {
         {hasActiveIntegration && !primaryIntegration && (
           <LackIntegrationAlert
             channelType={ChannelTypeEnum.EMAIL}
-            text={`You have multiple provider instances for Email in the ${environment?.name} environment. 
+            text={`You have multiple provider instances for Email in the ${environment?.name} environment.
             Please select the primary instance.`}
             isPrimaryMissing
           />
@@ -97,7 +100,7 @@ export function EmailMessagesCards() {
         <StepSettings />
         <Grid m={0} mt={24}>
           <Grid.Col p={0} mr={20} span={7}>
-            <EditorPreviewSwitch view={view} setView={setView} />
+            <EditorPreviewSwitch view={view} setView={setView} bridge={bridge} />
           </Grid.Col>
           <Grid.Col p={0} span={2}>
             <When truthy={view === ViewEnum.PREVIEW}>
@@ -145,21 +148,16 @@ export function EmailMessagesCards() {
         </Grid>
       </div>
       <When truthy={view === ViewEnum.PREVIEW}>
-        <Preview view={preview} />
+        <EmailPreview view={preview} />
       </When>
       <When truthy={view === ViewEnum.TEST}>
-        <TestSendEmail isIntegrationActive={hasActiveIntegration} />
+        <TestSendEmail bridge={bridge} isIntegrationActive={hasActiveIntegration} />
       </When>
       <When truthy={view === ViewEnum.EDIT}>
         <Grid grow>
           <Grid.Col span={9}>
-            <EmailContentCard organization={currentOrganization} />
-            <TranslateProductLead
-              id="translate-email-editor"
-              style={{
-                marginTop: 32,
-              }}
-            />
+            {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
+            <EmailContentCard organization={currentOrganization!} />
           </Grid.Col>
           <Grid.Col
             span={3}
@@ -168,6 +166,7 @@ export function EmailMessagesCards() {
             }}
           >
             <VariablesManagement
+              bridge={bridge}
               path={`${stepFormPath}.template.variables`}
               openVariablesModal={() => {
                 setModalOpen(true);
@@ -176,7 +175,7 @@ export function EmailMessagesCards() {
           </Grid.Col>
         </Grid>
       </When>
-      <VariableManagerModal setOpen={setModalOpen} open={modalOpen} variablesArray={variablesArray} />
+      <EditVariablesModal setOpen={setModalOpen} open={modalOpen} variablesArray={variablesArray} />
     </>
   );
 }

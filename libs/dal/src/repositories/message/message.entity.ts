@@ -31,10 +31,15 @@ export class MessageEntity {
 
   template?: NotificationTemplateEntity;
 
-  templateIdentifier?: string;
+  templateIdentifier: string;
 
-  createdAt?: string;
-  expireAt?: string;
+  createdAt: string;
+
+  expireAt: string;
+
+  updatedAt: string;
+
+  archivedAt?: string;
 
   content: string | IEmailBlock[];
 
@@ -48,6 +53,10 @@ export class MessageEntity {
 
   read: boolean;
 
+  archived: boolean;
+
+  deleted: boolean;
+
   email?: string;
 
   phone?: string;
@@ -56,7 +65,7 @@ export class MessageEntity {
 
   directWebhookUrl?: string;
 
-  providerId?: string;
+  providerId: string;
 
   deviceTokens?: string[];
 
@@ -88,10 +97,12 @@ export class MessageEntity {
   actor?: IActor;
 
   _actorId?: string;
+
+  tags?: string[];
 }
 
 export type MessageDBModel = ChangePropsValueType<
-  Omit<MessageEntity, 'createdAt'>,
+  MessageEntity,
   | '_templateId'
   | '_environmentId'
   | '_messageTemplateId'
@@ -101,6 +112,4 @@ export type MessageDBModel = ChangePropsValueType<
   | '_subscriberId'
   | '_feedId'
   | '_actorId'
-> & {
-  createdAt?: Date;
-};
+>;

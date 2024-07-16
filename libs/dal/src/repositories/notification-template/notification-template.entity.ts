@@ -15,6 +15,8 @@ import {
   INotificationTemplate,
   INotificationTemplateStep,
   IMessageTemplate,
+  ControlsDto,
+  WorkflowTypeEnum,
 } from '@novu/shared';
 
 import { NotificationGroupEntity } from '../notification-group';
@@ -70,6 +72,12 @@ export class NotificationTemplateEntity implements INotificationTemplate {
   blueprintId?: string;
 
   data?: NotificationTemplateCustomData;
+
+  type?: WorkflowTypeEnum;
+
+  rawData?: any;
+
+  payloadSchema?: any;
 }
 
 export type NotificationTemplateDBModel = ChangePropsValueType<
@@ -96,6 +104,8 @@ export class StepVariantEntity implements IStepVariant {
 
   uuid?: string;
 
+  stepId?: string;
+
   name?: string;
 
   _templateId: string;
@@ -116,6 +126,10 @@ export class StepVariantEntity implements IStepVariant {
   metadata?: IWorkflowStepMetadata;
 
   shouldStopOnFail?: boolean;
+
+  bridgeUrl?: string;
+
+  controlVariables?: ControlsDto;
 }
 
 export class NotificationStepEntity extends StepVariantEntity implements INotificationTemplateStep {

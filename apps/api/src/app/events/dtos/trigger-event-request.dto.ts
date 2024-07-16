@@ -12,10 +12,11 @@ import {
 import { Type } from 'class-transformer';
 import { ApiExtraModels, ApiProperty, ApiPropertyOptional, getSchemaPath } from '@nestjs/swagger';
 import {
+  ControlsDto,
   TopicKey,
-  TriggerRecipientSubscriber,
   TriggerRecipients,
   TriggerRecipientsTypeEnum,
+  TriggerRecipientSubscriber,
   TriggerTenantContext,
 } from '@novu/shared';
 import { CreateSubscriberRequestDto } from '../../subscribers/dtos';
@@ -39,6 +40,7 @@ export class TriggerEventRequestDto {
   @ApiProperty({
     description:
       'The trigger identifier of the workflow you wish to send. This identifier can be found on the workflow page.',
+    example: 'workflow_identifier',
   })
   @IsString()
   @IsDefined()
@@ -60,6 +62,10 @@ export class TriggerEventRequestDto {
   @IsOptional()
   payload?: Record<string, unknown>;
 
+  @IsString()
+  @IsOptional()
+  bridgeUrl?: string;
+
   @ApiPropertyOptional({
     description: 'This could be used to override provider specific configurations',
     example: {
@@ -76,21 +82,22 @@ export class TriggerEventRequestDto {
 
   @ApiProperty({
     description: 'The recipients list of people who will receive the notification.',
-    oneOf: [
-      {
-        $ref: getSchemaPath(SubscriberPayloadDto),
-      },
-      {
-        type: 'string',
-        description: 'Unique identifier of a subscriber in your systems',
-        example: 'SUBSCRIBER_ID',
-      },
-      {
-        $ref: getSchemaPath(TopicPayloadDto),
-      },
-    ],
-    type: [String, SubscriberPayloadDto, TopicPayloadDto],
-    isArray: true,
+    type: 'array',
+    items: {
+      oneOf: [
+        {
+          $ref: getSchemaPath(SubscriberPayloadDto),
+        },
+        {
+          type: 'string',
+          description: 'Unique identifier of a subscriber in your systems',
+          example: 'SUBSCRIBER_ID',
+        },
+        {
+          $ref: getSchemaPath(TopicPayloadDto),
+        },
+      ],
+    },
   })
   @IsDefined()
   to: TriggerRecipients;
@@ -119,7 +126,7 @@ export class TriggerEventRequestDto {
 
   @ApiProperty({
     description: `It is used to specify a tenant context during trigger event.
-    If a new tenant object is provided, we will create a new tenant.
+    Existing tenants will be updated with the provided details.
     `,
     oneOf: [
       { type: 'string', description: 'Unique identifier of a tenant in your system' },
@@ -131,6 +138,8 @@ export class TriggerEventRequestDto {
   @ValidateNested()
   @Type(() => TenantPayloadDto)
   tenant?: TriggerTenantContext;
+
+  controls?: ControlsDto;
 }
 
 export class BulkTriggerEventDto {

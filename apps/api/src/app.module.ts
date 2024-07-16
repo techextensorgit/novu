@@ -3,9 +3,8 @@ import { RavenInterceptor, RavenModule } from 'nest-raven';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { Type } from '@nestjs/common/interfaces/type.interface';
 import { ForwardReference } from '@nestjs/common/interfaces/modules/forward-reference.interface';
-import * as packageJson from '../package.json';
-import { TracingModule } from '@novu/application-generic';
-
+import packageJson from '../package.json';
+import { ProfilingModule, TracingModule } from '@novu/application-generic';
 import { SharedModule } from './app/shared/shared.module';
 import { UserModule } from './app/user/user.module';
 import { AuthModule } from './app/auth/auth.module';
@@ -37,45 +36,65 @@ import { IdempotencyInterceptor } from './app/shared/framework/idempotency.inter
 import { WorkflowOverridesModule } from './app/workflow-overrides/workflow-overrides.module';
 import { ApiRateLimitInterceptor } from './app/rate-limiting/guards';
 import { RateLimitingModule } from './app/rate-limiting/rate-limiting.module';
+import { ProductFeatureInterceptor } from './app/shared/interceptors/product-feature.interceptor';
+import { AnalyticsModule } from './app/analytics/analytics.module';
+import { InboxModule } from './app/inbox/inbox.module';
+import { isClerkEnabled } from '@novu/shared';
+import { LegacyEEAuthModule } from './app/auth/legacy-ee-auth/auth.module';
+import { BridgeModule } from './app/bridge/bridge.module';
 
 const enterpriseImports = (): Array<Type | DynamicModule | Promise<DynamicModule> | ForwardReference> => {
   const modules: Array<Type | DynamicModule | Promise<DynamicModule> | ForwardReference> = [];
-  try {
-    if (process.env.NOVU_ENTERPRISE === 'true' || process.env.CI_EE_TEST === 'true') {
-      if (require('@novu/ee-auth')?.EEAuthModule) {
-        modules.push(require('@novu/ee-auth')?.EEAuthModule);
-      }
-      if (require('@novu/ee-translation')?.EnterpriseTranslationModule) {
-        modules.push(require('@novu/ee-translation')?.EnterpriseTranslationModule);
-      }
-      if (require('@novu/ee-billing')?.BillingModule) {
-        modules.push(require('@novu/ee-billing')?.BillingModule.forRoot());
-      }
+  if (process.env.NOVU_ENTERPRISE === 'true' || process.env.CI_EE_TEST === 'true') {
+    // TODO: remove after Clerk replaces legacy EE auth
+    if (process.env.CLERK_ENABLED !== 'true') {
+      modules.push(LegacyEEAuthModule);
     }
-  } catch (e) {
-    Logger.error(e, `Unexpected error while importing enterprise modules`, 'EnterpriseImport');
+
+    if (require('@novu/ee-translation')?.EnterpriseTranslationModule) {
+      modules.push(require('@novu/ee-translation')?.EnterpriseTranslationModule);
+    }
+    if (require('@novu/ee-billing')?.BillingModule) {
+      modules.push(require('@novu/ee-billing')?.BillingModule.forRoot());
+    }
+  }
+
+  if (isClerkEnabled()) {
+    if (require('@novu/ee-auth')?.EEAuthModule) {
+      modules.push(require('@novu/ee-auth')?.EEAuthModule);
+    }
   }
 
   return modules;
 };
 
+const enterpriseQuotaThrottlerInterceptor =
+  (process.env.NOVU_ENTERPRISE === 'true' || process.env.CI_EE_TEST === 'true') &&
+  require('@novu/ee-billing')?.QuotaThrottlerInterceptor
+    ? [
+        {
+          provide: APP_INTERCEPTOR,
+          useClass: require('@novu/ee-billing')?.QuotaThrottlerInterceptor,
+        },
+      ]
+    : [];
+
 const baseModules: Array<Type | DynamicModule | Promise<DynamicModule> | ForwardReference> = [
-  InboundParseModule,
-  OrganizationModule,
-  SharedModule,
-  UserModule,
   AuthModule,
+  InboundParseModule,
+  SharedModule,
   HealthModule,
   EnvironmentsModule,
   ExecutionDetailsModule,
   WorkflowModule,
   EventsModule,
   WidgetsModule,
+  InboxModule,
   NotificationModule,
-  StorageModule,
   NotificationGroupsModule,
-  InvitesModule,
   ContentTemplatesModule,
+  OrganizationModule,
+  UserModule,
   IntegrationModule,
   ChangeModule,
   SubscribersModule,
@@ -88,10 +107,18 @@ const baseModules: Array<Type | DynamicModule | Promise<DynamicModule> | Forward
   TenantModule,
   WorkflowOverridesModule,
   RateLimitingModule,
-  TracingModule.register(packageJson.name),
+  WidgetsModule,
+  ProfilingModule.register(packageJson.name),
+  TracingModule.register(packageJson.name, packageJson.version),
+  BridgeModule,
 ];
 
 const enterpriseModules = enterpriseImports();
+
+if (!isClerkEnabled()) {
+  const communityModules = [StorageModule, InvitesModule];
+  baseModules.push(...communityModules);
+}
 
 const modules = baseModules.concat(enterpriseModules);
 
@@ -100,6 +127,11 @@ const providers: Provider[] = [
     provide: APP_INTERCEPTOR,
     useClass: ApiRateLimitInterceptor,
   },
+  {
+    provide: APP_INTERCEPTOR,
+    useClass: ProductFeatureInterceptor,
+  },
+  ...enterpriseQuotaThrottlerInterceptor,
   {
     provide: APP_INTERCEPTOR,
     useClass: IdempotencyInterceptor,
@@ -121,6 +153,10 @@ if (process.env.SENTRY_DSN) {
       user: ['_id', 'firstName', 'organizationId', 'environmentId', 'roles', 'domain'],
     }),
   });
+}
+
+if (process.env.SEGMENT_TOKEN) {
+  modules.push(AnalyticsModule);
 }
 
 if (process.env.NODE_ENV === 'test') {

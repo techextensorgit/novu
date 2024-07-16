@@ -3,8 +3,9 @@ import { TextInput, useMantineColorScheme } from '@mantine/core';
 import { Controller, useFormContext } from 'react-hook-form';
 import { colors } from '@novu/design-system';
 
-import { useEnvController } from '../../../hooks';
+import { useEnvironment } from '../../../hooks';
 import type { IForm } from './formTypes';
+import { useTemplateEditorForm } from './TemplateEditorFormProvider';
 
 export const StepNameInput = ({
   path,
@@ -20,7 +21,8 @@ export const StepNameInput = ({
     formState: { errors, isSubmitted },
   } = useFormContext<IForm>();
 
-  const { readonly } = useEnvController();
+  const { template } = useTemplateEditorForm();
+  const { readonly } = useEnvironment({ bridge: template?.bridge });
   const showErrors = isSubmitted && errors?.steps;
   const { colorScheme } = useMantineColorScheme();
 

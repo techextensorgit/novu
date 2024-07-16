@@ -3,9 +3,9 @@ import { Center, Loader } from '@mantine/core';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { IUserEntity } from '@novu/shared';
-
+import type { IResponseError, IUserEntity } from '@novu/shared';
 import { colors, shadows, Title, Text, Button } from '@novu/design-system';
+
 import { updateUserOnBoarding } from '../../../api/user';
 import { getBlueprintTemplateById } from '../../../api/notification-templates';
 import { errorMessage } from '../../../utils/notifications';
@@ -13,7 +13,7 @@ import { When } from '../../../components/utils/When';
 import { useSegment } from '../../../components/providers/SegmentProvider';
 import { useCreateTemplateFromBlueprint } from '../../../api/hooks';
 import { TemplateCreationSourceEnum } from '../shared';
-import { ROUTES } from '../../../constants/routes.enum';
+import { ROUTES } from '../../../constants/routes';
 
 export function BlueprintModal() {
   const theme = useMantineTheme();
@@ -29,11 +29,9 @@ export function BlueprintModal() {
     localStorage.removeItem('blueprintId');
   };
 
-  const { mutateAsync: updateOnBoardingStatus } = useMutation<
-    IUserEntity,
-    { error: string; message: string; statusCode: number },
-    { showOnBoarding: boolean }
-  >(({ showOnBoarding }) => updateUserOnBoarding(showOnBoarding));
+  const { mutateAsync: updateOnBoardingStatus } = useMutation<IUserEntity, IResponseError, { showOnBoarding: boolean }>(
+    ({ showOnBoarding }) => updateUserOnBoarding(showOnBoarding)
+  );
 
   async function disableOnboarding() {
     await updateOnBoardingStatus({ showOnBoarding: false });

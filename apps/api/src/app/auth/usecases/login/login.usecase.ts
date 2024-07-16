@@ -1,4 +1,4 @@
-import * as bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { differenceInMinutes, parseISO } from 'date-fns';
 import { UserRepository, UserEntity, OrganizationRepository } from '@novu/dal';
@@ -6,7 +6,7 @@ import { AnalyticsService, AuthService, createHash } from '@novu/application-gen
 
 import { LoginCommand } from './login.command';
 import { ApiException } from '../../../shared/exceptions/api.exception';
-import { normalizeEmail } from '../../../shared/helpers/email-normalization.service';
+import { normalizeEmail } from '@novu/shared';
 
 @Injectable()
 export class Login {
@@ -41,7 +41,8 @@ export class Login {
       throw new UnauthorizedException(`Account blocked, Please try again after ${blockedMinutesLeft} minutes`);
     }
 
-    if (!user.password) throw new ApiException('OAuth user login attempt');
+    // TODO: Trigger a password reset flow automatically for existing OAuth users instead of throwing an error
+    if (!user.password) throw new ApiException('Please sign in using Github.');
 
     const isMatching = await bcrypt.compare(command.password, user.password);
     if (!isMatching) {

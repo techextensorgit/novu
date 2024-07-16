@@ -2,11 +2,20 @@
 import { ClassConstructor, plainToInstance } from 'class-transformer';
 import { addDays } from 'date-fns';
 import {
-  MESSAGE_GENERIC_RETENTION_DAYS,
-  MESSAGE_IN_APP_RETENTION_DAYS,
-  NOTIFICATION_RETENTION_DAYS,
+  DEFAULT_MESSAGE_GENERIC_RETENTION_DAYS,
+  DEFAULT_MESSAGE_IN_APP_RETENTION_DAYS,
+  DEFAULT_NOTIFICATION_RETENTION_DAYS,
 } from '@novu/shared';
-import { Model, Types, ProjectionType, FilterQuery, UpdateQuery, QueryOptions } from 'mongoose';
+import {
+  Model,
+  Types,
+  ProjectionType,
+  FilterQuery,
+  UpdateQuery,
+  QueryOptions,
+  Query,
+  QueryWithHelpers,
+} from 'mongoose';
 import { DalException } from '../shared';
 
 export class BaseRepository<T_DBModel, T_MappedEntity, T_Enforcement> {
@@ -18,6 +27,15 @@ export class BaseRepository<T_DBModel, T_MappedEntity, T_Enforcement> {
 
   public static createObjectId() {
     return new Types.ObjectId().toString();
+  }
+
+  public static isInternalId(id: string) {
+    const isValidMongoId = Types.ObjectId.isValid(id);
+    if (!isValidMongoId) {
+      return false;
+    }
+
+    return id === new Types.ObjectId(id).toString();
   }
 
   protected convertObjectIdToString(value: Types.ObjectId): string {
@@ -92,6 +110,111 @@ export class BaseRepository<T_DBModel, T_MappedEntity, T_Enforcement> {
     }
   }
 
+  private async createCursorBasedOrStatement({
+    isSortDesc,
+    paginateField,
+    after,
+    queryOrStatements,
+  }: {
+    isSortDesc: boolean;
+    paginateField?: string;
+    after: string;
+    queryOrStatements?: object[];
+  }): Promise<FilterQuery<T_DBModel>[]> {
+    const afterItem = await this.MongooseModel.findOne({ _id: after });
+    if (!afterItem) {
+      throw new DalException('Invalid after id');
+    }
+
+    let cursorOrStatements: FilterQuery<T_DBModel>[] = [];
+    let enhancedCursorOrStatements: FilterQuery<T_DBModel>[] = [];
+    if (paginateField && afterItem[paginateField]) {
+      const paginatedFieldValue = afterItem[paginateField];
+      cursorOrStatements = [
+        { [paginateField]: isSortDesc ? { $lt: paginatedFieldValue } : { $gt: paginatedFieldValue } } as any,
+        { [paginateField]: { $eq: paginatedFieldValue }, _id: isSortDesc ? { $lt: after } : { $gt: after } },
+      ];
+      const firstStatement = (queryOrStatements ?? []).map((item) => ({
+        ...item,
+        ...cursorOrStatements[0],
+      }));
+      const secondStatement = (queryOrStatements ?? []).map((item) => ({
+        ...item,
+        ...cursorOrStatements[1],
+      }));
+      enhancedCursorOrStatements = [...firstStatement, ...secondStatement];
+    } else {
+      cursorOrStatements = [{ _id: isSortDesc ? { $lt: after } : { $gt: after } }];
+      const firstStatement = (queryOrStatements ?? []).map((item) => ({
+        ...item,
+        ...cursorOrStatements[0],
+      }));
+      enhancedCursorOrStatements = [...firstStatement];
+    }
+
+    return enhancedCursorOrStatements.length > 0 ? enhancedCursorOrStatements : cursorOrStatements;
+  }
+
+  async cursorPagination({
+    query,
+    limit,
+    offset,
+    after,
+    sort,
+    paginateField,
+    enhanceQuery,
+  }: {
+    query?: FilterQuery<T_DBModel> & T_Enforcement;
+    limit: number;
+    offset: number;
+    after?: string;
+    sort?: any;
+    paginateField?: string;
+    enhanceQuery?: (query: QueryWithHelpers<Array<T_DBModel>, T_DBModel>) => any;
+  }): Promise<{ data: T_MappedEntity[]; hasMore: boolean }> {
+    const isAfterDefined = typeof after !== 'undefined';
+    const sortKeys = Object.keys(sort ?? {});
+    const isSortDesc = sortKeys.length > 0 && sort[sortKeys[0]] === -1;
+
+    let findQueryBuilder = this.MongooseModel.find({
+      ...query,
+    });
+    if (isAfterDefined) {
+      const orStatements = await this.createCursorBasedOrStatement({
+        isSortDesc,
+        paginateField,
+        after,
+        queryOrStatements: query?.$or,
+      });
+
+      findQueryBuilder = this.MongooseModel.find({
+        ...query,
+        $or: orStatements,
+      });
+    }
+
+    findQueryBuilder.sort(sort).limit(limit + 1);
+    if (!isAfterDefined) {
+      findQueryBuilder.skip(offset);
+    }
+
+    if (enhanceQuery) {
+      findQueryBuilder = enhanceQuery(findQueryBuilder);
+    }
+
+    const messages = await findQueryBuilder.exec();
+
+    const hasMore = messages.length > limit;
+    if (hasMore) {
+      messages.pop();
+    }
+
+    return {
+      data: this.mapEntities(messages),
+      hasMore,
+    };
+  }
+
   private calcExpireDate(modelName: string, data: FilterQuery<T_DBModel> & T_Enforcement) {
     let startDate: Date = new Date();
     if (data.expireAt) {
@@ -101,12 +224,21 @@ export class BaseRepository<T_DBModel, T_MappedEntity, T_Enforcement> {
     switch (modelName) {
       case 'Message':
         if (data.channel === 'in_app') {
-          return addDays(startDate, MESSAGE_IN_APP_RETENTION_DAYS);
+          return addDays(
+            startDate,
+            Number(process.env.MESSAGE_IN_APP_RETENTION_DAYS || DEFAULT_MESSAGE_IN_APP_RETENTION_DAYS)
+          );
         } else {
-          return addDays(startDate, MESSAGE_GENERIC_RETENTION_DAYS);
+          return addDays(
+            startDate,
+            Number(process.env.MESSAGE_GENERIC_RETENTION_DAYS || DEFAULT_MESSAGE_GENERIC_RETENTION_DAYS)
+          );
         }
       case 'Notification':
-        return addDays(startDate, NOTIFICATION_RETENTION_DAYS);
+        return addDays(
+          startDate,
+          Number(process.env.NOTIFICATION_RETENTION_DAYS || DEFAULT_NOTIFICATION_RETENTION_DAYS)
+        );
       default:
         return null;
     }
@@ -156,6 +288,21 @@ export class BaseRepository<T_DBModel, T_MappedEntity, T_Enforcement> {
     const saved = await this.MongooseModel.updateMany(query, updateBody, {
       multi: true,
     });
+
+    return {
+      matched: saved.matchedCount,
+      modified: saved.modifiedCount,
+    };
+  }
+
+  async updateOne(
+    query: FilterQuery<T_DBModel> & T_Enforcement,
+    updateBody: UpdateQuery<T_DBModel>
+  ): Promise<{
+    matched: number;
+    modified: number;
+  }> {
+    const saved = await this.MongooseModel.updateOne(query, updateBody);
 
     return {
       matched: saved.matchedCount,

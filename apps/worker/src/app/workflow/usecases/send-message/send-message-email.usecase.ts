@@ -1,5 +1,7 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
+import inlineCss from 'inline-css';
+import { addBreadcrumb } from '@sentry/node';
 
 import {
   MessageRepository,
@@ -9,6 +11,8 @@ import {
   IntegrationEntity,
   MessageEntity,
   LayoutRepository,
+  OrganizationRepository,
+  OrganizationEntity,
 } from '@novu/dal';
 import {
   ChannelTypeEnum,
@@ -18,8 +22,8 @@ import {
   IAttachmentOptions,
   IEmailOptions,
   LogCodeEnum,
+  FeatureFlagsKeysEnum,
 } from '@novu/shared';
-import * as Sentry from '@sentry/node';
 import {
   InstrumentUsecase,
   DetailEnum,
@@ -31,8 +35,11 @@ import {
   SelectVariant,
   ExecutionLogRoute,
   ExecutionLogRouteCommand,
+  GetFeatureFlag,
+  GetFeatureFlagCommand,
 } from '@novu/application-generic';
-import * as inlineCss from 'inline-css';
+import { EmailOutput } from '@novu/framework';
+
 import { CreateLog } from '../../../shared/logs';
 import { SendMessageCommand } from './send-message.command';
 import { SendMessageBase } from './send-message.base';
@@ -46,6 +53,7 @@ export class SendMessageEmail extends SendMessageBase {
 
   constructor(
     protected environmentRepository: EnvironmentRepository,
+    protected organizationRepository: OrganizationRepository,
     protected subscriberRepository: SubscriberRepository,
     protected messageRepository: MessageRepository,
     protected layoutRepository: LayoutRepository,
@@ -55,7 +63,8 @@ export class SendMessageEmail extends SendMessageBase {
     protected selectIntegration: SelectIntegration,
     protected getNovuProviderCredentials: GetNovuProviderCredentials,
     protected selectVariant: SelectVariant,
-    protected moduleRef: ModuleRef
+    protected moduleRef: ModuleRef,
+    private getFeatureFlag: GetFeatureFlag
   ) {
     super(
       messageRepository,
@@ -109,7 +118,7 @@ export class SendMessageEmail extends SendMessageBase {
     const { subscriber } = command.compileContext;
     const email = command.payload.email || subscriber.email;
 
-    Sentry.addBreadcrumb({
+    addBreadcrumb({
       message: 'Sending Email',
     });
 
@@ -150,9 +159,10 @@ export class SendMessageEmail extends SendMessageBase {
       command.overrides.email || {},
       command.overrides[integration?.providerId] || {}
     );
+    const bridgeOutputs = command.bridgeData?.outputs;
 
     let html;
-    let subject = step?.template?.subject || '';
+    let subject = (bridgeOutputs as EmailOutput)?.subject || step?.template?.subject || '';
     let content;
     let senderName;
 
@@ -185,6 +195,7 @@ export class SendMessageEmail extends SendMessageBase {
       overrides,
       templateIdentifier: command.identifier,
       _jobId: command.jobId,
+      tags: command.tags,
     });
 
     let replyToAddress: string | undefined;
@@ -201,38 +212,65 @@ export class SendMessageEmail extends SendMessageBase {
     }
 
     try {
-      ({ html, content, subject, senderName } = await this.compileEmailTemplateUsecase.execute(
-        CompileEmailTemplateCommand.create({
-          environmentId: command.environmentId,
-          organizationId: command.organizationId,
-          userId: command.userId,
-          ...payload,
-        }),
-        this.initiateTranslations.bind(this)
-      ));
+      const organization = await this.getOrganization(command.organizationId);
 
-      if (this.storeContent()) {
-        await this.messageRepository.update(
-          {
-            _id: message._id,
-            _environmentId: command.environmentId,
-          },
-          {
-            $set: {
-              subject,
-              content,
+      const i18nInstance = await this.initiateTranslations(
+        command.environmentId,
+        command.organizationId,
+        command.payload.subscriber?.locale || organization?.defaultLocale
+      );
+
+      if (!command.bridgeData) {
+        ({ html, content, subject, senderName } = await this.compileEmailTemplateUsecase.execute(
+          CompileEmailTemplateCommand.create({
+            environmentId: command.environmentId,
+            organizationId: command.organizationId,
+            userId: command.userId,
+            ...payload,
+          }),
+          i18nInstance
+        ));
+
+        if (this.storeContent()) {
+          await this.messageRepository.update(
+            {
+              _id: message._id,
+              _environmentId: command.environmentId,
             },
-          }
-        );
-      }
+            {
+              $set: {
+                subject,
+                content,
+              },
+            }
+          );
+        }
 
-      html = await inlineCss(html, {
-        // Used for style sheet links that starts with / so should not be needed in our case.
-        url: ' ',
-      });
-    } catch (e) {
-      Logger.error({ payload }, 'Compiling the email template or storing it or inlining it has failed', LOG_CONTEXT);
-      await this.sendErrorHandlebars(command.job, e.message);
+        // TODO: remove as part of https://linear.app/novu/issue/NV-4117/email-html-content-issue-in-mobile-devices
+        const shouldDisableInlineCss = await this.getFeatureFlag.execute(
+          GetFeatureFlagCommand.create({
+            key: FeatureFlagsKeysEnum.IS_EMAIL_INLINE_CSS_DISABLED,
+            environmentId: command.environmentId,
+            organizationId: command.organizationId,
+            userId: command.userId,
+          })
+        );
+
+        if (!shouldDisableInlineCss) {
+          // this is causing rendering issues in Gmail (especially when media queries are used), so we are disabling it
+          html = await inlineCss(html, {
+            // Used for style sheet links that starts with / so should not be needed in our case.
+            url: ' ',
+          });
+        }
+      }
+    } catch (error) {
+      Logger.error(
+        { payload, error },
+        'Compiling the email template or storing it or inlining it has failed',
+        LOG_CONTEXT
+      );
+      await this.sendErrorHandlebars(command.job, error.message);
 
       return;
     }
@@ -263,8 +301,8 @@ export class SendMessageEmail extends SendMessageBase {
     const mailData: IEmailOptions = createMailData(
       {
         to: email,
-        subject,
-        html,
+        subject: subject,
+        html: (bridgeOutputs as EmailOutput)?.body || html,
         from: integration?.credentials.from || 'no-reply@novu.co',
         attachments,
         senderName,
@@ -449,11 +487,18 @@ export class SendMessageEmail extends SendMessageBase {
         message,
         'error',
         'mail_unexpected_error',
-        'Error while sending email with provider',
+        error.message || error.name || 'Error while sending email with provider',
         command,
-        LogCodeEnum.MAIL_PROVIDER_DELIVERY_ERROR,
-        error
+        LogCodeEnum.MAIL_PROVIDER_DELIVERY_ERROR
       );
+
+      /*
+       * Axios Error, to provide better readability, otherwise stringify ignores response object
+       * TODO: Handle this at the handler level globally
+       */
+      if (error?.isAxiosError && error.response) {
+        error = error.response;
+      }
 
       await this.executionLogRoute.execute(
         ExecutionLogRouteCommand.create({
@@ -464,7 +509,7 @@ export class SendMessageEmail extends SendMessageBase {
           status: ExecutionDetailsStatusEnum.FAILED,
           isTest: false,
           isRetry: false,
-          raw: JSON.stringify(error),
+          raw: JSON.stringify(error) === '{}' ? JSON.stringify({ message: error.message }) : JSON.stringify(error),
         })
       );
 
@@ -503,6 +548,16 @@ export class SendMessageEmail extends SendMessageBase {
     }
   }
 
+  protected async getOrganization(organizationId: string): Promise<OrganizationEntity | undefined> {
+    const organization = await this.organizationRepository.findById(organizationId, 'branding defaultLocale');
+
+    if (!organization) {
+      throw new NotFoundException(`Organization ${organizationId} not found`);
+    }
+
+    return organization;
+  }
+
   public buildFactoryIntegration(integration: IntegrationEntity, senderName?: string) {
     return {
       ...integration,
@@ -534,6 +589,7 @@ export const createMailData = (options: IEmailOptions, overrides: Record<string,
     senderName: overrides?.senderName || options.senderName,
     subject: overrides?.subject || options.subject,
     customData: overrides?.customData || {},
+    headers: overrides?.headers || {},
   };
 };
 

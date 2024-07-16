@@ -11,15 +11,17 @@ import { RegularInfo } from './digest/icons/RegularInfo';
 import { TimedDigestMetadata } from './TimedDigestMetadata';
 import { RegularDigestMetadata } from './RegularDigestMetadata';
 import { StepSettings } from './SideBar/StepSettings';
-import { useEnvController } from '../../../hooks';
+import { useEnvironment } from '../../../hooks';
 import { useStepFormPath } from '../hooks/useStepFormPath';
+import { useTemplateEditorForm } from '../components/TemplateEditorFormProvider';
 
 const GroupStyled = styled(Group)`
   gap: 18px;
 `;
 
 export const DigestMetadata = () => {
-  const { readonly } = useEnvController();
+  const { template } = useTemplateEditorForm();
+  const { readonly } = useEnvironment({ bridge: template?.bridge });
   const stepFormPath = useStepFormPath();
   const { control, watch } = useFormContext();
 

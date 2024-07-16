@@ -25,14 +25,12 @@ export class HealthController {
     const checks: HealthIndicatorFunction[] = [
       async () => this.dalHealthIndicator.isHealthy(),
       async () => this.workflowQueueHealthIndicator.isHealthy(),
-      async () => {
-        return {
-          apiVersion: {
-            version,
-            status: 'up',
-          },
-        };
-      },
+      async () => ({
+        apiVersion: {
+          version,
+          status: 'up',
+        },
+      }),
     ];
 
     if (process.env.ELASTICACHE_CLUSTER_SERVICE_HOST) {

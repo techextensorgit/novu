@@ -27,3 +27,9 @@ type ActiveIntegrationStatusWithPrimary = {
     hasPrimaryIntegrations: boolean;
   };
 };
+
+export enum WorkflowTypeEnum {
+  REGULAR = 'REGULAR',
+  ECHO = 'ECHO',
+  BRIDGE = 'BRIDGE',
+}

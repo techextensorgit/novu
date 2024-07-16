@@ -5,7 +5,7 @@ import { getHotkeyHandler } from '@mantine/hooks';
 import { TextAlignEnum } from '@novu/shared';
 import { colors } from '@novu/design-system';
 
-import { useEnvController } from '../../../../hooks';
+import { useEnvironment } from '../../../../hooks';
 import { useStepFormPath } from '../../hooks/useStepFormPath';
 import type { IForm } from '../formTypes';
 import { AutoSuggestionsDropdown } from './AutoSuggestionsDropdown';
@@ -17,7 +17,7 @@ export function TextRowContent({ blockIndex }: { blockIndex: number }) {
 
   const content = methods.watch(`${stepFormPath}.template.content.${blockIndex}.content`);
   const textAlign = methods.watch(`${stepFormPath}.template.content.${blockIndex}.styles.textAlign`);
-  const { readonly } = useEnvController();
+  const { readonly } = useEnvironment();
   const ref = useRef<HTMLDivElement>(null);
   const [text, setText] = useState<string>(content);
   const [visiblePlaceholder, setVisiblePlaceholder] = useState(!!content);
@@ -71,10 +71,10 @@ export function TextRowContent({ blockIndex }: { blockIndex: number }) {
 
   const checkPreviousChar = (data: string, anchorPos: number) => {
     if (anchorPos > 1) {
-      const endContent = data.slice(anchorPos);
+      const endContent = data.slice(anchorPos - 2);
 
       const contentToUse = endContent ? endContent : data;
-      const slicePositions = contentToUse.indexOf('{{') + 2;
+      const slicePositions = contentToUse.lastIndexOf('{') + 1;
 
       const currentChar = contentToUse.charAt(slicePositions - 1);
       const previousChar = contentToUse.charAt(slicePositions - 2);
@@ -114,7 +114,7 @@ export function TextRowContent({ blockIndex }: { blockIndex: number }) {
 
     const endContent = data.slice(anchorPosition);
 
-    const slicePositions = endContent.indexOf('{{') + 2;
+    const slicePositions = endContent.lastIndexOf('{{') + 2;
     const newEndContent = `${endContent.slice(0, slicePositions)}${value}${endContent.slice(slicePositions)}`;
 
     const newContent = `${data.slice(0, anchorPosition)}${newEndContent}`;

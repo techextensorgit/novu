@@ -62,7 +62,7 @@ yarn add @novu/node
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu(process.env.NOVU_API_KEY);
+const novu = new Novu(process.env.NOVU_SECRET_KEY);
 
 await novu.trigger('<REPLACE_WITH_EVENT_NAME_FROM_ADMIN_PANEL>', {
   to: {
@@ -126,7 +126,7 @@ Novu provides a single API to manage providers across multiple channels with a s
 
 #### 📱 In-App
 
-- [x] [Novu](https://docs.novu.co/notification-center/introduction)
+- [x] [Novu](https://docs.novu.co/notification-center/introduction?utm_campaign=node-sdk-readme)
 - [ ] MagicBell
 
 #### Other (Coming Soon...)
@@ -163,7 +163,7 @@ Novu provides a single API to manage providers across multiple channels with a s
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 const page = 0;
 const limit = 20;
@@ -176,7 +176,7 @@ await novu.subscribers.list(page, limit);
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.subscribers.identify('subscriberId', {
   firstName: 'Pawan',
@@ -198,7 +198,7 @@ await novu.subscribers.identify('subscriberId', {
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.subscribers.identify([
   {
@@ -236,7 +236,7 @@ await novu.subscribers.identify([
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.subscribers.get('subscriberId');
 ```
@@ -246,7 +246,7 @@ await novu.subscribers.get('subscriberId');
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.subscribers.update("subscriberId",{
   firstName: "Pawan",
@@ -268,7 +268,7 @@ await novu.subscribers.update("subscriberId",{
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 // update fcm token
 await novu.subscribers.setCredentials('subscriberId', 'fcm', {
@@ -296,7 +296,7 @@ await novu.subscribers.setCredentials(
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 // delete fcm token
 await novu.subscribers.deleteCredentials('subscriberId', 'fcm');
@@ -310,7 +310,7 @@ await novu.subscribers.deleteCredentials('subscriberId', 'slack');
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.subscribers.delete('subscriberId');
 ```
@@ -320,7 +320,7 @@ await novu.subscribers.delete('subscriberId');
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 // mark subscriber as offline
 await novu.subscribers.updateOnlineStatus('subscriberId', false);
@@ -331,7 +331,7 @@ await novu.subscribers.updateOnlineStatus('subscriberId', false);
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.subscribers.getPreference('subscriberId');
 ```
@@ -341,7 +341,7 @@ await novu.subscribers.getPreference('subscriberId');
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.subscribers.getGlobalPreference('subscriberId');
 ```
@@ -351,7 +351,7 @@ await novu.subscribers.getGlobalPreference('subscriberId');
 ```ts
 import { Novu, PreferenceLevelEnum } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 // Get global level preference
 await novu.subscribers.getPreferenceByLevel(
   'subscriberId',
@@ -370,7 +370,7 @@ await novu.subscribers.getPreferenceByLevel(
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 // enable in-app channel
 await novu.subscribers.updatePreference('subscriberId', 'workflowId', {
@@ -394,7 +394,7 @@ await novu.subscribers.updatePreference('subscriberId', 'workflowId', {
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 // enable in-app channel and disable email channel
 await novu.subscribers.updateGlobalPreference('subscriberId', {
@@ -417,7 +417,7 @@ await novu.subscribers.updateGlobalPreference('subscriberId', {
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 const params = {
   page: 0,
@@ -439,7 +439,7 @@ await novu.subscribers.getNotificationsFeed("subscriberId", params);
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 // get seen count
 await novu.subscribers.getUnseenCount('subscriberId', true);
@@ -453,7 +453,7 @@ await novu.subscribers.getUnseenCount('subscriberId', false);
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 // mark unseen
 await novu.subscribers.markMessageAs('subscriberId', 'messageId', {
@@ -472,7 +472,7 @@ await novu.subscribers.markMessageAs('subscriberId', 'messageId', {
 ```ts
 import { Novu, MarkMessagesAsEnum } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 // mark all messages as seen
 await novu.subscribers.markAllMessagesAs(
@@ -494,7 +494,7 @@ await novu.subscribers.markAllMessagesAs(
 ```ts
 import { Novu, ButtonTypeEnum, MessageActionStatusEnum } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 // mark a message's primary action button as pending
 await novu.subscribers.markMessageActionSeen(
@@ -524,7 +524,7 @@ await novu.subscribers.markMessageActionSeen(
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 // trigger to existing subscribers
 await novu.events.trigger("workflowIdentifier", {
@@ -541,7 +541,10 @@ await novu.events.trigger("workflowIdentifier", {
       // customData will work only for sendgrid
       customData: {
         "customKey": "customValue"
-      }
+      },
+      headers: {
+        'X-Novu-Custom-Header': 'Novu-Custom-Header-Value',
+      },
     }
   },
   // actorId is subscriberId of actor
@@ -576,7 +579,7 @@ await novu.events.trigger("workflowIdentifier", {
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.events.trigger("workflowIdentifier", {
   to: [ "subscriberId1" , "subscriberId2" ],
@@ -629,7 +632,7 @@ await novu.events.trigger("workflowIdentifier", {
 ```ts
 import { Novu, TriggerRecipientsTypeEnum } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.events.trigger('workflowIdentifier', {
   to: {
@@ -646,7 +649,7 @@ There is a limit of 100 items in the array of bulkTrigger.
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.events.bulkTrigger([
   {
@@ -693,7 +696,7 @@ await novu.events.bulkTrigger([
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.events.broadcast('workflowIdentifier', {
   payload: {
@@ -716,7 +719,7 @@ await novu.events.broadcast('workflowIdentifier', {
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.events.cancel('transactionId');
 ```
@@ -728,7 +731,7 @@ await novu.events.cancel('transactionId');
 ```ts
 import { Novu, ChannelTypeEnum } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 const params = {
   page: 0, // optional
@@ -746,7 +749,7 @@ await novu.messages.list(params);
 ```ts
 import { Novu, ChannelTypeEnum } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.messages.deleteById('messageId');
 ```
@@ -758,7 +761,7 @@ await novu.messages.deleteById('messageId');
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 const payload = {
   content: "<h1>Layout Start</h1>{{{body}}}<h1>Layout End</h1>",
@@ -783,7 +786,7 @@ await novu.layouts.create(payload);
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 const payloadToUpdate = {
   content: "<h1>Layout Start</h1>{{{body}}}<h1>Layout End</h1>",
@@ -808,7 +811,7 @@ await novu.layouts.update("layoutId", payloadToUpdate);
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.layouts.setDefault('layoutId');
 ```
@@ -818,7 +821,7 @@ await novu.layouts.setDefault('layoutId');
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.layouts.get('layoutId');
 ```
@@ -828,7 +831,7 @@ await novu.layouts.get('layoutId');
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.layouts.delete('layoutId');
 ```
@@ -838,7 +841,7 @@ await novu.layouts.delete('layoutId');
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 const params = {
   page: 0, // optional
@@ -855,7 +858,7 @@ await novu.layouts.list(params);
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 // create a new notification group
 await novu.notificationGroups.create('Product Updates');
@@ -880,7 +883,7 @@ await novu.notificationGroups.delete('notificationGroupId');
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 const payloadToCreate = {
   key: 'first-topic',
@@ -927,7 +930,7 @@ await novu.topics.rename('topicKey', 'New Topic Name');
 ```ts
 import { Novu, ChannelTypeEnum, ProvidersIdEnum } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 const updatePayload = {
   name: "SendGrid",
@@ -977,7 +980,7 @@ await novu.integrations.setIntegrationAsPrimary("integrationId")
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 // create new in-app feed
 await novu.feeds.create('Product Updates');
@@ -998,7 +1001,7 @@ await novu.feeds.delete('feedId');
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 const changesParams = {
   page: 1, //optional
@@ -1024,7 +1027,7 @@ await novu.changes.applyMany(['changeId1', 'changeId2']);
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 // get current environment
 await novu.environments.getCurrent();
@@ -1057,7 +1060,7 @@ await novu.environments.regenerateApiKeys();
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 // create new tenat
 await novu.tenants.create('tenantIdentifier', {
@@ -1111,7 +1114,7 @@ import {
   StepTypeEnum,
 } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 // List all workflow groups
 const { data: workflowGroupsData } = await novu.notificationGroups.get();
@@ -1211,7 +1214,7 @@ await novu.notificationTemplates.getAll({
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.organizations.list();
 ```
@@ -1221,7 +1224,7 @@ await novu.organizations.list();
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.organizations.create({ name: 'New Organization' });
 ```
@@ -1231,7 +1234,7 @@ await novu.organizations.create({ name: 'New Organization' });
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.organizations.rename({ name: 'Renamed Organization' });
 ```
@@ -1241,7 +1244,7 @@ await novu.organizations.rename({ name: 'Renamed Organization' });
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.organizations.getCurrent();
 ```
@@ -1251,7 +1254,7 @@ await novu.organizations.getCurrent();
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.organizations.removeMember('memberId');
 ```
@@ -1261,7 +1264,7 @@ await novu.organizations.removeMember('memberId');
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.organizations.updateMemberRole('memberId', {
   role: 'admin';
@@ -1273,7 +1276,7 @@ await novu.organizations.updateMemberRole('memberId', {
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.organizations.getMembers();
 ```
@@ -1283,7 +1286,7 @@ await novu.organizations.getMembers();
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.organizations.updateBranding({
   logo: 'https://s3.us-east-1.amazonaws.com/bucket/image.jpeg',
@@ -1297,7 +1300,7 @@ await novu.organizations.updateBranding({
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 // Validate the mx record setup for the inbound parse functionality
 await novu.inboundParse.getMxStatus();
@@ -1308,7 +1311,7 @@ await novu.inboundParse.getMxStatus();
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 const executionDetailsParams = {
   subscriberId: 'subscriberId_123',
@@ -1326,7 +1329,7 @@ await novu.executionDetails.get(executionDetailsParams);
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.workflowOverrides.create({
   workflowId: 'workflow_id_123',
@@ -1347,7 +1350,7 @@ await novu.workflowOverrides.create({
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.workflowOverrides.list(3, 10);
 ```
@@ -1357,7 +1360,7 @@ await novu.workflowOverrides.list(3, 10);
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.workflowOverrides.getOneById('overrideId_123');
 ```
@@ -1367,7 +1370,7 @@ await novu.workflowOverrides.getOneById('overrideId_123');
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.workflowOverrides.getOneByTenantIdandWorkflowId(
   'workflowId_123',
@@ -1380,7 +1383,7 @@ await novu.workflowOverrides.getOneByTenantIdandWorkflowId(
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.workflowOverrides.updateOneByTenantIdandWorkflowId(
   'workflowId_123',
@@ -1396,7 +1399,7 @@ await novu.workflowOverrides.updateOneByTenantIdandWorkflowId(
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.workflowOverrides.updateOneById('OVERRIDE_ID', {
   active: false,
@@ -1408,7 +1411,7 @@ await novu.workflowOverrides.updateOneById('OVERRIDE_ID', {
 ```ts
 import { Novu } from '@novu/node';
 
-const novu = new Novu('<NOVU_API_KEY>');
+const novu = new Novu('<NOVU_SECRET_KEY>');
 
 await novu.workflowOverrides.delete('overrideId_123');
 ```

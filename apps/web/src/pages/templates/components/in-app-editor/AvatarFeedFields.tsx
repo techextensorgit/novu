@@ -4,10 +4,10 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { showNotification } from '@mantine/notifications';
-import { IFeedEntity } from '@novu/shared';
+import type { IResponseError, IFeedEntity } from '@novu/shared';
 
 import { Checkbox, colors, Input, PlusGradient } from '@novu/design-system';
-import { useEnvController } from '../../../../hooks';
+import { useEnvironment } from '../../../../hooks';
 import { createFeed, getFeeds } from '../../../../api/feeds';
 import { QueryKeys } from '../../../../api/query.keys';
 import { FeedItems } from './FeedItems';
@@ -17,17 +17,13 @@ import { useStepFormPath } from '../../hooks/useStepFormPath';
 
 export const AvatarFeedFields = () => {
   const queryClient = useQueryClient();
-  const { readonly } = useEnvController();
+  const { readonly } = useEnvironment();
   const [newFeed, setNewFeed] = useInputState('');
   const { control, setValue, getValues } = useFormContext<IForm>();
   const path = useStepFormPath();
 
   const { data: feeds } = useQuery([QueryKeys.getFeeds], getFeeds);
-  const { mutateAsync: createNewFeed } = useMutation<
-    IFeedEntity,
-    { error: string; message: string; statusCode: number },
-    { name: string }
-  >(createFeed, {
+  const { mutateAsync: createNewFeed } = useMutation<IFeedEntity, IResponseError, { name: string }>(createFeed, {
     onSuccess: (data) => {
       queryClient.setQueryData([QueryKeys.getFeeds], [...feeds, data]);
     },

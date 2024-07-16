@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { Schema } from 'mongoose';
 
 import { schemaOptions } from '../schema-default.options';
@@ -41,6 +41,7 @@ const userSchema = new Schema<UserDBModel>(
       intercom: Schema.Types.String,
     },
     jobTitle: Schema.Types.String,
+    externalId: Schema.Types.String,
   },
   schemaOptions
 );

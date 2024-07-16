@@ -43,6 +43,13 @@ export class EnvironmentEntity {
   dns?: IDnsSettings;
 
   _parentId: string;
+
+  echo: {
+    url: string;
+  };
+  bridge: {
+    url: string;
+  };
 }
 
 export type EnvironmentDBModel = ChangePropsValueType<

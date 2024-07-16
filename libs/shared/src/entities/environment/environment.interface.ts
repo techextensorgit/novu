@@ -1,7 +1,7 @@
 import { IApiRateLimitMaximum } from '../../types';
 
 export interface IEnvironment {
-  _id?: string;
+  _id: string;
   name: string;
   _organizationId: string;
   _parentId?: string;
@@ -17,6 +17,13 @@ export interface IEnvironment {
     fontFamily: string;
     contentBackground: string;
     direction: 'ltr' | 'rtl';
+  };
+
+  echo?: {
+    url?: string;
+  };
+  bridge?: {
+    url?: string;
   };
 }
 

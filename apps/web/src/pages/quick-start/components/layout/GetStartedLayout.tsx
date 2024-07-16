@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import PageContainer from '../../../../components/layout/components/PageContainer';
-import { ROUTES } from '../../../../constants/routes.enum';
+import { ROUTES } from '../../../../constants/routes';
 import { currentOnboardingStep } from '../route/store';
 import { BodyLayout } from './BodyLayout';
 import { FooterLayout } from './FooterLayout';
@@ -23,8 +23,8 @@ export function GetStartedLayout({ children, footer }: IGetStartedLayoutProps) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    currentOnboardingStep().set(location.pathname);
-  }, [location.pathname]);
+    currentOnboardingStep().set(`${location.pathname}${location.search}`);
+  }, [location.pathname, location.search]);
 
   useEffect(() => {
     const route = currentOnboardingStep().get();

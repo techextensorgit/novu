@@ -1,6 +1,7 @@
-import { INotificationTemplate, WorkflowIntegrationStatus } from '@novu/shared';
+import { INotificationTemplate, isBridgeWorkflow, WorkflowIntegrationStatus, WorkflowTypeEnum } from '@novu/shared';
+import { IUsePaginationQueryParamsStateOptions } from '@novu/design-system';
 
-import { useEnvController } from './useEnvController';
+import { useEnvironment } from './useEnvironment';
 import { getNotificationsList } from '../api/notification-templates';
 import { usePaginatedQuery } from './usePaginatedQuery';
 
@@ -9,11 +10,19 @@ export type INotificationTemplateExtended = INotificationTemplate & {
   status: string;
   notificationGroup: { name: string };
   workflowIntegrationStatus?: WorkflowIntegrationStatus;
+  bridge?: boolean;
 };
 
 /** allow override of paginated inputs */
-export function useTemplates(pageIndex?: number, pageSize?: number) {
-  const { environment } = useEnvController();
+export function useTemplates({
+  pageIndex,
+  pageSize,
+  areSearchParamsEnabled = false,
+}: {
+  pageIndex?: IUsePaginationQueryParamsStateOptions['initialPageNumber'];
+  pageSize?: IUsePaginationQueryParamsStateOptions['initialPageSize'];
+} & Pick<IUsePaginationQueryParamsStateOptions, 'areSearchParamsEnabled'> = {}) {
+  const { environment } = useEnvironment();
 
   const {
     data,
@@ -28,18 +37,28 @@ export function useTemplates(pageIndex?: number, pageSize?: number) {
   }>({
     queryKey: ['notification-templates', environment?._id],
     buildQueryFn:
-      ({ pageIndex: ctxPageIndex, pageSize: ctxPageSize }) =>
+      ({ page, limit, query }) =>
       () =>
-        getNotificationsList(pageIndex ?? ctxPageIndex, pageSize ?? ctxPageSize),
+        getNotificationsList({ page, limit, query }),
     getTotalItemCount: (resp) => resp.totalCount,
     queryOptions: {
       keepPreviousData: true,
+    },
+    paginationOptions: {
+      areSearchParamsEnabled,
+      initialPageNumber: (pageIndex ?? 0) + 1,
+      initialPageSize: pageSize,
     },
   });
 
   return {
     ...paginatedQueryResp,
-    templates: data?.data,
+    templates: data?.data.map((template) => {
+      return {
+        ...template,
+        bridge: isBridgeWorkflow(template.type),
+      };
+    }),
     loading: isLoading,
     totalCount: data?.totalCount,
     totalItemCount,

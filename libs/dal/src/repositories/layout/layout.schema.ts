@@ -1,5 +1,5 @@
-import * as mongoose from 'mongoose';
-import * as mongooseDelete from 'mongoose-delete';
+import mongoose from 'mongoose';
+const mongooseDelete = require('mongoose-delete');
 import { Schema } from 'mongoose';
 
 import { LayoutDBModel } from './layout.entity';
@@ -10,6 +10,7 @@ const layoutSchema = new Schema<LayoutDBModel>(
     _environmentId: {
       type: Schema.Types.ObjectId,
       ref: 'Environment',
+      index: true,
     },
     _organizationId: {
       type: Schema.Types.ObjectId,

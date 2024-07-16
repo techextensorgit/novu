@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { Schema } from 'mongoose';
 
 import { schemaOptions } from '../schema-default.options';
@@ -10,26 +10,21 @@ const notificationSchema = new Schema<NotificationDBModel>(
     _templateId: {
       type: Schema.Types.ObjectId,
       ref: 'NotificationTemplate',
-      index: true,
     },
     _environmentId: {
       type: Schema.Types.ObjectId,
       ref: 'Environment',
-      index: true,
     },
     _organizationId: {
       type: Schema.Types.ObjectId,
       ref: 'Organization',
-      index: true,
     },
     _subscriberId: {
       type: Schema.Types.ObjectId,
       ref: 'Subscriber',
-      index: true,
     },
     transactionId: {
       type: Schema.Types.String,
-      index: true,
     },
     channels: [
       {
@@ -46,6 +41,12 @@ const notificationSchema = new Schema<NotificationDBModel>(
       type: Schema.Types.Mixed,
     },
     expireAt: Schema.Types.Date,
+    bridge: {
+      type: Schema.Types.Mixed,
+    },
+    controls: {
+      type: Schema.Types.Mixed,
+    },
   },
   schemaOptions
 );
@@ -140,6 +141,18 @@ notificationSchema.index({
  *           _environmentId: this.convertStringToObjectId(environmentId),
  *           createdAt: {$gte: monthBefore}
  *           weekly: { $sum: { $cond: [{ $gte: ['$createdAt', weekBefore] }, 1, 0] } },
+ *
+ *
+ * Path: ./get-platform-notification-usage.usecase.ts
+ *    Context: execute()
+ *        Query: organizationRepository.aggregate(
+ *                $lookup:
+ *        {
+ *          from: 'notifications',
+ *          localField: 'environments._id',
+ *          foreignField: '_environmentId',
+ *          as: 'notifications',
+ *        }
  */
 notificationSchema.index({
   _environmentId: 1,

@@ -2,11 +2,9 @@ import { Module } from '@nestjs/common';
 import { TerminusModule } from '@nestjs/terminus';
 
 import {
-  CreateExecutionDetails,
   EventsDistributedLockService,
   GetNovuProviderCredentials,
   StorageHelperService,
-  SendTestEmail,
 } from '@novu/application-generic';
 
 import { EventsController } from './events.controller';
@@ -23,15 +21,9 @@ import { ExecutionDetailsModule } from '../execution-details/execution-details.m
 import { TopicsModule } from '../topics/topics.module';
 import { LayoutsModule } from '../layouts/layouts.module';
 import { TenantModule } from '../tenant/tenant.module';
-import { JobTopicNameEnum } from '@novu/shared';
+import { BridgeModule } from '../bridge';
 
-const PROVIDERS = [
-  CreateExecutionDetails,
-  GetNovuProviderCredentials,
-  StorageHelperService,
-  EventsDistributedLockService,
-  SendTestEmail,
-];
+const PROVIDERS = [GetNovuProviderCredentials, StorageHelperService, EventsDistributedLockService];
 
 @Module({
   imports: [
@@ -47,6 +39,7 @@ const PROVIDERS = [
     TopicsModule,
     LayoutsModule,
     TenantModule,
+    BridgeModule,
   ],
   controllers: [EventsController],
   providers: [...PROVIDERS, ...USE_CASES],
