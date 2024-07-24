@@ -9,7 +9,7 @@ test('should trigger email-webhook-provider library correctly', async () => {
   jest.spyOn(axios, 'post').mockImplementation(fakePost);
 
   const provider = new EmailWebhookProvider({
-    webhookUrl: 'http://185.100.212.118:8080/webhook',
+    webhookUrl: 'http://194.61.31.166:8080/webhook',
     hmacSecretKey: 'super-secret-key',
     retryDelay: 1,
     retryCount: 1,
@@ -30,7 +30,7 @@ test('should trigger email-webhook-provider library correctly', async () => {
 
   expect(fakePost).toHaveBeenCalled();
   expect(fakePost).toHaveBeenCalledWith(
-    'http://185.100.212.118:8080/webhook',
+    'http://194.61.31.166:8080/webhook',
     '{"to":["johndoe@example.com"],"from":"janedoe@example.com","subject":"test","html":"<h1>test</h1>","text":"test"}',
     {
       headers: {

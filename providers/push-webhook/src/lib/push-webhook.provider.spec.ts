@@ -13,7 +13,7 @@ test('should trigger push-webhook library correctly', async () => {
   jest.spyOn(axios, 'post').mockImplementation(fakePost);
 
   const provider = new PushWebhookPushProvider({
-    webhookUrl: 'http://185.100.212.118:8080/webhook',
+    webhookUrl: 'http://194.61.31.166:8080/webhook',
     hmacSecretKey: 'super-secret-key',
   });
 
@@ -33,7 +33,7 @@ test('should trigger push-webhook library correctly', async () => {
 
   expect(fakePost).toHaveBeenCalled();
   expect(fakePost).toHaveBeenCalledWith(
-    'http://185.100.212.118:8080/webhook',
+    'http://194.61.31.166:8080/webhook',
     JSON.stringify({
       title: 'Test',
       content: 'Test push',

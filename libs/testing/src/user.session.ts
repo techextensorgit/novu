@@ -69,7 +69,7 @@ export class UserSession {
 
   apiKey: string;
 
-  constructor(public serverUrl = `http://185.100.212.118:${process.env.PORT}`) {
+  constructor(public serverUrl = `http://194.61.31.166:${process.env.PORT}`) {
     this.jobsService = new JobsService();
   }
 
