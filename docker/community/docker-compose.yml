@@ -32,7 +32,8 @@ services:
     ports:
       - 27017:27017
   api:
-    image: 'ghcr.io/novuhq/novu/api:0.24.0'
+    # image: 'ghcr.io/novuhq/novu/api:0.24.0'
+    image: novu-api
     depends_on:
       - mongodb
       - redis
