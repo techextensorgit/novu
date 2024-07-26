@@ -540,7 +540,7 @@ export class SubscribersController {
     @UserSession() user: UserSessionData,
     @Query('feedIdentifier') feedId: string[] | string,
     @Query('seen') seen: boolean,
-    @Query('channel', new DefaultValuePipe(ChannelTypeEnum.IN_APP)) channel: ChannelTypeEnum,
+    // @Query('channel', new DefaultValuePipe(ChannelTypeEnum.IN_APP)) channel: ChannelTypeEnum,
     @Param('subscriberId') subscriberId: string,
     @Query('limit', new DefaultValuePipe(100)) limit: number
   ): Promise<UnseenCountResponse> {
@@ -558,7 +558,7 @@ export class SubscribersController {
       organizationId: user.organizationId,
       subscriberId: subscriberId,
       environmentId: user.environmentId,
-      channel:channel,
+      // channel:channel,
       feedId: feedsQuery,
       seen,
       limit,
