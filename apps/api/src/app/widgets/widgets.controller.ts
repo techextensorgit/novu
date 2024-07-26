@@ -17,7 +17,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiExcludeController, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { AnalyticsService, GetSubscriberPreference, GetSubscriberPreferenceCommand } from '@novu/application-generic';
 import { MessageEntity, PreferenceLevelEnum, SubscriberEntity } from '@novu/dal';
-import { MessagesStatusEnum, ButtonTypeEnum, MessageActionStatusEnum } from '@novu/shared';
+import { MessagesStatusEnum, ButtonTypeEnum, MessageActionStatusEnum, ChannelTypeEnum } from '@novu/shared';
 
 import { SubscriberSession } from '../shared/framework/user.decorator';
 import {
@@ -143,6 +143,7 @@ export class WidgetsController {
     @SubscriberSession() subscriberSession: SubscriberEntity,
     @Query('feedIdentifier') feedId: string[] | string,
     @Query('seen') seen: boolean,
+    @Query('channel', new DefaultValuePipe(ChannelTypeEnum.IN_APP)) channel: ChannelTypeEnum,
     @Query('limit', new DefaultValuePipe(100), new LimitPipe(1, 100, true)) limit: number
   ): Promise<UnseenCountResponse> {
     const feedsQuery = this.toArray(feedId);
@@ -156,6 +157,7 @@ export class WidgetsController {
       subscriberId: subscriberSession.subscriberId,
       environmentId: subscriberSession._environmentId,
       feedId: feedsQuery,
+      channel: channel,
       seen,
       limit,
     });
@@ -169,6 +171,7 @@ export class WidgetsController {
     @SubscriberSession() subscriberSession: SubscriberEntity,
     @Query('feedIdentifier') feedId: string[] | string,
     @Query('read') read: boolean,
+    @Query('channel', new DefaultValuePipe(ChannelTypeEnum.IN_APP)) channel: ChannelTypeEnum,
     @Query('limit', new DefaultValuePipe(100), new LimitPipe(1, 100, true)) limit: number
   ): Promise<UnseenCountResponse> {
     const feedsQuery = this.toArray(feedId);
@@ -182,6 +185,7 @@ export class WidgetsController {
       subscriberId: subscriberSession.subscriberId,
       environmentId: subscriberSession._environmentId,
       feedId: feedsQuery,
+      channel:channel,
       read,
       limit,
     });
@@ -194,6 +198,7 @@ export class WidgetsController {
   async getCount(
     @SubscriberSession() subscriberSession: SubscriberEntity,
     @Query() query: GetCountQuery,
+    @Query('channel', new DefaultValuePipe(ChannelTypeEnum.IN_APP)) channel: ChannelTypeEnum,
     @Query('limit', new DefaultValuePipe(100), new LimitPipe(1, 100, true)) limit: number
   ): Promise<UnseenCountResponse> {
     const feedsQuery = this.toArray(query.feedIdentifier);
@@ -207,6 +212,7 @@ export class WidgetsController {
       subscriberId: subscriberSession.subscriberId,
       environmentId: subscriberSession._environmentId,
       feedId: feedsQuery,
+      channel:channel,
       seen: query.seen,
       read: query.read,
       limit: limit,

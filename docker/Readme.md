@@ -29,7 +29,7 @@ cp .env.example ./local/.env
 docker-compose -f ./local/docker-compose.yml up
 ```
 
-Now visit [http://127.0.0.1:4200](http://127.0.0.1:4200) to start using Novu.
+Now visit [http://37.60.242.154:4200](http://37.60.242.154:4200) to start using Novu.
 
 ### Securing your setup
 

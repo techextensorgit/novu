@@ -59,7 +59,7 @@ describe('Remove messages by bulk - /widgets/messages/bulk/delete (POST)', funct
     const [firstMessage, ...messagesToDelete] = messagesBefore;
 
     await axios.post(
-      `http://127.0.0.1:${process.env.PORT}/v1/widgets/messages/bulk/delete`,
+      `http://37.60.242.154:${process.env.PORT}/v1/widgets/messages/bulk/delete`,
       { messageIds: messagesToDelete.map((msg) => msg._id) },
       {
         headers: {
@@ -87,7 +87,7 @@ describe('Remove messages by bulk - /widgets/messages/bulk/delete (POST)', funct
 
     try {
       const res = await axios.post(
-        `http://127.0.0.1:${process.env.PORT}/v1/widgets/messages/bulk/delete`,
+        `http://37.60.242.154:${process.env.PORT}/v1/widgets/messages/bulk/delete`,
         {},
         {
           headers: {
@@ -108,7 +108,7 @@ describe('Remove messages by bulk - /widgets/messages/bulk/delete (POST)', funct
     let messageIds = duplicateStr(randomMongoId, 100);
 
     const res = await axios.post(
-      `http://127.0.0.1:${process.env.PORT}/v1/widgets/messages/bulk/delete`,
+      `http://37.60.242.154:${process.env.PORT}/v1/widgets/messages/bulk/delete`,
       { messageIds },
       {
         headers: {
@@ -123,7 +123,7 @@ describe('Remove messages by bulk - /widgets/messages/bulk/delete (POST)', funct
       messageIds = duplicateStr(randomMongoId, 101);
 
       await axios.post(
-        `http://127.0.0.1:${process.env.PORT}/v1/widgets/messages/bulk/delete`,
+        `http://37.60.242.154:${process.env.PORT}/v1/widgets/messages/bulk/delete`,
         { messageIds },
         {
           headers: {

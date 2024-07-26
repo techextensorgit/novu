@@ -163,7 +163,7 @@ async function markAs(
   subscriberId: string
 ) {
   return await axiosInstance.post(
-    `http://127.0.0.1:${process.env.PORT}/v1/subscribers/${subscriberId}/messages/mark-as`,
+    `http://37.60.242.154:${process.env.PORT}/v1/subscribers/${subscriberId}/messages/mark-as`,
     {
       messageId: messageIds,
       markAs: mark,

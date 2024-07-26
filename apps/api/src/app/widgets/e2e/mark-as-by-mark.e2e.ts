@@ -168,7 +168,7 @@ async function getMessage(
 
 async function markAs(subscriberToken: string, messageIds: string | string[] | undefined, mark: MessagesStatusEnum) {
   return await axios.post(
-    `http://127.0.0.1:${process.env.PORT}/v1/widgets/messages/mark-as`,
+    `http://37.60.242.154:${process.env.PORT}/v1/widgets/messages/mark-as`,
     { messageId: messageIds, markAs: mark },
     {
       headers: {

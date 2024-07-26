@@ -25,6 +25,7 @@ import {
 } from '@novu/application-generic';
 import { ApiExcludeEndpoint, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import {
+  ChannelTypeEnum,
   ApiRateLimitCategoryEnum,
   ApiRateLimitCostEnum,
   ButtonTypeEnum,
@@ -539,6 +540,7 @@ export class SubscribersController {
     @UserSession() user: UserSessionData,
     @Query('feedIdentifier') feedId: string[] | string,
     @Query('seen') seen: boolean,
+    @Query('channel', new DefaultValuePipe(ChannelTypeEnum.IN_APP)) channel: ChannelTypeEnum,
     @Param('subscriberId') subscriberId: string,
     @Query('limit', new DefaultValuePipe(100)) limit: number
   ): Promise<UnseenCountResponse> {
@@ -556,6 +558,7 @@ export class SubscribersController {
       organizationId: user.organizationId,
       subscriberId: subscriberId,
       environmentId: user.environmentId,
+      channel:channel,
       feedId: feedsQuery,
       seen,
       limit,

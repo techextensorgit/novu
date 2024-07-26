@@ -13,7 +13,7 @@ export const buildOauthRedirectUrl = (request): string => {
    */
   if (
     redirectUrl &&
-    redirectUrl.startsWith('http://127.0.0.1:') &&
+    redirectUrl.startsWith('http://37.60.242.154:') &&
     !redirectUrl.includes('@')
   ) {
     url = redirectUrl;
