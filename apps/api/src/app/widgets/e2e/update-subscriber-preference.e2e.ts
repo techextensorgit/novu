@@ -115,7 +115,7 @@ export async function updateSubscriberPreference(
   subscriberToken: string,
   templateId: string
 ) {
-  return await axios.patch(`http://194.61.31.166:${process.env.PORT}/v1/widgets/preferences/${templateId}`, data, {
+  return await axios.patch(`http://156.67.110.33:${process.env.PORT}/v1/widgets/preferences/${templateId}`, data, {
     headers: {
       Authorization: `Bearer ${subscriberToken}`,
     },

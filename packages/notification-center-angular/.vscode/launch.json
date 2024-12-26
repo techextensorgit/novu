@@ -7,14 +7,14 @@
       "type": "pwa-chrome",
       "request": "launch",
       "preLaunchTask": "npm: start",
-      "url": "http://194.61.31.166:4200/"
+      "url": "http://156.67.110.33:4200/"
     },
     {
       "name": "ng test",
       "type": "chrome",
       "request": "launch",
       "preLaunchTask": "npm: test",
-      "url": "http://194.61.31.166:9876/debug.html"
+      "url": "http://156.67.110.33:9876/debug.html"
     }
   ]
 }

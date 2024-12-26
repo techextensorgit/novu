@@ -43,7 +43,7 @@ describe('Mark as Seen - /widgets/messages/:messageId/seen (POST)', async () => 
 
     expect(messages[0].seen).to.equal(false);
     await axios.post(
-      `http://194.61.31.166:${process.env.PORT}/v1/widgets/messages/markAs`,
+      `http://156.67.110.33:${process.env.PORT}/v1/widgets/messages/markAs`,
       { messageId, mark: { seen: true } },
       {
         headers: {

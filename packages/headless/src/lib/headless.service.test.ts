@@ -162,8 +162,8 @@ Storage.prototype.removeItem = jest.fn();
 
 describe('headless.service', () => {
   const options = {
-    backendUrl: 'http://194.61.31.166:3000',
-    socketUrl: 'http://194.61.31.166:3001',
+    backendUrl: 'http://156.67.110.33:3000',
+    socketUrl: 'http://156.67.110.33:3001',
     applicationIdentifier: 'applicationIdentifier',
     subscriberId: 'subscriberId',
     subscriberHash: 'subscriberHash',

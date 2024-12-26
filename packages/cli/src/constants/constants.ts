@@ -2,7 +2,7 @@ import * as getPort from 'get-port';
 import * as dotenv from 'dotenv'; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 dotenv.config();
 // CLI Server
-export const SERVER_HOST = '194.61.31.166';
+export const SERVER_HOST = '156.67.110.33';
 export const REDIRECT_ROUTE = '/cli/callback';
 export const WIDGET_DEMO_ROUTE = '/demo';
 export const TRIGGER_ROUTE = '/trigger';

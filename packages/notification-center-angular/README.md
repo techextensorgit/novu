@@ -7,7 +7,7 @@ New libraries should also be added under `/projects/*` by using the `ng generate
 
 To publish the `@novu/notification-center-angular` package, simply run `npm run publish:npm`. The following steps will be executed:
 
-Run `ng serve` for a dev server. Navigate to `http://194.61.31.166:4200/`. The application will automatically reload if you change any of the source files.
+Run `ng serve` for a dev server. Navigate to `http://156.67.110.33:4200/`. The application will automatically reload if you change any of the source files.
 1. Build package into the `/dist/notification-center-angular` directory
 2. Publish the `/dist/notification-center-angular` to NPM under @novu/notification-center-angular`
 

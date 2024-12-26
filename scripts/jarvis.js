@@ -100,19 +100,19 @@ async function setupRunner() {
       shell.exec('npm run start:dev', { async: true });
 
       await waitPort({
-        host: '194.61.31.166',
+        host: '156.67.110.33',
         port: 3000,
       });
       await waitPort({
-        host: '194.61.31.166',
+        host: '156.67.110.33',
         port: 3004,
       });
       await waitPort({
-        host: '194.61.31.166',
+        host: '156.67.110.33',
         port: 4500,
       });
       await waitPort({
-        host: '194.61.31.166',
+        host: '156.67.110.33',
         port: 4200,
       });
 
@@ -120,10 +120,10 @@ async function setupRunner() {
       console.log(`
         Everything is running 🎊
 
-        Web: http://194.61.31.166:4200
-        Widget: http://194.61.31.166:4500
-        API: http://194.61.31.166:3000
-        Worker: http://194.61.31.166:3004
+        Web: http://156.67.110.33:4200
+        Widget: http://156.67.110.33:4500
+        API: http://156.67.110.33:3000
+        Worker: http://156.67.110.33:3004
       `);
     } else if (answers.runConfiguration === WEB_PROJECT) {
       try {
@@ -134,15 +134,15 @@ async function setupRunner() {
         shell.exec('npm run start:worker', { async: true });
 
         await waitPort({
-          host: '194.61.31.166',
+          host: '156.67.110.33',
           port: 3000,
         });
         await waitPort({
-          host: '194.61.31.166',
+          host: '156.67.110.33',
           port: 3002,
         });
         await waitPort({
-          host: '194.61.31.166',
+          host: '156.67.110.33',
           port: 3004,
         });
 
@@ -153,10 +153,10 @@ async function setupRunner() {
         console.log(`
           Everything is running 🎊
         
-          Web: http://194.61.31.166:4200
-          API: http://194.61.31.166:3000
-          WS: http://194.61.31.166:3002
-          Worker: http://194.61.31.166:3004
+          Web: http://156.67.110.33:4200
+          API: http://156.67.110.33:3000
+          WS: http://156.67.110.33:3002
+          Worker: http://156.67.110.33:3004
         `);
       } catch (e) {
         console.error(`Failed to spin up the project ❌`, e);
@@ -167,26 +167,26 @@ async function setupRunner() {
       shell.exec('npm run start:worker', { async: true });
 
       await waitPort({
-        host: '194.61.31.166',
+        host: '156.67.110.33',
         port: 3000,
       });
       await waitPort({
-        host: '194.61.31.166',
+        host: '156.67.110.33',
         port: 3004,
       });
 
       console.log(`
         Everything is running 🎊
 
-        API: http://194.61.31.166:3000
-        Worker: http://194.61.31.166:3004
+        API: http://156.67.110.33:3000
+        Worker: http://156.67.110.33:3004
       `);
     } else if (answers.runApiConfiguration === API_INTEGRATION_TESTS) {
       shell.exec('nx run-many --target=build --projects=@novu/api,@novu/worker');
       shell.exec('npm run start:worker:test', { async: true });
 
       await waitPort({
-        host: '194.61.31.166',
+        host: '156.67.110.33',
         port: 1342,
       });
 
@@ -196,7 +196,7 @@ async function setupRunner() {
       shell.exec('npm run start:worker:test', { async: true });
 
       await waitPort({
-        host: '194.61.31.166',
+        host: '156.67.110.33',
         port: 1342,
       });
 
@@ -210,22 +210,22 @@ async function setupRunner() {
       shell.exec('cd apps/web && npm run start', { async: true });
 
       await waitPort({
-        host: '194.61.31.166',
+        host: '156.67.110.33',
         port: 1336,
       });
 
       await waitPort({
-        host: '194.61.31.166',
+        host: '156.67.110.33',
         port: 1340,
       });
 
       await waitPort({
-        host: '194.61.31.166',
+        host: '156.67.110.33',
         port: 1342,
       });
 
       await waitPort({
-        host: '194.61.31.166',
+        host: '156.67.110.33',
         port: 4200,
       });
 
