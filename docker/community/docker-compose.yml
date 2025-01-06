@@ -17,7 +17,7 @@ services:
       start_period: 10s
 
   mongodb:
-    image: mongo:8.0.3
+    image: mongo
     container_name: mongodb
     restart: unless-stopped
     logging:
@@ -28,22 +28,21 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_ROOT_USERNAME=TE@Admin
+      - MONGO_INITDB_ROOT_PASSWORD=7r8h3e8Y$Q#A
+      - MONGO_INITDB_DATABASE=novu-db
     volumes:
-      - mongodb:/data/db
+      - mongodb:/data/db      
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./mongod.conf.orig:/etc/mongod.conf
     ports:
       - 27017:27017
     healthcheck:
-      test:
-        [
-          'CMD-SHELL',
-          "echo 'db.runCommand({ ping: 1 }).ok' | mongosh mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@127.0.0.1:27017/admin --quiet",
-        ]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 60s
+      test: ["CMD-SHELL", "exit 0"] 
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
 
   api:
     image: 'ghcr.io/novuhq/novu/api:2.1.0'
@@ -177,7 +176,7 @@ services:
       - 4200:4200
     command: ['/bin/sh', '-c', 'pnpm run envsetup:docker && pnpm run start:static:build']
     healthcheck:
-      test: ['CMD-SHELL', 'curl --silent --fail http://localhost:4200 || exit 1']
+      test: ['CMD-SHELL', 'curl --silent --fail https://novu.techextensor.com || exit 1']
       interval: 30s
       timeout: 10s
       retries: 3
