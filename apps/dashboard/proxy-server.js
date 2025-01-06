@@ -13,7 +13,7 @@ const app = express();
 app.use(
   '/api',
   createProxyMiddleware({
-    target: `http://127.0.0.1:${port}?`, // Backend server
+    target: `http://37.60.242.154:${port}?`, // Backend server
     changeOrigin: true, // Modify the origin header to match the target
   })
 );

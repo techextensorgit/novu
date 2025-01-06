@@ -169,4 +169,4 @@ jobs:
           GH_PASSWORD: ${{ secrets.GH_PACKAGES }}
         run: |
           docker run --network=host --name $LOCAL_TAG -dit --env NODE_ENV=test $REGISTRY/$REPOSITORY:$IMAGE_TAG
-          docker run --network=host appropriate/curl --retry 10 --retry-delay 5 --retry-connrefused http://127.0.0.1:$TEST_PORT/v1/health-check | grep 'ok'
+          docker run --network=host appropriate/curl --retry 10 --retry-delay 5 --retry-connrefused http://37.60.242.154:$TEST_PORT/v1/health-check | grep 'ok'

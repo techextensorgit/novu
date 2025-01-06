@@ -64,7 +64,7 @@ module.exports = (on, config) => {
 
     async dropDatabase() {
       const dal = new DalService();
-      await dal.connect('mongodb://127.0.0.1:27017/novu-test');
+      await dal.connect('mongodb://37.60.242.154:27017/novu-test');
       await dal.destroy();
 
       return true;
@@ -72,7 +72,7 @@ module.exports = (on, config) => {
 
     async seedDatabase() {
       const dal = new DalService();
-      await dal.connect('mongodb://127.0.0.1:27017/novu-test');
+      await dal.connect('mongodb://37.60.242.154:27017/novu-test');
 
       const session = new UserSession(config.env.API_URL);
 
@@ -81,7 +81,7 @@ module.exports = (on, config) => {
 
     async getSession({ settings, templateOverride }) {
       const dal = new DalService();
-      await dal.connect('mongodb://127.0.0.1:27017/novu-test');
+      await dal.connect('mongodb://37.60.242.154:27017/novu-test');
 
       const session = new UserSession(config.env.API_URL);
       await session.initialize({

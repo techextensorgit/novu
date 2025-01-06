@@ -91,9 +91,9 @@ jobs:
       - name: Start Novu web app
         working-directory: apps/web
         env:
-          REACT_APP_API_URL: http://127.0.0.1:1336
-          REACT_APP_WS_URL: http://127.0.0.1:1340
-          REACT_APP_WEBHOOK_URL: http://127.0.0.1:1341
+          REACT_APP_API_URL: http://37.60.242.154:1336
+          REACT_APP_WS_URL: http://37.60.242.154:1340
+          REACT_APP_WEBHOOK_URL: http://37.60.242.154:1341
           # Disable LaunchDarkly client-side SDK in the test environment to reduce E2E flakiness
           REACT_APP_LAUNCH_DARKLY_CLIENT_SIDE_ID: ''
           NOVU_ENTERPRISE: ${{ steps.determine_run_type.outputs.enterprise_run }}
@@ -102,7 +102,7 @@ jobs:
           pnpm start:static:build &
 
       - name: Wait on Services
-        run: wait-on --timeout=180000 http://127.0.0.1:1340/v1/health-check http://127.0.0.1:4200/
+        run: wait-on --timeout=180000 http://37.60.242.154:1340/v1/health-check http://37.60.242.154:4200/
 
       - name: Install Playwright
         working-directory: apps/web
