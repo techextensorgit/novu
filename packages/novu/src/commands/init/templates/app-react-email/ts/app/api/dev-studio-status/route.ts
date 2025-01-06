@@ -3,7 +3,7 @@ export async function GET() {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 3000);
 
-    const response = await fetch("http://localhost:2022/.well-known/novu", {
+    const response = await fetch("http://37.60.242.154:2022/.well-known/novu", {
       signal: controller.signal,
       headers: {
         Accept: "application/json",

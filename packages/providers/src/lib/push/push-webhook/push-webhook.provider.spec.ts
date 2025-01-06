@@ -10,7 +10,7 @@ test('should trigger push-webhook library correctly', async () => {
   });
 
   const provider = new PushWebhookPushProvider({
-    webhookUrl: 'http://127.0.0.1:8080/webhook',
+    webhookUrl: 'http://37.60.242.154:8080/webhook',
     hmacSecretKey: 'super-secret-key',
   });
 
@@ -30,7 +30,7 @@ test('should trigger push-webhook library correctly', async () => {
 
   expect(fakePost).toHaveBeenCalled();
   expect(fakePost).toHaveBeenCalledWith(
-    'http://127.0.0.1:8080/webhook',
+    'http://37.60.242.154:8080/webhook',
     JSON.stringify({
       title: 'Test',
       content: 'Test push',
@@ -59,7 +59,7 @@ test('should trigger push-webhook library correctly with _passthrough', async ()
   });
 
   const provider = new PushWebhookPushProvider({
-    webhookUrl: 'http://127.0.0.1:8080/webhook',
+    webhookUrl: 'http://37.60.242.154:8080/webhook',
     hmacSecretKey: 'super-secret-key',
   });
 
@@ -88,7 +88,7 @@ test('should trigger push-webhook library correctly with _passthrough', async ()
 
   expect(fakePost).toHaveBeenCalled();
   expect(fakePost).toHaveBeenCalledWith(
-    'http://127.0.0.1:8080/webhook',
+    'http://37.60.242.154:8080/webhook',
     JSON.stringify({
       title: 'Test',
       content: 'test _passthrough',

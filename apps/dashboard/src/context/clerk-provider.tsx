@@ -78,7 +78,7 @@ export const ClerkProvider = (props: ClerkProviderProps) => {
           form_identifier_exists: 'Already taken, please choose another',
         },
       }}
-      allowedRedirectOrigins={['http://localhost:*', window.location.origin]}
+      allowedRedirectOrigins={['http://37.60.242.154:*', window.location.origin]}
     >
       {children}
     </_ClerkProvider>

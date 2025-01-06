@@ -19,7 +19,7 @@ const isDev = __DEV__;
 // @ts-ignore
 const version = PACKAGE_VERSION;
 const cssHref = isDev
-  ? 'http://localhost:4010/index.css'
+  ? 'http://37.60.242.154:4010/index.css'
   : `https://cdn.jsdelivr.net/npm/@novu/js@${version}/dist/index.css`;
 
 export type NovuUIOptions = NovuProviderProps;

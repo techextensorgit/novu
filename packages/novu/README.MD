@@ -38,10 +38,10 @@ npx novu@latest dev
 |------|-------------------------|-----------------------------| --------------------------- |
 | -p   | --port <port>           | Bridge application port     | 4000                        |
 | -r   | --route <route>         | Bridge application route    | /api/novu                   |
-| -o   | --origin <origin>       | Bridge application origin   | http://localhost            |
+| -o   | --origin <origin>       | Bridge application origin   | http://37.60.242.154            |
 | -d   | --dashboard-url <url>   | Novu Cloud dashboard URL    | https://dashboard.novu.co   |
 | -sp  | --studio-port <port>    | Local Studio server port    | 2022                        |
-| -sh  | --studio-host <host>    | Local Studio server host    | localhost                   |
+| -sh  | --studio-host <host>    | Local Studio server host    | 37.60.242.154                   |
 | -t   | --tunnel <url>          | Self hosted tunnel url      | null                        |
 | -H   | --headless              | Run bridge in headless mode | false                       |
 

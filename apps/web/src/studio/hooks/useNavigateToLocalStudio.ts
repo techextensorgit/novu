@@ -2,9 +2,9 @@ import { useQuery } from '@tanstack/react-query';
 import { useCallback } from 'react';
 import { LocalStudioWellKnownMetadata } from '../types';
 
-const WELL_KNOWN_URL = 'http://localhost:2022/.well-known/novu';
+const WELL_KNOWN_URL = 'http://37.60.242.154:2022/.well-known/novu';
 const DEFAULT_STUDIO_PROTOCOL = 'http:';
-const DEFAULT_STUDIO_HOST_NAME = 'localhost';
+const DEFAULT_STUDIO_HOST_NAME = '37.60.242.154';
 const DEFAULT_STUDIO_PORT = '2022';
 
 type UseNavigateToLocalStudio = {

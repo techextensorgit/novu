@@ -80,8 +80,8 @@ export class DevServer {
           function injectIframe(src) {
            /*
            * Updates the URL in the parent window for better navigation control.
-           * Example: If the user enters 'http://localhost:PORT/studio/onboarding/preview', it remains unchanged,
-           * otherwise, redirects back to 'http://localhost:PORT/studio/onboarding'.
+           * Example: If the user enters 'http://37.60.242.154:PORT/studio/onboarding/preview', it remains unchanged,
+           * otherwise, redirects back to 'http://37.60.242.154:PORT/studio/onboarding'.
            */
             const getWindowsUrl = (url) => {
               const studioPath = '/studio';

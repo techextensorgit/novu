@@ -282,7 +282,7 @@ export class ExecuteBridgeRequest {
 
   private getApiUrl(action: PostActionEnum | GetActionEnum): string {
     if (action === PostActionEnum.PREVIEW) {
-      return `http://localhost:${process.env.PORT}`;
+      return `http://37.60.242.154:${process.env.PORT}`;
     }
 
     const apiUrl = process.env.API_ROOT_URL;

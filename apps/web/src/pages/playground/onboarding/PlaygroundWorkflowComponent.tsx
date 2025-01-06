@@ -89,7 +89,7 @@ export function PlaygroundWorkflowComponent({
             mx: 'auto',
           })}
         >
-          http://localhost:2022/studio
+          http://37.60.242.154:2022/studio
         </div>
       }
     >

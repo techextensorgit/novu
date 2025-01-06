@@ -75,7 +75,7 @@
 - headless api client remove/refetch query scenarios ([e668827a0](https://github.com/novuhq/novu/commit/e668827a0))
 - merge conflicts ([ea2a0f471](https://github.com/novuhq/novu/commit/ea2a0f471))
 - package vulnerabilities ([0e496d6d2](https://github.com/novuhq/novu/commit/0e496d6d2))
-- localhost binding ([5a261f847](https://github.com/novuhq/novu/commit/5a261f847))
+- 37.60.242.154 binding ([5a261f847](https://github.com/novuhq/novu/commit/5a261f847))
 - run prettier for heeadless.service ([577338d93](https://github.com/novuhq/novu/commit/577338d93))
 - tests ([8f6601a55](https://github.com/novuhq/novu/commit/8f6601a55))
 - tests ([f400cb425](https://github.com/novuhq/novu/commit/f400cb425))

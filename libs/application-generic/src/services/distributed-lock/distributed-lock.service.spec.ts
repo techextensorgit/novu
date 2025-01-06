@@ -11,7 +11,7 @@ import {
 
 // eslint-disable-next-line no-multi-assign
 const originalRedisCacheServiceHost = (process.env.REDIS_CACHE_SERVICE_HOST =
-  process.env.REDIS_CACHE_SERVICE_HOST ?? 'localhost');
+  process.env.REDIS_CACHE_SERVICE_HOST ?? '37.60.242.154');
 // eslint-disable-next-line no-multi-assign
 const originalRedisCacheServicePort = (process.env.REDIS_CACHE_SERVICE_PORT =
   process.env.REDIS_CACHE_SERVICE_PORT ?? '6379');
@@ -308,7 +308,7 @@ describe('Distributed Lock Service', () => {
       expect(
         cacheInMemoryProviderService.inMemoryProviderService
           .inMemoryProviderConfig.host,
-      ).toEqual('localhost');
+      ).toEqual('37.60.242.154');
       distributedLockService = new DistributedLockService(undefined);
       // If no initializing the service is like the client is not properly set
     });

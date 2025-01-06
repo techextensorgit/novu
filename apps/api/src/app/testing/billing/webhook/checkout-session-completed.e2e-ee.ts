@@ -14,7 +14,7 @@ const mockCheckoutSessionCompletedEvent = {
       amount_subtotal: 270000,
       amount_total: 270000,
       billing_address_collection: 'auto',
-      cancel_url: 'http://localhost:4200/manage-account/billing?result=canceled',
+      cancel_url: 'http://37.60.242.154:4200/manage-account/billing?result=canceled',
       created: 1728552369,
       currency: 'usd',
       customer: 'cus_R0JFO85Q8ThjEZ',
@@ -29,7 +29,7 @@ const mockCheckoutSessionCompletedEvent = {
       payment_status: 'paid',
       status: 'complete',
       subscription: 'current_subscription_id',
-      success_url: 'http://localhost:4200/manage-account/billing?result=success&session_id={CHECKOUT_SESSION_ID}',
+      success_url: 'http://37.60.242.154:4200/manage-account/billing?result=success&session_id={CHECKOUT_SESSION_ID}',
       tax_id_collection: {
         enabled: true,
         required: 'never',

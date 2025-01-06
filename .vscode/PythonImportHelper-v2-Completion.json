@@ -1,0 +1,1665 @@
+[
+    {
+        "label": "re",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "re",
+        "description": "re",
+        "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "base64",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "base64",
+        "description": "base64",
+        "detail": "base64",
+        "documentation": {}
+    },
+    {
+        "label": "hashlib",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "hashlib",
+        "description": "hashlib",
+        "detail": "hashlib",
+        "documentation": {}
+    },
+    {
+        "label": "ASN1FormatError",
+        "importPath": "dkim.asn1",
+        "description": "dkim.asn1",
+        "isExtraImport": true,
+        "detail": "dkim.asn1",
+        "documentation": {}
+    },
+    {
+        "label": "asn1_build",
+        "importPath": "dkim.asn1",
+        "description": "dkim.asn1",
+        "isExtraImport": true,
+        "detail": "dkim.asn1",
+        "documentation": {}
+    },
+    {
+        "label": "asn1_parse",
+        "importPath": "dkim.asn1",
+        "description": "dkim.asn1",
+        "isExtraImport": true,
+        "detail": "dkim.asn1",
+        "documentation": {}
+    },
+    {
+        "label": "BIT_STRING",
+        "importPath": "dkim.asn1",
+        "description": "dkim.asn1",
+        "isExtraImport": true,
+        "detail": "dkim.asn1",
+        "documentation": {}
+    },
+    {
+        "label": "INTEGER",
+        "importPath": "dkim.asn1",
+        "description": "dkim.asn1",
+        "isExtraImport": true,
+        "detail": "dkim.asn1",
+        "documentation": {}
+    },
+    {
+        "label": "SEQUENCE",
+        "importPath": "dkim.asn1",
+        "description": "dkim.asn1",
+        "isExtraImport": true,
+        "detail": "dkim.asn1",
+        "documentation": {}
+    },
+    {
+        "label": "OBJECT_IDENTIFIER",
+        "importPath": "dkim.asn1",
+        "description": "dkim.asn1",
+        "isExtraImport": true,
+        "detail": "dkim.asn1",
+        "documentation": {}
+    },
+    {
+        "label": "OCTET_STRING",
+        "importPath": "dkim.asn1",
+        "description": "dkim.asn1",
+        "isExtraImport": true,
+        "detail": "dkim.asn1",
+        "documentation": {}
+    },
+    {
+        "label": "NULL",
+        "importPath": "dkim.asn1",
+        "description": "dkim.asn1",
+        "isExtraImport": true,
+        "detail": "dkim.asn1",
+        "documentation": {}
+    },
+    {
+        "label": "logging",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "logging",
+        "description": "logging",
+        "detail": "logging",
+        "documentation": {}
+    },
+    {
+        "label": "socket,",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "socket.",
+        "description": "socket.",
+        "detail": "socket.",
+        "documentation": {}
+    },
+    {
+        "label": "Type,Class,Opcode",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "Type.Class.Opcode",
+        "description": "Type.Class.Opcode",
+        "detail": "Type.Class.Opcode",
+        "documentation": {}
+    },
+    {
+        "label": "asyncore",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "asyncore",
+        "description": "asyncore",
+        "detail": "asyncore",
+        "documentation": {}
+    },
+    {
+        "label": "Lib",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "Lib",
+        "description": "Lib",
+        "detail": "Lib",
+        "documentation": {}
+    },
+    {
+        "label": "Base",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "Base",
+        "description": "Base",
+        "detail": "Base",
+        "documentation": {}
+    },
+    {
+        "label": "ServerError",
+        "importPath": "Base",
+        "description": "Base",
+        "isExtraImport": true,
+        "detail": "Base",
+        "documentation": {}
+    },
+    {
+        "label": "_winreg",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "_winreg",
+        "description": "_winreg",
+        "detail": "_winreg",
+        "documentation": {}
+    },
+    {
+        "label": "struct",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "struct",
+        "description": "struct",
+        "detail": "struct",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "socket",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "socket",
+        "description": "socket",
+        "detail": "socket",
+        "documentation": {}
+    },
+    {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "reduce",
+        "importPath": "functools",
+        "description": "functools",
+        "isExtraImport": true,
+        "detail": "functools",
+        "documentation": {}
+    },
+    {
+        "label": "DNS",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "DNS",
+        "description": "DNS",
+        "detail": "DNS",
+        "documentation": {}
+    },
+    {
+        "label": "dkim",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "dkim",
+        "description": "dkim",
+        "detail": "dkim",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "spf",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "spf",
+        "description": "spf",
+        "detail": "spf",
+        "documentation": {}
+    },
+    {
+        "label": "ASN1FormatError",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.dkim.asn1",
+        "description": "apps.inbound-mail.src.python.dkim.asn1",
+        "peekOfCode": "class ASN1FormatError(Exception):\n    pass\ndef asn1_parse(template, data):\n    \"\"\"Parse a data structure according to an ASN.1 template.\n    @param template: tuples comprising the ASN.1 template\n    @param data: byte string data to parse\n    @return: decoded structure\n    \"\"\"\n    data = bytearray(data)\n    r = []",
+        "detail": "apps.inbound-mail.src.python.dkim.asn1",
+        "documentation": {}
+    },
+    {
+        "label": "asn1_parse",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.dkim.asn1",
+        "description": "apps.inbound-mail.src.python.dkim.asn1",
+        "peekOfCode": "def asn1_parse(template, data):\n    \"\"\"Parse a data structure according to an ASN.1 template.\n    @param template: tuples comprising the ASN.1 template\n    @param data: byte string data to parse\n    @return: decoded structure\n    \"\"\"\n    data = bytearray(data)\n    r = []\n    i = 0\n    try:",
+        "detail": "apps.inbound-mail.src.python.dkim.asn1",
+        "documentation": {}
+    },
+    {
+        "label": "asn1_length",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.dkim.asn1",
+        "description": "apps.inbound-mail.src.python.dkim.asn1",
+        "peekOfCode": "def asn1_length(n):\n    \"\"\"Return a string representing a field length in ASN.1 format.\n    @param n: integer field length\n    @return: ASN.1 field length\n    \"\"\"\n    assert n >= 0\n    if n < 0x7f:\n        return bytearray([n])\n    r = bytearray()\n    while n > 0:",
+        "detail": "apps.inbound-mail.src.python.dkim.asn1",
+        "documentation": {}
+    },
+    {
+        "label": "asn1_encode",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.dkim.asn1",
+        "description": "apps.inbound-mail.src.python.dkim.asn1",
+        "peekOfCode": "def asn1_encode(type, data):\n    length = asn1_length(len(data))\n    length.insert(0, type)\n    length.extend(data)\n    return length\ndef asn1_build(node):\n    \"\"\"Build a DER-encoded ASN.1 data structure.\n    @param node: (type, data) tuples comprising the ASN.1 structure\n    @return: DER-encoded ASN.1 byte string\n    \"\"\"",
+        "detail": "apps.inbound-mail.src.python.dkim.asn1",
+        "documentation": {}
+    },
+    {
+        "label": "asn1_build",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.dkim.asn1",
+        "description": "apps.inbound-mail.src.python.dkim.asn1",
+        "peekOfCode": "def asn1_build(node):\n    \"\"\"Build a DER-encoded ASN.1 data structure.\n    @param node: (type, data) tuples comprising the ASN.1 structure\n    @return: DER-encoded ASN.1 byte string\n    \"\"\"\n    if node[0] == OCTET_STRING:\n        return asn1_encode(OCTET_STRING, node[1])\n    if node[0] == NULL:\n        assert node[1] is None\n        return asn1_encode(NULL, b'')",
+        "detail": "apps.inbound-mail.src.python.dkim.asn1",
+        "documentation": {}
+    },
+    {
+        "label": "__all__",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.dkim.asn1",
+        "description": "apps.inbound-mail.src.python.dkim.asn1",
+        "peekOfCode": "__all__ = [\n    'asn1_build',\n    'asn1_parse',\n    'ASN1FormatError',\n    'BIT_STRING',\n    'INTEGER',\n    'SEQUENCE',\n    'OBJECT_IDENTIFIER',\n    'OCTET_STRING',\n    'NULL',",
+        "detail": "apps.inbound-mail.src.python.dkim.asn1",
+        "documentation": {}
+    },
+    {
+        "label": "INTEGER",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.dkim.asn1",
+        "description": "apps.inbound-mail.src.python.dkim.asn1",
+        "peekOfCode": "INTEGER = 0x02\nBIT_STRING = 0x03\nOCTET_STRING = 0x04\nNULL = 0x05\nOBJECT_IDENTIFIER = 0x06\nSEQUENCE = 0x30\nclass ASN1FormatError(Exception):\n    pass\ndef asn1_parse(template, data):\n    \"\"\"Parse a data structure according to an ASN.1 template.",
+        "detail": "apps.inbound-mail.src.python.dkim.asn1",
+        "documentation": {}
+    },
+    {
+        "label": "BIT_STRING",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.dkim.asn1",
+        "description": "apps.inbound-mail.src.python.dkim.asn1",
+        "peekOfCode": "BIT_STRING = 0x03\nOCTET_STRING = 0x04\nNULL = 0x05\nOBJECT_IDENTIFIER = 0x06\nSEQUENCE = 0x30\nclass ASN1FormatError(Exception):\n    pass\ndef asn1_parse(template, data):\n    \"\"\"Parse a data structure according to an ASN.1 template.\n    @param template: tuples comprising the ASN.1 template",
+        "detail": "apps.inbound-mail.src.python.dkim.asn1",
+        "documentation": {}
+    },
+    {
+        "label": "OCTET_STRING",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.dkim.asn1",
+        "description": "apps.inbound-mail.src.python.dkim.asn1",
+        "peekOfCode": "OCTET_STRING = 0x04\nNULL = 0x05\nOBJECT_IDENTIFIER = 0x06\nSEQUENCE = 0x30\nclass ASN1FormatError(Exception):\n    pass\ndef asn1_parse(template, data):\n    \"\"\"Parse a data structure according to an ASN.1 template.\n    @param template: tuples comprising the ASN.1 template\n    @param data: byte string data to parse",
+        "detail": "apps.inbound-mail.src.python.dkim.asn1",
+        "documentation": {}
+    },
+    {
+        "label": "NULL",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.dkim.asn1",
+        "description": "apps.inbound-mail.src.python.dkim.asn1",
+        "peekOfCode": "NULL = 0x05\nOBJECT_IDENTIFIER = 0x06\nSEQUENCE = 0x30\nclass ASN1FormatError(Exception):\n    pass\ndef asn1_parse(template, data):\n    \"\"\"Parse a data structure according to an ASN.1 template.\n    @param template: tuples comprising the ASN.1 template\n    @param data: byte string data to parse\n    @return: decoded structure",
+        "detail": "apps.inbound-mail.src.python.dkim.asn1",
+        "documentation": {}
+    },
+    {
+        "label": "OBJECT_IDENTIFIER",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.dkim.asn1",
+        "description": "apps.inbound-mail.src.python.dkim.asn1",
+        "peekOfCode": "OBJECT_IDENTIFIER = 0x06\nSEQUENCE = 0x30\nclass ASN1FormatError(Exception):\n    pass\ndef asn1_parse(template, data):\n    \"\"\"Parse a data structure according to an ASN.1 template.\n    @param template: tuples comprising the ASN.1 template\n    @param data: byte string data to parse\n    @return: decoded structure\n    \"\"\"",
+        "detail": "apps.inbound-mail.src.python.dkim.asn1",
+        "documentation": {}
+    },
+    {
+        "label": "SEQUENCE",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.dkim.asn1",
+        "description": "apps.inbound-mail.src.python.dkim.asn1",
+        "peekOfCode": "SEQUENCE = 0x30\nclass ASN1FormatError(Exception):\n    pass\ndef asn1_parse(template, data):\n    \"\"\"Parse a data structure according to an ASN.1 template.\n    @param template: tuples comprising the ASN.1 template\n    @param data: byte string data to parse\n    @return: decoded structure\n    \"\"\"\n    data = bytearray(data)",
+        "detail": "apps.inbound-mail.src.python.dkim.asn1",
+        "documentation": {}
+    },
+    {
+        "label": "InvalidCanonicalizationPolicyError",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "description": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "peekOfCode": "class InvalidCanonicalizationPolicyError(Exception):\n    \"\"\"The c= value could not be parsed.\"\"\"\n    pass\ndef strip_trailing_whitespace(content):\n    return re.sub(b\"[\\t ]+\\r\\n\", b\"\\r\\n\", content)\ndef compress_whitespace(content):\n    return re.sub(b\"[\\t ]+\", b\" \", content)\ndef strip_trailing_lines(content):\n    return re.sub(b\"(\\r\\n)*$\", b\"\\r\\n\", content)\ndef unfold_header_value(content):",
+        "detail": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "documentation": {}
+    },
+    {
+        "label": "Simple",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "description": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "peekOfCode": "class Simple:\n    \"\"\"Class that represents the \"simple\" canonicalization algorithm.\"\"\"\n    name = b\"simple\"\n    @staticmethod\n    def canonicalize_headers(headers):\n        # No changes to headers.\n        return headers\n    @staticmethod\n    def canonicalize_body(body):\n        # Ignore all empty lines at the end of the message body.",
+        "detail": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "documentation": {}
+    },
+    {
+        "label": "Relaxed",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "description": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "peekOfCode": "class Relaxed:\n    \"\"\"Class that represents the \"relaxed\" canonicalization algorithm.\"\"\"\n    name = b\"relaxed\"\n    @staticmethod\n    def canonicalize_headers(headers):\n        # Convert all header field names to lowercase.\n        # Unfold all header lines.\n        # Compress WSP to single space.\n        # Remove all WSP at the start or end of the field value (strip).\n        return [",
+        "detail": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "documentation": {}
+    },
+    {
+        "label": "CanonicalizationPolicy",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "description": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "peekOfCode": "class CanonicalizationPolicy:\n    def __init__(self, header_algorithm, body_algorithm):\n        self.header_algorithm = header_algorithm\n        self.body_algorithm = body_algorithm\n    @classmethod\n    def from_c_value(cls, c):\n        \"\"\"Construct the canonicalization policy described by a c= value.\n        May raise an C{InvalidCanonicalizationPolicyError} if the given\n        value is invalid\n        @param c: c= value from a DKIM-Signature header field",
+        "detail": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "documentation": {}
+    },
+    {
+        "label": "strip_trailing_whitespace",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "description": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "peekOfCode": "def strip_trailing_whitespace(content):\n    return re.sub(b\"[\\t ]+\\r\\n\", b\"\\r\\n\", content)\ndef compress_whitespace(content):\n    return re.sub(b\"[\\t ]+\", b\" \", content)\ndef strip_trailing_lines(content):\n    return re.sub(b\"(\\r\\n)*$\", b\"\\r\\n\", content)\ndef unfold_header_value(content):\n    return re.sub(b\"\\r\\n\", b\"\", content)\nclass Simple:\n    \"\"\"Class that represents the \"simple\" canonicalization algorithm.\"\"\"",
+        "detail": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "documentation": {}
+    },
+    {
+        "label": "compress_whitespace",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "description": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "peekOfCode": "def compress_whitespace(content):\n    return re.sub(b\"[\\t ]+\", b\" \", content)\ndef strip_trailing_lines(content):\n    return re.sub(b\"(\\r\\n)*$\", b\"\\r\\n\", content)\ndef unfold_header_value(content):\n    return re.sub(b\"\\r\\n\", b\"\", content)\nclass Simple:\n    \"\"\"Class that represents the \"simple\" canonicalization algorithm.\"\"\"\n    name = b\"simple\"\n    @staticmethod",
+        "detail": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "documentation": {}
+    },
+    {
+        "label": "strip_trailing_lines",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "description": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "peekOfCode": "def strip_trailing_lines(content):\n    return re.sub(b\"(\\r\\n)*$\", b\"\\r\\n\", content)\ndef unfold_header_value(content):\n    return re.sub(b\"\\r\\n\", b\"\", content)\nclass Simple:\n    \"\"\"Class that represents the \"simple\" canonicalization algorithm.\"\"\"\n    name = b\"simple\"\n    @staticmethod\n    def canonicalize_headers(headers):\n        # No changes to headers.",
+        "detail": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "documentation": {}
+    },
+    {
+        "label": "unfold_header_value",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "description": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "peekOfCode": "def unfold_header_value(content):\n    return re.sub(b\"\\r\\n\", b\"\", content)\nclass Simple:\n    \"\"\"Class that represents the \"simple\" canonicalization algorithm.\"\"\"\n    name = b\"simple\"\n    @staticmethod\n    def canonicalize_headers(headers):\n        # No changes to headers.\n        return headers\n    @staticmethod",
+        "detail": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "documentation": {}
+    },
+    {
+        "label": "__all__",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "description": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "peekOfCode": "__all__ = [\n    'CanonicalizationPolicy',\n    'InvalidCanonicalizationPolicyError',\n    ]\nclass InvalidCanonicalizationPolicyError(Exception):\n    \"\"\"The c= value could not be parsed.\"\"\"\n    pass\ndef strip_trailing_whitespace(content):\n    return re.sub(b\"[\\t ]+\\r\\n\", b\"\\r\\n\", content)\ndef compress_whitespace(content):",
+        "detail": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "documentation": {}
+    },
+    {
+        "label": "ALGORITHMS",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "description": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "peekOfCode": "ALGORITHMS = dict((c.name, c) for c in (Simple, Relaxed))",
+        "detail": "apps.inbound-mail.src.python.dkim.canonicalization",
+        "documentation": {}
+    },
+    {
+        "label": "DigestTooLargeError",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.dkim.crypto",
+        "description": "apps.inbound-mail.src.python.dkim.crypto",
+        "peekOfCode": "class DigestTooLargeError(Exception):\n    \"\"\"The digest is too large to fit within the requested length.\"\"\"\n    pass\nclass UnparsableKeyError(Exception):\n    \"\"\"The data could not be parsed as a key.\"\"\"\n    pass\ndef parse_public_key(data):\n    \"\"\"Parse an RSA public key.\n    @param data: DER-encoded X.509 subjectPublicKeyInfo\n        containing an RFC3447 RSAPublicKey.",
+        "detail": "apps.inbound-mail.src.python.dkim.crypto",
+        "documentation": {}
+    },
+    {
+        "label": "UnparsableKeyError",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.dkim.crypto",
+        "description": "apps.inbound-mail.src.python.dkim.crypto",
+        "peekOfCode": "class UnparsableKeyError(Exception):\n    \"\"\"The data could not be parsed as a key.\"\"\"\n    pass\ndef parse_public_key(data):\n    \"\"\"Parse an RSA public key.\n    @param data: DER-encoded X.509 subjectPublicKeyInfo\n        containing an RFC3447 RSAPublicKey.\n    @return: RSA public key\n    \"\"\"\n    try:",
+        "detail": "apps.inbound-mail.src.python.dkim.crypto",
+        "documentation": {}
+    },
+    {
+        "label": "parse_public_key",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.dkim.crypto",
+        "description": "apps.inbound-mail.src.python.dkim.crypto",
+        "peekOfCode": "def parse_public_key(data):\n    \"\"\"Parse an RSA public key.\n    @param data: DER-encoded X.509 subjectPublicKeyInfo\n        containing an RFC3447 RSAPublicKey.\n    @return: RSA public key\n    \"\"\"\n    try:\n        # Not sure why the [1:] is necessary to skip a byte.\n        x = asn1_parse(ASN1_Object, data)\n        pkd = asn1_parse(ASN1_RSAPublicKey, x[0][1][1:])",
+        "detail": "apps.inbound-mail.src.python.dkim.crypto",
+        "documentation": {}
+    },
+    {
+        "label": "parse_private_key",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.dkim.crypto",
+        "description": "apps.inbound-mail.src.python.dkim.crypto",
+        "peekOfCode": "def parse_private_key(data):\n    \"\"\"Parse an RSA private key.\n    @param data: DER-encoded RFC3447 RSAPrivateKey.\n    @return: RSA private key\n    \"\"\"\n    try:\n        pka = asn1_parse(ASN1_RSAPrivateKey, data)\n    except ASN1FormatError as e:\n        raise UnparsableKeyError('Unparsable private key: ' + str(e))\n    pk = {",
+        "detail": "apps.inbound-mail.src.python.dkim.crypto",
+        "documentation": {}
+    },
+    {
+        "label": "parse_pem_private_key",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.dkim.crypto",
+        "description": "apps.inbound-mail.src.python.dkim.crypto",
+        "peekOfCode": "def parse_pem_private_key(data):\n    \"\"\"Parse a PEM RSA private key.\n    @param data: RFC3447 RSAPrivateKey in PEM format.\n    @return: RSA private key\n    \"\"\"\n    m = re.search(b\"--\\n(.*?)\\n--\", data, re.DOTALL)\n    if m is None:\n        raise UnparsableKeyError(\"Private key not found\")\n    try:\n        pkdata = base64.b64decode(m.group(1))",
+        "detail": "apps.inbound-mail.src.python.dkim.crypto",
+        "documentation": {}
+    },
+    {
+        "label": "EMSA_PKCS1_v1_5_encode",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.dkim.crypto",
+        "description": "apps.inbound-mail.src.python.dkim.crypto",
+        "peekOfCode": "def EMSA_PKCS1_v1_5_encode(hash, mlen):\n    \"\"\"Encode a digest with RFC3447 EMSA-PKCS1-v1_5.\n    @param hash: hash object to encode\n    @param mlen: desired message length\n    @return: encoded digest byte string\n    \"\"\"\n    dinfo = asn1_build(\n        (SEQUENCE, [\n            (SEQUENCE, [\n                (OBJECT_IDENTIFIER, HASH_ID_MAP[hash.name.lower()]),",
+        "detail": "apps.inbound-mail.src.python.dkim.crypto",
+        "documentation": {}
+    },
+    {
+        "label": "str2int",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.dkim.crypto",
+        "description": "apps.inbound-mail.src.python.dkim.crypto",
+        "peekOfCode": "def str2int(s):\n    \"\"\"Convert a byte string to an integer.\n    @param s: byte string representing a positive integer to convert\n    @return: converted integer\n    \"\"\"\n    s = bytearray(s)\n    r = 0\n    for c in s:\n        r = (r << 8) | c\n    return r",
+        "detail": "apps.inbound-mail.src.python.dkim.crypto",
+        "documentation": {}
+    },
+    {
+        "label": "int2str",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.dkim.crypto",
+        "description": "apps.inbound-mail.src.python.dkim.crypto",
+        "peekOfCode": "def int2str(n, length=-1):\n    \"\"\"Convert an integer to a byte string.\n    @param n: positive integer to convert\n    @param length: minimum length\n    @return: converted bytestring, of at least the minimum length if it was\n        specified\n    \"\"\"\n    assert n >= 0\n    r = bytearray()\n    while length < 0 or len(r) < length:",
+        "detail": "apps.inbound-mail.src.python.dkim.crypto",
+        "documentation": {}
+    },
+    {
+        "label": "rsa_decrypt",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.dkim.crypto",
+        "description": "apps.inbound-mail.src.python.dkim.crypto",
+        "peekOfCode": "def rsa_decrypt(message, pk, mlen):\n    \"\"\"Perform RSA decryption/signing\n    @param message: byte string to operate on\n    @param pk: private key data\n    @param mlen: desired output length\n    @return: byte string result of the operation\n    \"\"\"\n    c = str2int(message)\n    m1 = pow(c, pk['exponent1'], pk['prime1'])\n    m2 = pow(c, pk['exponent2'], pk['prime2'])",
+        "detail": "apps.inbound-mail.src.python.dkim.crypto",
+        "documentation": {}
+    },
+    {
+        "label": "rsa_encrypt",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.dkim.crypto",
+        "description": "apps.inbound-mail.src.python.dkim.crypto",
+        "peekOfCode": "def rsa_encrypt(message, pk, mlen):\n    \"\"\"Perform RSA encryption/verification\n    @param message: byte string to operate on\n    @param pk: public key data\n    @param mlen: desired output length\n    @return: byte string result of the operation\n    \"\"\"\n    m = str2int(message)\n    return int2str(pow(m, pk['publicExponent'], pk['modulus']), mlen)\ndef RSASSA_PKCS1_v1_5_sign(hash, private_key):",
+        "detail": "apps.inbound-mail.src.python.dkim.crypto",
+        "documentation": {}
+    },
+    {
+        "label": "RSASSA_PKCS1_v1_5_sign",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.dkim.crypto",
+        "description": "apps.inbound-mail.src.python.dkim.crypto",
+        "peekOfCode": "def RSASSA_PKCS1_v1_5_sign(hash, private_key):\n    \"\"\"Sign a digest with RFC3447 RSASSA-PKCS1-v1_5.\n    @param hash: hash object to sign\n    @param private_key: private key data\n    @return: signed digest byte string\n    \"\"\"\n    modlen = len(int2str(private_key['modulus']))\n    encoded_digest = EMSA_PKCS1_v1_5_encode(hash, modlen)\n    return rsa_decrypt(encoded_digest, private_key, modlen)\ndef RSASSA_PKCS1_v1_5_verify(hash, signature, public_key):",
+        "detail": "apps.inbound-mail.src.python.dkim.crypto",
+        "documentation": {}
+    },
+    {
+        "label": "RSASSA_PKCS1_v1_5_verify",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.dkim.crypto",
+        "description": "apps.inbound-mail.src.python.dkim.crypto",
+        "peekOfCode": "def RSASSA_PKCS1_v1_5_verify(hash, signature, public_key):\n    \"\"\"Verify a digest signed with RFC3447 RSASSA-PKCS1-v1_5.\n    @param hash: hash object to check\n    @param signature: signed digest byte string\n    @param public_key: public key data\n    @return: True if the signature is valid, False otherwise\n    \"\"\"\n    modlen = len(int2str(public_key['modulus']))\n    encoded_digest = EMSA_PKCS1_v1_5_encode(hash, modlen)\n    signed_digest = rsa_encrypt(signature, public_key, modlen)",
+        "detail": "apps.inbound-mail.src.python.dkim.crypto",
+        "documentation": {}
+    },
+    {
+        "label": "__all__",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.dkim.crypto",
+        "description": "apps.inbound-mail.src.python.dkim.crypto",
+        "peekOfCode": "__all__ = [\n    'DigestTooLargeError',\n    'HASH_ALGORITHMS',\n    'parse_pem_private_key',\n    'parse_private_key',\n    'parse_public_key',\n    'RSASSA_PKCS1_v1_5_sign',\n    'RSASSA_PKCS1_v1_5_verify',\n    'UnparsableKeyError',\n    ]",
+        "detail": "apps.inbound-mail.src.python.dkim.crypto",
+        "documentation": {}
+    },
+    {
+        "label": "ASN1_Object",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.dkim.crypto",
+        "description": "apps.inbound-mail.src.python.dkim.crypto",
+        "peekOfCode": "ASN1_Object = [\n    (SEQUENCE, [\n        (SEQUENCE, [\n            (OBJECT_IDENTIFIER,),\n            (NULL,),\n        ]),\n        (BIT_STRING,),\n    ])\n]\nASN1_RSAPublicKey = [",
+        "detail": "apps.inbound-mail.src.python.dkim.crypto",
+        "documentation": {}
+    },
+    {
+        "label": "ASN1_RSAPublicKey",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.dkim.crypto",
+        "description": "apps.inbound-mail.src.python.dkim.crypto",
+        "peekOfCode": "ASN1_RSAPublicKey = [\n    (SEQUENCE, [\n        (INTEGER,),\n        (INTEGER,),\n    ])\n]\nASN1_RSAPrivateKey = [\n    (SEQUENCE, [\n        (INTEGER,),\n        (INTEGER,),",
+        "detail": "apps.inbound-mail.src.python.dkim.crypto",
+        "documentation": {}
+    },
+    {
+        "label": "ASN1_RSAPrivateKey",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.dkim.crypto",
+        "description": "apps.inbound-mail.src.python.dkim.crypto",
+        "peekOfCode": "ASN1_RSAPrivateKey = [\n    (SEQUENCE, [\n        (INTEGER,),\n        (INTEGER,),\n        (INTEGER,),\n        (INTEGER,),\n        (INTEGER,),\n        (INTEGER,),\n        (INTEGER,),\n        (INTEGER,),",
+        "detail": "apps.inbound-mail.src.python.dkim.crypto",
+        "documentation": {}
+    },
+    {
+        "label": "HASH_ALGORITHMS",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.dkim.crypto",
+        "description": "apps.inbound-mail.src.python.dkim.crypto",
+        "peekOfCode": "HASH_ALGORITHMS = {\n    b'rsa-sha1': hashlib.sha1,\n    b'rsa-sha256': hashlib.sha256,\n    }\n# These values come from RFC 3447, section 9.2 Notes, page 43.\nHASH_ID_MAP = {\n    'sha1': b\"\\x2b\\x0e\\x03\\x02\\x1a\",\n    'sha256': b\"\\x60\\x86\\x48\\x01\\x65\\x03\\x04\\x02\\x01\",\n    }\nclass DigestTooLargeError(Exception):",
+        "detail": "apps.inbound-mail.src.python.dkim.crypto",
+        "documentation": {}
+    },
+    {
+        "label": "HASH_ID_MAP",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.dkim.crypto",
+        "description": "apps.inbound-mail.src.python.dkim.crypto",
+        "peekOfCode": "HASH_ID_MAP = {\n    'sha1': b\"\\x2b\\x0e\\x03\\x02\\x1a\",\n    'sha256': b\"\\x60\\x86\\x48\\x01\\x65\\x03\\x04\\x02\\x01\",\n    }\nclass DigestTooLargeError(Exception):\n    \"\"\"The digest is too large to fit within the requested length.\"\"\"\n    pass\nclass UnparsableKeyError(Exception):\n    \"\"\"The data could not be parsed as a key.\"\"\"\n    pass",
+        "detail": "apps.inbound-mail.src.python.dkim.crypto",
+        "documentation": {}
+    },
+    {
+        "label": "get_txt_dnspython",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.dkim.dnsplug",
+        "description": "apps.inbound-mail.src.python.dkim.dnsplug",
+        "peekOfCode": "def get_txt_dnspython(name):\n    \"\"\"Return a TXT record associated with a DNS name.\"\"\"\n    try:\n      a = dns.resolver.query(name, dns.rdatatype.TXT,raise_on_no_answer=False)\n      for r in a.response.answer:\n          if r.rdtype == dns.rdatatype.TXT:\n              return b\"\".join(r.items[0].strings)\n    except dns.resolver.NXDOMAIN: pass\n    return None\ndef get_txt_pydns(name):",
+        "detail": "apps.inbound-mail.src.python.dkim.dnsplug",
+        "documentation": {}
+    },
+    {
+        "label": "get_txt_pydns",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.dkim.dnsplug",
+        "description": "apps.inbound-mail.src.python.dkim.dnsplug",
+        "peekOfCode": "def get_txt_pydns(name):\n    \"\"\"Return a TXT record associated with a DNS name.\"\"\"\n    # Older pydns releases don't like a trailing dot.\n    if name.endswith('.'):\n        name = name[:-1]\n    response = DNS.DnsRequest(name, qtype='txt').req()\n    if not response.answers:\n        return None\n    return b''.join(response.answers[0]['data'])\ndef get_txt_Milter_dns(name):",
+        "detail": "apps.inbound-mail.src.python.dkim.dnsplug",
+        "documentation": {}
+    },
+    {
+        "label": "get_txt_Milter_dns",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.dkim.dnsplug",
+        "description": "apps.inbound-mail.src.python.dkim.dnsplug",
+        "peekOfCode": "def get_txt_Milter_dns(name):\n    \"\"\"Return a TXT record associated with a DNS name.\"\"\"\n    # Older pydns releases don't like a trailing dot.\n    if name.endswith('.'):\n        name = name[:-1]\n    sess = Session()\n    a = sess.dns(name,'TXT')\n    if a: return b''.join(a[0])\n    return None\n# Prefer dnspython if it's there, otherwise use pydns.",
+        "detail": "apps.inbound-mail.src.python.dkim.dnsplug",
+        "documentation": {}
+    },
+    {
+        "label": "get_txt",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.dkim.dnsplug",
+        "description": "apps.inbound-mail.src.python.dkim.dnsplug",
+        "peekOfCode": "def get_txt(name):\n    \"\"\"Return a TXT record associated with a DNS name.\n    @param name: The bytestring domain name to look up.\n    \"\"\"\n    # pydns needs Unicode, but DKIM's d= is ASCII (already punycoded).\n    try:\n        unicode_name = name.decode('ascii')\n    except UnicodeDecodeError:\n        return None\n    txt = _get_txt(unicode_name)",
+        "detail": "apps.inbound-mail.src.python.dkim.dnsplug",
+        "documentation": {}
+    },
+    {
+        "label": "__all__",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.dkim.dnsplug",
+        "description": "apps.inbound-mail.src.python.dkim.dnsplug",
+        "peekOfCode": "__all__ = [\n    'get_txt'\n    ]\ndef get_txt_dnspython(name):\n    \"\"\"Return a TXT record associated with a DNS name.\"\"\"\n    try:\n      a = dns.resolver.query(name, dns.rdatatype.TXT,raise_on_no_answer=False)\n      for r in a.response.answer:\n          if r.rdtype == dns.rdatatype.TXT:\n              return b\"\".join(r.items[0].strings)",
+        "detail": "apps.inbound-mail.src.python.dkim.dnsplug",
+        "documentation": {}
+    },
+    {
+        "label": "InvalidTagValueList",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.dkim.util",
+        "description": "apps.inbound-mail.src.python.dkim.util",
+        "peekOfCode": "class InvalidTagValueList(Exception):\n    pass\nclass DuplicateTag(InvalidTagValueList):\n    pass\nclass InvalidTagSpec(InvalidTagValueList):\n    pass\ndef parse_tag_value(tag_list):\n    \"\"\"Parse a DKIM Tag=Value list.\n    Interprets the syntax specified by RFC4871 section 3.2.\n    Assumes that folding whitespace is already unfolded.",
+        "detail": "apps.inbound-mail.src.python.dkim.util",
+        "documentation": {}
+    },
+    {
+        "label": "DuplicateTag",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.dkim.util",
+        "description": "apps.inbound-mail.src.python.dkim.util",
+        "peekOfCode": "class DuplicateTag(InvalidTagValueList):\n    pass\nclass InvalidTagSpec(InvalidTagValueList):\n    pass\ndef parse_tag_value(tag_list):\n    \"\"\"Parse a DKIM Tag=Value list.\n    Interprets the syntax specified by RFC4871 section 3.2.\n    Assumes that folding whitespace is already unfolded.\n    @param tag_list: A string containing a DKIM Tag=Value list.\n    \"\"\"",
+        "detail": "apps.inbound-mail.src.python.dkim.util",
+        "documentation": {}
+    },
+    {
+        "label": "InvalidTagSpec",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.dkim.util",
+        "description": "apps.inbound-mail.src.python.dkim.util",
+        "peekOfCode": "class InvalidTagSpec(InvalidTagValueList):\n    pass\ndef parse_tag_value(tag_list):\n    \"\"\"Parse a DKIM Tag=Value list.\n    Interprets the syntax specified by RFC4871 section 3.2.\n    Assumes that folding whitespace is already unfolded.\n    @param tag_list: A string containing a DKIM Tag=Value list.\n    \"\"\"\n    tags = {}\n    tag_specs = tag_list.strip().split(b';')",
+        "detail": "apps.inbound-mail.src.python.dkim.util",
+        "documentation": {}
+    },
+    {
+        "label": "parse_tag_value",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.dkim.util",
+        "description": "apps.inbound-mail.src.python.dkim.util",
+        "peekOfCode": "def parse_tag_value(tag_list):\n    \"\"\"Parse a DKIM Tag=Value list.\n    Interprets the syntax specified by RFC4871 section 3.2.\n    Assumes that folding whitespace is already unfolded.\n    @param tag_list: A string containing a DKIM Tag=Value list.\n    \"\"\"\n    tags = {}\n    tag_specs = tag_list.strip().split(b';')\n    # Trailing semicolons are valid.\n    if not tag_specs[-1]:",
+        "detail": "apps.inbound-mail.src.python.dkim.util",
+        "documentation": {}
+    },
+    {
+        "label": "get_default_logger",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.dkim.util",
+        "description": "apps.inbound-mail.src.python.dkim.util",
+        "peekOfCode": "def get_default_logger():\n    \"\"\"Get the default dkimpy logger.\"\"\"\n    logger = logging.getLogger('dkimpy')\n    if not logger.handlers:\n        logger.addHandler(NullHandler())\n    return logger",
+        "detail": "apps.inbound-mail.src.python.dkim.util",
+        "documentation": {}
+    },
+    {
+        "label": "__all__",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.dkim.util",
+        "description": "apps.inbound-mail.src.python.dkim.util",
+        "peekOfCode": "__all__ = [\n    'DuplicateTag',\n    'get_default_logger',\n    'InvalidTagSpec',\n    'InvalidTagValueList',\n    'parse_tag_value',\n    ]\nclass InvalidTagValueList(Exception):\n    pass\nclass DuplicateTag(InvalidTagValueList):",
+        "detail": "apps.inbound-mail.src.python.dkim.util",
+        "documentation": {}
+    },
+    {
+        "label": "DNSError",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.DNS.Base",
+        "description": "apps.inbound-mail.src.python.DNS.Base",
+        "peekOfCode": "class DNSError(Exception): pass\nclass ArgumentError(DNSError): pass\nclass SocketError(DNSError): pass\nclass TimeoutError(DNSError): pass\nclass ServerError(DNSError):\n    def __init__(self, message, rcode):\n        DNSError.__init__(self, message, rcode)\n        self.message = message\n        self.rcode = rcode\nclass IncompleteReplyError(DNSError): pass",
+        "detail": "apps.inbound-mail.src.python.DNS.Base",
+        "documentation": {}
+    },
+    {
+        "label": "ArgumentError",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.DNS.Base",
+        "description": "apps.inbound-mail.src.python.DNS.Base",
+        "peekOfCode": "class ArgumentError(DNSError): pass\nclass SocketError(DNSError): pass\nclass TimeoutError(DNSError): pass\nclass ServerError(DNSError):\n    def __init__(self, message, rcode):\n        DNSError.__init__(self, message, rcode)\n        self.message = message\n        self.rcode = rcode\nclass IncompleteReplyError(DNSError): pass\n# Lib uses some of the above exception classes, so import after defining.",
+        "detail": "apps.inbound-mail.src.python.DNS.Base",
+        "documentation": {}
+    },
+    {
+        "label": "SocketError",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.DNS.Base",
+        "description": "apps.inbound-mail.src.python.DNS.Base",
+        "peekOfCode": "class SocketError(DNSError): pass\nclass TimeoutError(DNSError): pass\nclass ServerError(DNSError):\n    def __init__(self, message, rcode):\n        DNSError.__init__(self, message, rcode)\n        self.message = message\n        self.rcode = rcode\nclass IncompleteReplyError(DNSError): pass\n# Lib uses some of the above exception classes, so import after defining.\nimport Lib",
+        "detail": "apps.inbound-mail.src.python.DNS.Base",
+        "documentation": {}
+    },
+    {
+        "label": "TimeoutError",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.DNS.Base",
+        "description": "apps.inbound-mail.src.python.DNS.Base",
+        "peekOfCode": "class TimeoutError(DNSError): pass\nclass ServerError(DNSError):\n    def __init__(self, message, rcode):\n        DNSError.__init__(self, message, rcode)\n        self.message = message\n        self.rcode = rcode\nclass IncompleteReplyError(DNSError): pass\n# Lib uses some of the above exception classes, so import after defining.\nimport Lib\ndefaults= { 'protocol':'udp', 'port':53, 'opcode':Opcode.QUERY,",
+        "detail": "apps.inbound-mail.src.python.DNS.Base",
+        "documentation": {}
+    },
+    {
+        "label": "ServerError",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.DNS.Base",
+        "description": "apps.inbound-mail.src.python.DNS.Base",
+        "peekOfCode": "class ServerError(DNSError):\n    def __init__(self, message, rcode):\n        DNSError.__init__(self, message, rcode)\n        self.message = message\n        self.rcode = rcode\nclass IncompleteReplyError(DNSError): pass\n# Lib uses some of the above exception classes, so import after defining.\nimport Lib\ndefaults= { 'protocol':'udp', 'port':53, 'opcode':Opcode.QUERY,\n            'qtype':Type.A, 'rd':1, 'timing':1, 'timeout': 30,",
+        "detail": "apps.inbound-mail.src.python.DNS.Base",
+        "documentation": {}
+    },
+    {
+        "label": "IncompleteReplyError",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.DNS.Base",
+        "description": "apps.inbound-mail.src.python.DNS.Base",
+        "peekOfCode": "class IncompleteReplyError(DNSError): pass\n# Lib uses some of the above exception classes, so import after defining.\nimport Lib\ndefaults= { 'protocol':'udp', 'port':53, 'opcode':Opcode.QUERY,\n            'qtype':Type.A, 'rd':1, 'timing':1, 'timeout': 30,\n            'server_rotate': 0 }\ndefaults['server']=[]\ndef ParseResolvConf(resolv_path=\"/etc/resolv.conf\"):\n    \"parses the /etc/resolv.conf file and sets defaults for name servers\"\n    global defaults",
+        "detail": "apps.inbound-mail.src.python.DNS.Base",
+        "documentation": {}
+    },
+    {
+        "label": "DnsRequest",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.DNS.Base",
+        "description": "apps.inbound-mail.src.python.DNS.Base",
+        "peekOfCode": "class DnsRequest:\n    \"\"\" high level Request object \"\"\"\n    def __init__(self,*name,**args):\n        self.donefunc=None\n        self.async=None\n        self.defaults = {}\n        self.argparse(name,args)\n        self.defaults = self.args\n        self.tid = 0\n    def argparse(self,name,args):",
+        "detail": "apps.inbound-mail.src.python.DNS.Base",
+        "documentation": {}
+    },
+    {
+        "label": "DnsAsyncRequest",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.DNS.Base",
+        "description": "apps.inbound-mail.src.python.DNS.Base",
+        "peekOfCode": "class DnsAsyncRequest(DnsRequest,asyncore.dispatcher_with_send):\n    \" an asynchronous request object. out of date, probably broken \"\n    def __init__(self,*name,**args):\n        DnsRequest.__init__(self, *name, **args)\n        # XXX todo\n        if args.has_key('done') and args['done']:\n            self.donefunc=args['done']\n        else:\n            self.donefunc=self.showResult\n        #self.realinit(name,args) # XXX todo",
+        "detail": "apps.inbound-mail.src.python.DNS.Base",
+        "documentation": {}
+    },
+    {
+        "label": "ParseResolvConf",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.DNS.Base",
+        "description": "apps.inbound-mail.src.python.DNS.Base",
+        "peekOfCode": "def ParseResolvConf(resolv_path=\"/etc/resolv.conf\"):\n    \"parses the /etc/resolv.conf file and sets defaults for name servers\"\n    global defaults\n    lines=open(resolv_path).readlines()\n    for line in lines:\n        line = string.strip(line)\n        if not line or line[0]==';' or line[0]=='#':\n            continue\n        fields=string.split(line)\n        if len(fields) < 2: ",
+        "detail": "apps.inbound-mail.src.python.DNS.Base",
+        "documentation": {}
+    },
+    {
+        "label": "DiscoverNameServers",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.DNS.Base",
+        "description": "apps.inbound-mail.src.python.DNS.Base",
+        "peekOfCode": "def DiscoverNameServers():\n    import sys\n    if sys.platform in ('win32', 'nt'):\n        import win32dns\n        defaults['server']=win32dns.RegistryResolve()\n    else:\n        return ParseResolvConf()\nclass DnsRequest:\n    \"\"\" high level Request object \"\"\"\n    def __init__(self,*name,**args):",
+        "detail": "apps.inbound-mail.src.python.DNS.Base",
+        "documentation": {}
+    },
+    {
+        "label": "classstr",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.DNS.Class",
+        "description": "apps.inbound-mail.src.python.DNS.Class",
+        "peekOfCode": "def classstr(klass):\n    if classmap.has_key(klass): return classmap[klass]\n    else: return `klass`\n#\n# $Log: Class.py,v $\n# Revision 1.6.2.1  2011/03/16 20:06:39  customdesigned\n# Refer to explicit LICENSE file.\n#\n# Revision 1.6  2002/04/23 12:52:19  anthonybaxter\n# cleanup whitespace.",
+        "detail": "apps.inbound-mail.src.python.DNS.Class",
+        "documentation": {}
+    },
+    {
+        "label": "IN",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.DNS.Class",
+        "description": "apps.inbound-mail.src.python.DNS.Class",
+        "peekOfCode": "IN = 1          # the Internet\nCS = 2          # the CSNET class (Obsolete - used only for examples in\n                # some obsolete RFCs)\nCH = 3          # the CHAOS class. When someone shows me python running on\n                # a Symbolics Lisp machine, I'll look at implementing this.\nHS = 4          # Hesiod [Dyer 87]\n# QCLASS values (section 3.2.5)\nANY = 255       # any class\n# Construct reverse mapping dictionary\n_names = dir()",
+        "detail": "apps.inbound-mail.src.python.DNS.Class",
+        "documentation": {}
+    },
+    {
+        "label": "CS",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.DNS.Class",
+        "description": "apps.inbound-mail.src.python.DNS.Class",
+        "peekOfCode": "CS = 2          # the CSNET class (Obsolete - used only for examples in\n                # some obsolete RFCs)\nCH = 3          # the CHAOS class. When someone shows me python running on\n                # a Symbolics Lisp machine, I'll look at implementing this.\nHS = 4          # Hesiod [Dyer 87]\n# QCLASS values (section 3.2.5)\nANY = 255       # any class\n# Construct reverse mapping dictionary\n_names = dir()\nclassmap = {}",
+        "detail": "apps.inbound-mail.src.python.DNS.Class",
+        "documentation": {}
+    },
+    {
+        "label": "CH",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.DNS.Class",
+        "description": "apps.inbound-mail.src.python.DNS.Class",
+        "peekOfCode": "CH = 3          # the CHAOS class. When someone shows me python running on\n                # a Symbolics Lisp machine, I'll look at implementing this.\nHS = 4          # Hesiod [Dyer 87]\n# QCLASS values (section 3.2.5)\nANY = 255       # any class\n# Construct reverse mapping dictionary\n_names = dir()\nclassmap = {}\nfor _name in _names:\n    if _name[0] != '_': classmap[eval(_name)] = _name",
+        "detail": "apps.inbound-mail.src.python.DNS.Class",
+        "documentation": {}
+    },
+    {
+        "label": "HS",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.DNS.Class",
+        "description": "apps.inbound-mail.src.python.DNS.Class",
+        "peekOfCode": "HS = 4          # Hesiod [Dyer 87]\n# QCLASS values (section 3.2.5)\nANY = 255       # any class\n# Construct reverse mapping dictionary\n_names = dir()\nclassmap = {}\nfor _name in _names:\n    if _name[0] != '_': classmap[eval(_name)] = _name\ndef classstr(klass):\n    if classmap.has_key(klass): return classmap[klass]",
+        "detail": "apps.inbound-mail.src.python.DNS.Class",
+        "documentation": {}
+    },
+    {
+        "label": "ANY",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.DNS.Class",
+        "description": "apps.inbound-mail.src.python.DNS.Class",
+        "peekOfCode": "ANY = 255       # any class\n# Construct reverse mapping dictionary\n_names = dir()\nclassmap = {}\nfor _name in _names:\n    if _name[0] != '_': classmap[eval(_name)] = _name\ndef classstr(klass):\n    if classmap.has_key(klass): return classmap[klass]\n    else: return `klass`\n#",
+        "detail": "apps.inbound-mail.src.python.DNS.Class",
+        "documentation": {}
+    },
+    {
+        "label": "_names",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.DNS.Class",
+        "description": "apps.inbound-mail.src.python.DNS.Class",
+        "peekOfCode": "_names = dir()\nclassmap = {}\nfor _name in _names:\n    if _name[0] != '_': classmap[eval(_name)] = _name\ndef classstr(klass):\n    if classmap.has_key(klass): return classmap[klass]\n    else: return `klass`\n#\n# $Log: Class.py,v $\n# Revision 1.6.2.1  2011/03/16 20:06:39  customdesigned",
+        "detail": "apps.inbound-mail.src.python.DNS.Class",
+        "documentation": {}
+    },
+    {
+        "label": "classmap",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.DNS.Class",
+        "description": "apps.inbound-mail.src.python.DNS.Class",
+        "peekOfCode": "classmap = {}\nfor _name in _names:\n    if _name[0] != '_': classmap[eval(_name)] = _name\ndef classstr(klass):\n    if classmap.has_key(klass): return classmap[klass]\n    else: return `klass`\n#\n# $Log: Class.py,v $\n# Revision 1.6.2.1  2011/03/16 20:06:39  customdesigned\n# Refer to explicit LICENSE file.",
+        "detail": "apps.inbound-mail.src.python.DNS.Class",
+        "documentation": {}
+    },
+    {
+        "label": "revlookup",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.DNS.lazy",
+        "description": "apps.inbound-mail.src.python.DNS.lazy",
+        "peekOfCode": "def revlookup(name):\n    \"convenience routine for doing a reverse lookup of an address\"\n    names = revlookupall(name)\n    if not names: return None\n    return names[0]     # return shortest name\ndef revlookupall(name):\n    \"convenience routine for doing a reverse lookup of an address\"\n    # FIXME: check for IPv6\n    a = name.split('.')\n    a.reverse()",
+        "detail": "apps.inbound-mail.src.python.DNS.lazy",
+        "documentation": {}
+    },
+    {
+        "label": "revlookupall",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.DNS.lazy",
+        "description": "apps.inbound-mail.src.python.DNS.lazy",
+        "peekOfCode": "def revlookupall(name):\n    \"convenience routine for doing a reverse lookup of an address\"\n    # FIXME: check for IPv6\n    a = name.split('.')\n    a.reverse()\n    b = '.'.join(a)+'.in-addr.arpa'\n    names = dnslookup(b, qtype = 'ptr')\n    # this will return all records.\n    names.sort(key=str.__len__)\n    return names",
+        "detail": "apps.inbound-mail.src.python.DNS.lazy",
+        "documentation": {}
+    },
+    {
+        "label": "dnslookup",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.DNS.lazy",
+        "description": "apps.inbound-mail.src.python.DNS.lazy",
+        "peekOfCode": "def dnslookup(name,qtype):\n    \"convenience routine to return just answer data for any query type\"\n    if Base.defaults['server'] == []: Base.DiscoverNameServers()\n    result = Base.DnsRequest(name=name, qtype=qtype).req()\n    if result.header['status'] != 'NOERROR':\n        raise ServerError(\"DNS query status: %s\" % result.header['status'],\n            result.header['rcode'])\n    elif len(result.answers) == 0 and Base.defaults['server_rotate']:\n        # check with next DNS server\n        result = Base.DnsRequest(name=name, qtype=qtype).req()",
+        "detail": "apps.inbound-mail.src.python.DNS.lazy",
+        "documentation": {}
+    },
+    {
+        "label": "mxlookup",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.DNS.lazy",
+        "description": "apps.inbound-mail.src.python.DNS.lazy",
+        "peekOfCode": "def mxlookup(name):\n    \"\"\"\n    convenience routine for doing an MX lookup of a name. returns a\n    sorted list of (preference, mail exchanger) records\n    \"\"\"\n    l = dnslookup(name, qtype = 'mx')\n    l.sort()\n    return l\n#\n# $Log: lazy.py,v $",
+        "detail": "apps.inbound-mail.src.python.DNS.lazy",
+        "documentation": {}
+    },
+    {
+        "label": "opcodestr",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.DNS.Opcode",
+        "description": "apps.inbound-mail.src.python.DNS.Opcode",
+        "peekOfCode": "def opcodestr(opcode):\n    if opcodemap.has_key(opcode): return opcodemap[opcode]\n    else: return `opcode`\n#\n# $Log: Opcode.py,v $\n# Revision 1.6.2.1  2011/03/16 20:06:39  customdesigned\n# Refer to explicit LICENSE file.\n#\n# Revision 1.6  2002/04/23 10:51:43  anthonybaxter\n# Added UPDATE, NOTIFY.",
+        "detail": "apps.inbound-mail.src.python.DNS.Opcode",
+        "documentation": {}
+    },
+    {
+        "label": "QUERY",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.DNS.Opcode",
+        "description": "apps.inbound-mail.src.python.DNS.Opcode",
+        "peekOfCode": "QUERY = 0\nIQUERY = 1\nSTATUS = 2\nNOTIFY = 4\nUPDATE = 5\n# Construct reverse mapping dictionary\n_names = dir()\nopcodemap = {}\nfor _name in _names:\n    if _name[0] != '_': opcodemap[eval(_name)] = _name",
+        "detail": "apps.inbound-mail.src.python.DNS.Opcode",
+        "documentation": {}
+    },
+    {
+        "label": "IQUERY",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.DNS.Opcode",
+        "description": "apps.inbound-mail.src.python.DNS.Opcode",
+        "peekOfCode": "IQUERY = 1\nSTATUS = 2\nNOTIFY = 4\nUPDATE = 5\n# Construct reverse mapping dictionary\n_names = dir()\nopcodemap = {}\nfor _name in _names:\n    if _name[0] != '_': opcodemap[eval(_name)] = _name\ndef opcodestr(opcode):",
+        "detail": "apps.inbound-mail.src.python.DNS.Opcode",
+        "documentation": {}
+    },
+    {
+        "label": "STATUS",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.DNS.Opcode",
+        "description": "apps.inbound-mail.src.python.DNS.Opcode",
+        "peekOfCode": "STATUS = 2\nNOTIFY = 4\nUPDATE = 5\n# Construct reverse mapping dictionary\n_names = dir()\nopcodemap = {}\nfor _name in _names:\n    if _name[0] != '_': opcodemap[eval(_name)] = _name\ndef opcodestr(opcode):\n    if opcodemap.has_key(opcode): return opcodemap[opcode]",
+        "detail": "apps.inbound-mail.src.python.DNS.Opcode",
+        "documentation": {}
+    },
+    {
+        "label": "NOTIFY",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.DNS.Opcode",
+        "description": "apps.inbound-mail.src.python.DNS.Opcode",
+        "peekOfCode": "NOTIFY = 4\nUPDATE = 5\n# Construct reverse mapping dictionary\n_names = dir()\nopcodemap = {}\nfor _name in _names:\n    if _name[0] != '_': opcodemap[eval(_name)] = _name\ndef opcodestr(opcode):\n    if opcodemap.has_key(opcode): return opcodemap[opcode]\n    else: return `opcode`",
+        "detail": "apps.inbound-mail.src.python.DNS.Opcode",
+        "documentation": {}
+    },
+    {
+        "label": "UPDATE",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.DNS.Opcode",
+        "description": "apps.inbound-mail.src.python.DNS.Opcode",
+        "peekOfCode": "UPDATE = 5\n# Construct reverse mapping dictionary\n_names = dir()\nopcodemap = {}\nfor _name in _names:\n    if _name[0] != '_': opcodemap[eval(_name)] = _name\ndef opcodestr(opcode):\n    if opcodemap.has_key(opcode): return opcodemap[opcode]\n    else: return `opcode`\n#",
+        "detail": "apps.inbound-mail.src.python.DNS.Opcode",
+        "documentation": {}
+    },
+    {
+        "label": "_names",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.DNS.Opcode",
+        "description": "apps.inbound-mail.src.python.DNS.Opcode",
+        "peekOfCode": "_names = dir()\nopcodemap = {}\nfor _name in _names:\n    if _name[0] != '_': opcodemap[eval(_name)] = _name\ndef opcodestr(opcode):\n    if opcodemap.has_key(opcode): return opcodemap[opcode]\n    else: return `opcode`\n#\n# $Log: Opcode.py,v $\n# Revision 1.6.2.1  2011/03/16 20:06:39  customdesigned",
+        "detail": "apps.inbound-mail.src.python.DNS.Opcode",
+        "documentation": {}
+    },
+    {
+        "label": "opcodemap",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.DNS.Opcode",
+        "description": "apps.inbound-mail.src.python.DNS.Opcode",
+        "peekOfCode": "opcodemap = {}\nfor _name in _names:\n    if _name[0] != '_': opcodemap[eval(_name)] = _name\ndef opcodestr(opcode):\n    if opcodemap.has_key(opcode): return opcodemap[opcode]\n    else: return `opcode`\n#\n# $Log: Opcode.py,v $\n# Revision 1.6.2.1  2011/03/16 20:06:39  customdesigned\n# Refer to explicit LICENSE file.",
+        "detail": "apps.inbound-mail.src.python.DNS.Opcode",
+        "documentation": {}
+    },
+    {
+        "label": "statusstr",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.DNS.Status",
+        "description": "apps.inbound-mail.src.python.DNS.Status",
+        "peekOfCode": "def statusstr(status):\n    if statusmap.has_key(status): return statusmap[status]\n    else: return `status`\n#\n# $Log: Status.py,v $\n# Revision 1.7.2.1  2011/03/16 20:06:39  customdesigned\n# Refer to explicit LICENSE file.\n#\n# Revision 1.7  2002/04/23 12:52:19  anthonybaxter\n# cleanup whitespace.",
+        "detail": "apps.inbound-mail.src.python.DNS.Status",
+        "documentation": {}
+    },
+    {
+        "label": "_names",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.DNS.Status",
+        "description": "apps.inbound-mail.src.python.DNS.Status",
+        "peekOfCode": "_names = dir()\nstatusmap = {}\nfor _name in _names:\n    if _name[0] != '_': statusmap[eval(_name)] = _name\ndef statusstr(status):\n    if statusmap.has_key(status): return statusmap[status]\n    else: return `status`\n#\n# $Log: Status.py,v $\n# Revision 1.7.2.1  2011/03/16 20:06:39  customdesigned",
+        "detail": "apps.inbound-mail.src.python.DNS.Status",
+        "documentation": {}
+    },
+    {
+        "label": "statusmap",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.DNS.Status",
+        "description": "apps.inbound-mail.src.python.DNS.Status",
+        "peekOfCode": "statusmap = {}\nfor _name in _names:\n    if _name[0] != '_': statusmap[eval(_name)] = _name\ndef statusstr(status):\n    if statusmap.has_key(status): return statusmap[status]\n    else: return `status`\n#\n# $Log: Status.py,v $\n# Revision 1.7.2.1  2011/03/16 20:06:39  customdesigned\n# Refer to explicit LICENSE file.",
+        "detail": "apps.inbound-mail.src.python.DNS.Status",
+        "documentation": {}
+    },
+    {
+        "label": "binipdisplay",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.DNS.win32dns",
+        "description": "apps.inbound-mail.src.python.DNS.win32dns",
+        "peekOfCode": "def binipdisplay(s):\n    \"convert a binary array of ip addresses to a python list\"\n    if len(s)%4!= 0:\n        raise EnvironmentError # well ...\n    ol=[]\n    for i in range(len(s)/4):\n        s1=s[:4]\n        s=s[4:]\n        ip=[]\n        for j in s1:",
+        "detail": "apps.inbound-mail.src.python.DNS.win32dns",
+        "documentation": {}
+    },
+    {
+        "label": "stringdisplay",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.DNS.win32dns",
+        "description": "apps.inbound-mail.src.python.DNS.win32dns",
+        "peekOfCode": "def stringdisplay(s):\n    '''convert \"d.d.d.d,d.d.d.d\" to [\"d.d.d.d\",\"d.d.d.d\"].\n       also handle u'd.d.d.d d.d.d.d', as reporting on SF \n    '''\n    import re\n    return [str(x) for x in re.split(\"[ ,]\",s)]\ndef RegistryResolve():\n    nameservers=[]\n    x=_winreg.ConnectRegistry(None,_winreg.HKEY_LOCAL_MACHINE)\n    try:",
+        "detail": "apps.inbound-mail.src.python.DNS.win32dns",
+        "documentation": {}
+    },
+    {
+        "label": "RegistryResolve",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.DNS.win32dns",
+        "description": "apps.inbound-mail.src.python.DNS.win32dns",
+        "peekOfCode": "def RegistryResolve():\n    nameservers=[]\n    x=_winreg.ConnectRegistry(None,_winreg.HKEY_LOCAL_MACHINE)\n    try:\n        y= _winreg.OpenKey(x,\n         r\"SYSTEM\\CurrentControlSet\\Services\\Tcpip\\Parameters\")\n    except EnvironmentError: # so it isn't NT/2000/XP\n        # windows ME, perhaps?\n        try: # for Windows ME\n            y= _winreg.OpenKey(x,",
+        "detail": "apps.inbound-mail.src.python.DNS.win32dns",
+        "documentation": {}
+    },
+    {
+        "label": "AddressValueError",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.ipaddr",
+        "description": "apps.inbound-mail.src.python.ipaddr",
+        "peekOfCode": "class AddressValueError(ValueError):\n    \"\"\"A Value Error related to the address.\"\"\"\nclass NetmaskValueError(ValueError):\n    \"\"\"A Value Error related to the netmask.\"\"\"\ndef IPAddress(address, version=None):\n    \"\"\"Take an IP string/int and return an object of the correct type.\n    Args:\n        address: A string or integer, the IP address.  Either IPv4 or\n          IPv6 addresses may be supplied; integers less than 2**32 will\n          be considered to be IPv4 by default.",
+        "detail": "apps.inbound-mail.src.python.ipaddr",
+        "documentation": {}
+    },
+    {
+        "label": "NetmaskValueError",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.ipaddr",
+        "description": "apps.inbound-mail.src.python.ipaddr",
+        "peekOfCode": "class NetmaskValueError(ValueError):\n    \"\"\"A Value Error related to the netmask.\"\"\"\ndef IPAddress(address, version=None):\n    \"\"\"Take an IP string/int and return an object of the correct type.\n    Args:\n        address: A string or integer, the IP address.  Either IPv4 or\n          IPv6 addresses may be supplied; integers less than 2**32 will\n          be considered to be IPv4 by default.\n        version: An Integer, 4 or 6. If set, don't try to automatically\n          determine what the IP address type is. important for things",
+        "detail": "apps.inbound-mail.src.python.ipaddr",
+        "documentation": {}
+    },
+    {
+        "label": "_IPAddrBase",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.ipaddr",
+        "description": "apps.inbound-mail.src.python.ipaddr",
+        "peekOfCode": "class _IPAddrBase(object):\n    \"\"\"The mother class.\"\"\"\n    def __index__(self):\n        return self._ip\n    def __int__(self):\n        return self._ip\n    def __hex__(self):\n        return hex(self._ip)\n    @property\n    def exploded(self):",
+        "detail": "apps.inbound-mail.src.python.ipaddr",
+        "documentation": {}
+    },
+    {
+        "label": "_BaseIP",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.ipaddr",
+        "description": "apps.inbound-mail.src.python.ipaddr",
+        "peekOfCode": "class _BaseIP(_IPAddrBase):\n    \"\"\"A generic IP object.\n    This IP class contains the version independent methods which are\n    used by single IP addresses.\n    \"\"\"\n    def __eq__(self, other):\n        try:\n            return (self._ip == other._ip\n                    and self._version == other._version)\n        except AttributeError:",
+        "detail": "apps.inbound-mail.src.python.ipaddr",
+        "documentation": {}
+    },
+    {
+        "label": "_BaseNet",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.ipaddr",
+        "description": "apps.inbound-mail.src.python.ipaddr",
+        "peekOfCode": "class _BaseNet(_IPAddrBase):\n    \"\"\"A generic IP object.\n    This IP class contains the version independent methods which are\n    used by networks.\n    \"\"\"\n    def __init__(self, address):\n        self._cache = {}\n    def __repr__(self):\n        return '%s(%r)' % (self.__class__.__name__, str(self))\n    def iterhosts(self):",
+        "detail": "apps.inbound-mail.src.python.ipaddr",
+        "documentation": {}
+    },
+    {
+        "label": "_BaseV4",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.ipaddr",
+        "description": "apps.inbound-mail.src.python.ipaddr",
+        "peekOfCode": "class _BaseV4(object):\n    \"\"\"Base IPv4 object.\n    The following methods are used by IPv4 objects in both single IP\n    addresses and networks.\n    \"\"\"\n    # Equivalent to 255.255.255.255 or 32 bits of 1's.\n    _ALL_ONES = (2**IPV4LENGTH) - 1\n    _DECIMAL_DIGITS = frozenset('0123456789')\n    def __init__(self, address):\n        self._version = 4",
+        "detail": "apps.inbound-mail.src.python.ipaddr",
+        "documentation": {}
+    },
+    {
+        "label": "IPv4Address",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.ipaddr",
+        "description": "apps.inbound-mail.src.python.ipaddr",
+        "peekOfCode": "class IPv4Address(_BaseV4, _BaseIP):\n    \"\"\"Represent and manipulate single IPv4 Addresses.\"\"\"\n    def __init__(self, address):\n        \"\"\"\n        Args:\n            address: A string or integer representing the IP\n              '192.168.1.1'\n              Additionally, an integer can be passed, so\n              IPv4Address('192.168.1.1') == IPv4Address(3232235777).\n              or, more generally",
+        "detail": "apps.inbound-mail.src.python.ipaddr",
+        "documentation": {}
+    },
+    {
+        "label": "IPv4Network",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.ipaddr",
+        "description": "apps.inbound-mail.src.python.ipaddr",
+        "peekOfCode": "class IPv4Network(_BaseV4, _BaseNet):\n    \"\"\"This class represents and manipulates 32-bit IPv4 networks.\n    Attributes: [examples for IPv4Network('1.2.3.4/27')]\n        ._ip: 16909060\n        .ip: IPv4Address('1.2.3.4')\n        .network: IPv4Address('1.2.3.0')\n        .hostmask: IPv4Address('0.0.0.31')\n        .broadcast: IPv4Address('1.2.3.31')\n        .netmask: IPv4Address('255.255.255.224')\n        .prefixlen: 27",
+        "detail": "apps.inbound-mail.src.python.ipaddr",
+        "documentation": {}
+    },
+    {
+        "label": "_BaseV6",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.ipaddr",
+        "description": "apps.inbound-mail.src.python.ipaddr",
+        "peekOfCode": "class _BaseV6(object):\n    \"\"\"Base IPv6 object.\n    The following methods are used by IPv6 objects in both single IP\n    addresses and networks.\n    \"\"\"\n    _ALL_ONES = (2**IPV6LENGTH) - 1\n    _HEXTET_COUNT = 8\n    _HEX_DIGITS = frozenset('0123456789ABCDEFabcdef')\n    def __init__(self, address):\n        self._version = 6",
+        "detail": "apps.inbound-mail.src.python.ipaddr",
+        "documentation": {}
+    },
+    {
+        "label": "IPv6Address",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.ipaddr",
+        "description": "apps.inbound-mail.src.python.ipaddr",
+        "peekOfCode": "class IPv6Address(_BaseV6, _BaseIP):\n    \"\"\"Represent and manipulate single IPv6 Addresses.\n    \"\"\"\n    def __init__(self, address):\n        \"\"\"Instantiate a new IPv6 address object.\n        Args:\n            address: A string or integer representing the IP\n              Additionally, an integer can be passed, so\n              IPv6Address('2001:4860::') ==\n                IPv6Address(42541956101370907050197289607612071936L).",
+        "detail": "apps.inbound-mail.src.python.ipaddr",
+        "documentation": {}
+    },
+    {
+        "label": "IPv6Network",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.ipaddr",
+        "description": "apps.inbound-mail.src.python.ipaddr",
+        "peekOfCode": "class IPv6Network(_BaseV6, _BaseNet):\n    \"\"\"This class represents and manipulates 128-bit IPv6 networks.\n    Attributes: [examples for IPv6('2001:658:22A:CAFE:200::1/64')]\n        .ip: IPv6Address('2001:658:22a:cafe:200::1')\n        .network: IPv6Address('2001:658:22a:cafe::')\n        .hostmask: IPv6Address('::ffff:ffff:ffff:ffff')\n        .broadcast: IPv6Address('2001:658:22a:cafe:ffff:ffff:ffff:ffff')\n        .netmask: IPv6Address('ffff:ffff:ffff:ffff::')\n        .prefixlen: 64\n    \"\"\"",
+        "detail": "apps.inbound-mail.src.python.ipaddr",
+        "documentation": {}
+    },
+    {
+        "label": "IPAddress",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.ipaddr",
+        "description": "apps.inbound-mail.src.python.ipaddr",
+        "peekOfCode": "def IPAddress(address, version=None):\n    \"\"\"Take an IP string/int and return an object of the correct type.\n    Args:\n        address: A string or integer, the IP address.  Either IPv4 or\n          IPv6 addresses may be supplied; integers less than 2**32 will\n          be considered to be IPv4 by default.\n        version: An Integer, 4 or 6. If set, don't try to automatically\n          determine what the IP address type is. important for things\n          like IPAddress(1), which could be IPv4, '0.0.0.1',  or IPv6,\n          '::1'.",
+        "detail": "apps.inbound-mail.src.python.ipaddr",
+        "documentation": {}
+    },
+    {
+        "label": "IPNetwork",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.ipaddr",
+        "description": "apps.inbound-mail.src.python.ipaddr",
+        "peekOfCode": "def IPNetwork(address, version=None, strict=False):\n    \"\"\"Take an IP string/int and return an object of the correct type.\n    Args:\n        address: A string or integer, the IP address.  Either IPv4 or\n          IPv6 addresses may be supplied; integers less than 2**32 will\n          be considered to be IPv4 by default.\n        version: An Integer, if set, don't try to automatically\n          determine what the IP address type is. important for things\n          like IPNetwork(1), which could be IPv4, '0.0.0.1/32', or IPv6,\n          '::1/128'.",
+        "detail": "apps.inbound-mail.src.python.ipaddr",
+        "documentation": {}
+    },
+    {
+        "label": "v4_int_to_packed",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.ipaddr",
+        "description": "apps.inbound-mail.src.python.ipaddr",
+        "peekOfCode": "def v4_int_to_packed(address):\n    \"\"\"The binary representation of this address.\n    Args:\n        address: An integer representation of an IPv4 IP address.\n    Returns:\n        The binary representation of this address.\n    Raises:\n        ValueError: If the integer is too large to be an IPv4 IP\n          address.\n    \"\"\"",
+        "detail": "apps.inbound-mail.src.python.ipaddr",
+        "documentation": {}
+    },
+    {
+        "label": "v6_int_to_packed",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.ipaddr",
+        "description": "apps.inbound-mail.src.python.ipaddr",
+        "peekOfCode": "def v6_int_to_packed(address):\n    \"\"\"The binary representation of this address.\n    Args:\n        address: An integer representation of an IPv6 IP address.\n    Returns:\n        The binary representation of this address.\n    \"\"\"\n    return Bytes(struct.pack('!QQ', address >> 64, address & (2**64 - 1)))\ndef _find_address_range(addresses):\n    \"\"\"Find a sequence of addresses.",
+        "detail": "apps.inbound-mail.src.python.ipaddr",
+        "documentation": {}
+    },
+    {
+        "label": "summarize_address_range",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.ipaddr",
+        "description": "apps.inbound-mail.src.python.ipaddr",
+        "peekOfCode": "def summarize_address_range(first, last):\n    \"\"\"Summarize a network range given the first and last IP addresses.\n    Example:\n        >>> summarize_address_range(IPv4Address('1.1.1.0'),\n            IPv4Address('1.1.1.130'))\n        [IPv4Network('1.1.1.0/25'), IPv4Network('1.1.1.128/31'),\n        IPv4Network('1.1.1.130/32')]\n    Args:\n        first: the first IPv4Address or IPv6Address in the range.\n        last: the last IPv4Address or IPv6Address in the range.",
+        "detail": "apps.inbound-mail.src.python.ipaddr",
+        "documentation": {}
+    },
+    {
+        "label": "collapse_address_list",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.ipaddr",
+        "description": "apps.inbound-mail.src.python.ipaddr",
+        "peekOfCode": "def collapse_address_list(addresses):\n    \"\"\"Collapse a list of IP objects.\n    Example:\n        collapse_address_list([IPv4('1.1.0.0/24'), IPv4('1.1.1.0/24')]) ->\n          [IPv4('1.1.0.0/23')]\n    Args:\n        addresses: A list of IPv4Network or IPv6Network objects.\n    Returns:\n        A list of IPv4Network or IPv6Network objects depending on what we\n        were passed.",
+        "detail": "apps.inbound-mail.src.python.ipaddr",
+        "documentation": {}
+    },
+    {
+        "label": "get_mixed_type_key",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.ipaddr",
+        "description": "apps.inbound-mail.src.python.ipaddr",
+        "peekOfCode": "def get_mixed_type_key(obj):\n    \"\"\"Return a key suitable for sorting between networks and addresses.\n    Address and Network objects are not sortable by default; they're\n    fundamentally different so the expression\n        IPv4Address('1.1.1.1') <= IPv4Network('1.1.1.1/24')\n    doesn't make any sense.  There are some times however, where you may wish\n    to have ipaddr sort these for you anyway. If you need to do this, you\n    can use this function as the key= argument to sorted().\n    Args:\n      obj: either a Network or Address object.",
+        "detail": "apps.inbound-mail.src.python.ipaddr",
+        "documentation": {}
+    },
+    {
+        "label": "__version__",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.ipaddr",
+        "description": "apps.inbound-mail.src.python.ipaddr",
+        "peekOfCode": "__version__ = '2.1.11'\nimport struct\nIPV4LENGTH = 32\nIPV6LENGTH = 128\nclass AddressValueError(ValueError):\n    \"\"\"A Value Error related to the address.\"\"\"\nclass NetmaskValueError(ValueError):\n    \"\"\"A Value Error related to the netmask.\"\"\"\ndef IPAddress(address, version=None):\n    \"\"\"Take an IP string/int and return an object of the correct type.",
+        "detail": "apps.inbound-mail.src.python.ipaddr",
+        "documentation": {}
+    },
+    {
+        "label": "IPV4LENGTH",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.ipaddr",
+        "description": "apps.inbound-mail.src.python.ipaddr",
+        "peekOfCode": "IPV4LENGTH = 32\nIPV6LENGTH = 128\nclass AddressValueError(ValueError):\n    \"\"\"A Value Error related to the address.\"\"\"\nclass NetmaskValueError(ValueError):\n    \"\"\"A Value Error related to the netmask.\"\"\"\ndef IPAddress(address, version=None):\n    \"\"\"Take an IP string/int and return an object of the correct type.\n    Args:\n        address: A string or integer, the IP address.  Either IPv4 or",
+        "detail": "apps.inbound-mail.src.python.ipaddr",
+        "documentation": {}
+    },
+    {
+        "label": "IPV6LENGTH",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.ipaddr",
+        "description": "apps.inbound-mail.src.python.ipaddr",
+        "peekOfCode": "IPV6LENGTH = 128\nclass AddressValueError(ValueError):\n    \"\"\"A Value Error related to the address.\"\"\"\nclass NetmaskValueError(ValueError):\n    \"\"\"A Value Error related to the netmask.\"\"\"\ndef IPAddress(address, version=None):\n    \"\"\"Take an IP string/int and return an object of the correct type.\n    Args:\n        address: A string or integer, the IP address.  Either IPv4 or\n          IPv6 addresses may be supplied; integers less than 2**32 will",
+        "detail": "apps.inbound-mail.src.python.ipaddr",
+        "documentation": {}
+    },
+    {
+        "label": "CollapseAddrList",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.ipaddr",
+        "description": "apps.inbound-mail.src.python.ipaddr",
+        "peekOfCode": "CollapseAddrList = collapse_address_list\n# We need to distinguish between the string and packed-bytes representations\n# of an IP address.  For example, b'0::1' is the IPv4 address 48.58.58.49,\n# while '0::1' is an IPv6 address.\n#\n# In Python 3, the native 'bytes' type already provides this functionality,\n# so we use it directly.  For earlier implementations where bytes is not a\n# distinct type, we create a subclass of str to serve as a tag.\n#\n# Usage example (Python 2):",
+        "detail": "apps.inbound-mail.src.python.ipaddr",
+        "documentation": {}
+    },
+    {
+        "label": "AmbiguityWarning",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "class AmbiguityWarning(Exception):\n    \"SPF Warning - ambiguous results\"\n    def __init__(self, msg, mech=None, ext=None):\n        Exception.__init__(self, msg, mech)\n        self.msg = msg\n        self.mech = mech\n        self.ext = ext\n    def __str__(self):\n        if self.mech:\n            return '%s: %s' %(self.msg, self.mech)",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "TempError",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "class TempError(Exception):\n    \"Temporary SPF error\"\n    def __init__(self, msg, mech=None, ext=None):\n        Exception.__init__(self, msg, mech)\n        self.msg = msg\n        self.mech = mech\n        self.ext = ext\n    def __str__(self):\n        if self.mech:\n            return '%s: %s '%(self.msg, self.mech)",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "PermError",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "class PermError(Exception):\n    \"Permanent SPF error\"\n    def __init__(self, msg, mech=None, ext=None):\n        Exception.__init__(self, msg, mech)\n        self.msg = msg\n        self.mech = mech\n        self.ext = ext\n    def __str__(self):\n        if self.mech:\n            return '%s: %s'%(self.msg, self.mech)",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "query",
+        "kind": 6,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "class query(object):\n    \"\"\"A query object keeps the relevant information about a single SPF\n    query:\n    i: ip address of SMTP client in dotted notation\n    s: sender declared in MAIL FROM:<>\n    l: local part of sender s\n    d: current domain, initially domain part of sender s\n    h: EHLO/HELO domain\n    v: 'in-addr' for IPv4 clients and 'ip6' for IPv6 clients\n    t: current timestamp",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "DNSLookup",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "def DNSLookup(name, qtype, strict=True, timeout=30):\n    try:\n        req = DNS.DnsRequest(name, qtype=qtype, timeout=timeout)\n        resp = req.req()\n        #resp.show()\n        # key k: ('wayforward.net', 'A'), value v\n        # FIXME: pydns returns AAAA RR as 16 byte binary string, but\n        # A RR as dotted quad.  For consistency, this driver should\n        # return both as binary string.\n        #",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "check2",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "def check2(i, s, h, local=None, receiver=None, timeout=MAX_PER_LOOKUP_TIME, verbose=False, querytime=0):\n    \"\"\"Test an incoming MAIL FROM:<s>, from a client with ip address i.\n    h is the HELO/EHLO domain name.  This is the RFC4408 compliant pySPF2.0\n    interface.  The interface returns an SPF result and explanation only.\n    SMTP response codes are not returned since RFC 4408 does not specify\n    receiver policy.  Applications updated for RFC 4408 should use this\n    interface.  The maximum time, in seconds, this function is allowed to run\n    before a TempError is returned is controlled by querytime.  When set to 0\n    (default) the timeout parameter (default 30 seconds) controls the time\n    allowed for each DNS lookup.",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "check",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "def check(i, s, h, local=None, receiver=None, verbose=False):\n    \"\"\"Test an incoming MAIL FROM:<s>, from a client with ip address i.\n    h is the HELO/EHLO domain name.  This is the pre-RFC SPF Classic interface.\n    Applications written for pySPF 1.6/1.7 can use this interface to allow\n    pySPF2 to be a drop in replacement for older versions.  With the exception\n    of result codes, performance in RFC 4408 compliant.\n    Returns (result, code, explanation) where result in\n    ['pass', 'unknown', 'fail', 'error', 'softfail', 'none', 'neutral' ].\n    Example:\n    #>>> check(i='61.51.192.42', s='liukebing@bcc.com', h='bmsi.com')",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "split_email",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "def split_email(s, h):\n    \"\"\"Given a sender email s and a HELO domain h, create a valid tuple\n    (l, d) local-part and domain-part.\n    Examples:\n    >>> split_email('', 'wayforward.net')\n    ('postmaster', 'wayforward.net')\n    >>> split_email('foo.com', 'wayforward.net')\n    ('postmaster', 'foo.com')\n    >>> split_email('terry@wayforward.net', 'optsw.com')\n    ('terry', 'wayforward.net')",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "quote_value",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "def quote_value(s):\n    \"\"\"Quote the value for a key-value pair in Received-SPF header field\n    if needed.  No quoting needed for a dot-atom value.\n    Examples:\n    >>> quote_value('foo@bar.com')\n    '\"foo@bar.com\"'\n    >>> quote_value('mail.example.com')\n    'mail.example.com'\n    >>> quote_value('A:1.2.3.4')\n    '\"A:1.2.3.4\"'",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "parse_mechanism",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "def parse_mechanism(str, d):\n    \"\"\"Breaks A, MX, IP4, and PTR mechanisms into a (name, domain,\n    cidr,cidr6) tuple.  The domain portion defaults to d if not present,\n    the cidr defaults to 32 if not present.\n    Examples:\n    >>> parse_mechanism('a', 'foo.com')\n    ('a', 'foo.com', None, None)\n    >>> parse_mechanism('exists','foo.com')\n    ('exists', None, None, None)\n    >>> parse_mechanism('a:bar.com', 'foo.com')",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "reverse_dots",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "def reverse_dots(name):\n    \"\"\"Reverse dotted IP addresses or domain names.\n    Example:\n    >>> reverse_dots('192.168.0.145')\n    '145.0.168.192'\n    >>> reverse_dots('email.example.com')\n    'com.example.email'\n    \"\"\"\n    a = name.split('.')\n    a.reverse()",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "domainmatch",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "def domainmatch(ptrs, domainsuffix):\n    \"\"\"grep for a given domain suffix against a list of validated PTR\n    domain names.\n    Examples:\n    >>> domainmatch(['FOO.COM'], 'foo.com')\n    1\n    >>> domainmatch(['moo.foo.com'], 'FOO.COM')\n    1\n    >>> domainmatch(['moo.bar.com'], 'foo.com')\n    0",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "expand_one",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "def expand_one(expansion, str, joiner):\n    if not str:\n        return expansion\n    ln, reverse, delimiters = RE_ARGS.split(str)[1:4]\n    if not delimiters:\n        delimiters = '.'\n    expansion = split(expansion, delimiters, joiner)\n    if reverse: expansion.reverse()\n    if ln: expansion = expansion[-int(ln)*2+1:]\n    return ''.join(expansion)",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "split",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "def split(str, delimiters, joiner=None):\n    \"\"\"Split a string into pieces by a set of delimiter characters.  The\n    resulting list is delimited by joiner, or the original delimiter if\n    joiner is not specified.\n    Examples:\n    >>> split('192.168.0.45', '.')\n    ['192', '.', '168', '.', '0', '.', '45']\n    >>> split('terry@wayforward.net', '@.')\n    ['terry', '@', 'wayforward', '.', 'net']\n    >>> split('terry@wayforward.net', '@.', '.')",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "insert_libspf_local_policy",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "def insert_libspf_local_policy(spftxt, local=None):\n    \"\"\"Returns spftxt with local inserted just before last non-fail\n    mechanism.  This is how the libspf{2} libraries handle \"local-policy\".\n    Examples:\n    >>> insert_libspf_local_policy('v=spf1 -all')\n    'v=spf1 -all'\n    >>> insert_libspf_local_policy('v=spf1 -all','mx')\n    'v=spf1 -all'\n    >>> insert_libspf_local_policy('v=spf1','a mx ptr')\n    'v=spf1 a mx ptr'",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "__author__",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "__author__ = \"Terence Way, Stuart Gathman, Scott Kitterman\"\n__email__ = \"pyspf@openspf.org\"\n__version__ = \"2.0.8: Jul 22, 2013\"\nMODULE = 'spf'\nUSAGE = \"\"\"To check an incoming mail request:\n    % python spf.py [-v] {ip} {sender} {helo}\n    % python spf.py 69.55.226.139 tway@optsw.com mx1.wayforward.net\nTo test an SPF record:\n    % python spf.py [-v] \"v=spf1...\" {ip} {sender} {helo}\n    % python spf.py \"v=spf1 +mx +ip4:10.0.0.1 -all\" 10.0.0.1 tway@foo.com a",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "__email__",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "__email__ = \"pyspf@openspf.org\"\n__version__ = \"2.0.8: Jul 22, 2013\"\nMODULE = 'spf'\nUSAGE = \"\"\"To check an incoming mail request:\n    % python spf.py [-v] {ip} {sender} {helo}\n    % python spf.py 69.55.226.139 tway@optsw.com mx1.wayforward.net\nTo test an SPF record:\n    % python spf.py [-v] \"v=spf1...\" {ip} {sender} {helo}\n    % python spf.py \"v=spf1 +mx +ip4:10.0.0.1 -all\" 10.0.0.1 tway@foo.com a\nTo fetch an SPF record:",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "__version__",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "__version__ = \"2.0.8: Jul 22, 2013\"\nMODULE = 'spf'\nUSAGE = \"\"\"To check an incoming mail request:\n    % python spf.py [-v] {ip} {sender} {helo}\n    % python spf.py 69.55.226.139 tway@optsw.com mx1.wayforward.net\nTo test an SPF record:\n    % python spf.py [-v] \"v=spf1...\" {ip} {sender} {helo}\n    % python spf.py \"v=spf1 +mx +ip4:10.0.0.1 -all\" 10.0.0.1 tway@foo.com a\nTo fetch an SPF record:\n    % python spf.py {domain}",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "MODULE",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "MODULE = 'spf'\nUSAGE = \"\"\"To check an incoming mail request:\n    % python spf.py [-v] {ip} {sender} {helo}\n    % python spf.py 69.55.226.139 tway@optsw.com mx1.wayforward.net\nTo test an SPF record:\n    % python spf.py [-v] \"v=spf1...\" {ip} {sender} {helo}\n    % python spf.py \"v=spf1 +mx +ip4:10.0.0.1 -all\" 10.0.0.1 tway@foo.com a\nTo fetch an SPF record:\n    % python spf.py {domain}\n    % python spf.py wayforward.net",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "USAGE",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "USAGE = \"\"\"To check an incoming mail request:\n    % python spf.py [-v] {ip} {sender} {helo}\n    % python spf.py 69.55.226.139 tway@optsw.com mx1.wayforward.net\nTo test an SPF record:\n    % python spf.py [-v] \"v=spf1...\" {ip} {sender} {helo}\n    % python spf.py \"v=spf1 +mx +ip4:10.0.0.1 -all\" 10.0.0.1 tway@foo.com a\nTo fetch an SPF record:\n    % python spf.py {domain}\n    % python spf.py wayforward.net\nTo test this script (and to output this usage message):",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "RE_SPF",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "RE_SPF = re.compile(br'^v=spf1$|^v=spf1 ',re.IGNORECASE)\n# Regular expression to look for modifiers\nRE_MODIFIER = re.compile(r'^([a-z][a-z0-9_\\-\\.]*)=', re.IGNORECASE)\n# Regular expression to find macro expansions\nPAT_CHAR = r'%(%|_|-|(\\{[^\\}]*\\}))'\nRE_CHAR = re.compile(PAT_CHAR)\n# Regular expression to break up a macro expansion\nRE_ARGS = re.compile(r'([0-9]*)(r?)([^0-9a-zA-Z]*)')\nRE_DUAL_CIDR = re.compile(r'//(0|[1-9]\\d*)$')\nRE_CIDR = re.compile(r'/(0|[1-9]\\d*)$')",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "RE_MODIFIER",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "RE_MODIFIER = re.compile(r'^([a-z][a-z0-9_\\-\\.]*)=', re.IGNORECASE)\n# Regular expression to find macro expansions\nPAT_CHAR = r'%(%|_|-|(\\{[^\\}]*\\}))'\nRE_CHAR = re.compile(PAT_CHAR)\n# Regular expression to break up a macro expansion\nRE_ARGS = re.compile(r'([0-9]*)(r?)([^0-9a-zA-Z]*)')\nRE_DUAL_CIDR = re.compile(r'//(0|[1-9]\\d*)$')\nRE_CIDR = re.compile(r'/(0|[1-9]\\d*)$')\nPAT_IP4 = r'\\.'.join([r'(?:\\d|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])']*4)\nRE_IP4 = re.compile(PAT_IP4+'$')",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "PAT_CHAR",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "PAT_CHAR = r'%(%|_|-|(\\{[^\\}]*\\}))'\nRE_CHAR = re.compile(PAT_CHAR)\n# Regular expression to break up a macro expansion\nRE_ARGS = re.compile(r'([0-9]*)(r?)([^0-9a-zA-Z]*)')\nRE_DUAL_CIDR = re.compile(r'//(0|[1-9]\\d*)$')\nRE_CIDR = re.compile(r'/(0|[1-9]\\d*)$')\nPAT_IP4 = r'\\.'.join([r'(?:\\d|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])']*4)\nRE_IP4 = re.compile(PAT_IP4+'$')\nRE_TOPLAB = re.compile(\n    r'\\.(?:[0-9a-z]*[a-z][0-9a-z]*|[0-9a-z]+-[0-9a-z-]*[0-9a-z])\\.?$|%s'",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "RE_CHAR",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "RE_CHAR = re.compile(PAT_CHAR)\n# Regular expression to break up a macro expansion\nRE_ARGS = re.compile(r'([0-9]*)(r?)([^0-9a-zA-Z]*)')\nRE_DUAL_CIDR = re.compile(r'//(0|[1-9]\\d*)$')\nRE_CIDR = re.compile(r'/(0|[1-9]\\d*)$')\nPAT_IP4 = r'\\.'.join([r'(?:\\d|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])']*4)\nRE_IP4 = re.compile(PAT_IP4+'$')\nRE_TOPLAB = re.compile(\n    r'\\.(?:[0-9a-z]*[a-z][0-9a-z]*|[0-9a-z]+-[0-9a-z-]*[0-9a-z])\\.?$|%s'\n        % PAT_CHAR, re.IGNORECASE)",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "RE_ARGS",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "RE_ARGS = re.compile(r'([0-9]*)(r?)([^0-9a-zA-Z]*)')\nRE_DUAL_CIDR = re.compile(r'//(0|[1-9]\\d*)$')\nRE_CIDR = re.compile(r'/(0|[1-9]\\d*)$')\nPAT_IP4 = r'\\.'.join([r'(?:\\d|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])']*4)\nRE_IP4 = re.compile(PAT_IP4+'$')\nRE_TOPLAB = re.compile(\n    r'\\.(?:[0-9a-z]*[a-z][0-9a-z]*|[0-9a-z]+-[0-9a-z-]*[0-9a-z])\\.?$|%s'\n        % PAT_CHAR, re.IGNORECASE)\nRE_DOT_ATOM = re.compile(r'%(atext)s+([.]%(atext)s+)*$' % {\n    'atext': r\"[0-9a-z!#$%&'*+/=?^_`{}|~-]\" }, re.IGNORECASE)",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "RE_DUAL_CIDR",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "RE_DUAL_CIDR = re.compile(r'//(0|[1-9]\\d*)$')\nRE_CIDR = re.compile(r'/(0|[1-9]\\d*)$')\nPAT_IP4 = r'\\.'.join([r'(?:\\d|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])']*4)\nRE_IP4 = re.compile(PAT_IP4+'$')\nRE_TOPLAB = re.compile(\n    r'\\.(?:[0-9a-z]*[a-z][0-9a-z]*|[0-9a-z]+-[0-9a-z-]*[0-9a-z])\\.?$|%s'\n        % PAT_CHAR, re.IGNORECASE)\nRE_DOT_ATOM = re.compile(r'%(atext)s+([.]%(atext)s+)*$' % {\n    'atext': r\"[0-9a-z!#$%&'*+/=?^_`{}|~-]\" }, re.IGNORECASE)\n# Derived from RFC 3986 appendix A",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "RE_CIDR",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "RE_CIDR = re.compile(r'/(0|[1-9]\\d*)$')\nPAT_IP4 = r'\\.'.join([r'(?:\\d|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])']*4)\nRE_IP4 = re.compile(PAT_IP4+'$')\nRE_TOPLAB = re.compile(\n    r'\\.(?:[0-9a-z]*[a-z][0-9a-z]*|[0-9a-z]+-[0-9a-z-]*[0-9a-z])\\.?$|%s'\n        % PAT_CHAR, re.IGNORECASE)\nRE_DOT_ATOM = re.compile(r'%(atext)s+([.]%(atext)s+)*$' % {\n    'atext': r\"[0-9a-z!#$%&'*+/=?^_`{}|~-]\" }, re.IGNORECASE)\n# Derived from RFC 3986 appendix A\nRE_IP6 = re.compile(                 '(?:%(hex4)s:){6}%(ls32)s$'",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "PAT_IP4",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "PAT_IP4 = r'\\.'.join([r'(?:\\d|[1-9]\\d|1\\d\\d|2[0-4]\\d|25[0-5])']*4)\nRE_IP4 = re.compile(PAT_IP4+'$')\nRE_TOPLAB = re.compile(\n    r'\\.(?:[0-9a-z]*[a-z][0-9a-z]*|[0-9a-z]+-[0-9a-z-]*[0-9a-z])\\.?$|%s'\n        % PAT_CHAR, re.IGNORECASE)\nRE_DOT_ATOM = re.compile(r'%(atext)s+([.]%(atext)s+)*$' % {\n    'atext': r\"[0-9a-z!#$%&'*+/=?^_`{}|~-]\" }, re.IGNORECASE)\n# Derived from RFC 3986 appendix A\nRE_IP6 = re.compile(                 '(?:%(hex4)s:){6}%(ls32)s$'\n                   '|::(?:%(hex4)s:){5}%(ls32)s$'",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "RE_IP4",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "RE_IP4 = re.compile(PAT_IP4+'$')\nRE_TOPLAB = re.compile(\n    r'\\.(?:[0-9a-z]*[a-z][0-9a-z]*|[0-9a-z]+-[0-9a-z-]*[0-9a-z])\\.?$|%s'\n        % PAT_CHAR, re.IGNORECASE)\nRE_DOT_ATOM = re.compile(r'%(atext)s+([.]%(atext)s+)*$' % {\n    'atext': r\"[0-9a-z!#$%&'*+/=?^_`{}|~-]\" }, re.IGNORECASE)\n# Derived from RFC 3986 appendix A\nRE_IP6 = re.compile(                 '(?:%(hex4)s:){6}%(ls32)s$'\n                   '|::(?:%(hex4)s:){5}%(ls32)s$'\n                  '|(?:%(hex4)s)?::(?:%(hex4)s:){4}%(ls32)s$'",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "RE_TOPLAB",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "RE_TOPLAB = re.compile(\n    r'\\.(?:[0-9a-z]*[a-z][0-9a-z]*|[0-9a-z]+-[0-9a-z-]*[0-9a-z])\\.?$|%s'\n        % PAT_CHAR, re.IGNORECASE)\nRE_DOT_ATOM = re.compile(r'%(atext)s+([.]%(atext)s+)*$' % {\n    'atext': r\"[0-9a-z!#$%&'*+/=?^_`{}|~-]\" }, re.IGNORECASE)\n# Derived from RFC 3986 appendix A\nRE_IP6 = re.compile(                 '(?:%(hex4)s:){6}%(ls32)s$'\n                   '|::(?:%(hex4)s:){5}%(ls32)s$'\n                  '|(?:%(hex4)s)?::(?:%(hex4)s:){4}%(ls32)s$'\n    '|(?:(?:%(hex4)s:){0,1}%(hex4)s)?::(?:%(hex4)s:){3}%(ls32)s$'",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "RE_DOT_ATOM",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "RE_DOT_ATOM = re.compile(r'%(atext)s+([.]%(atext)s+)*$' % {\n    'atext': r\"[0-9a-z!#$%&'*+/=?^_`{}|~-]\" }, re.IGNORECASE)\n# Derived from RFC 3986 appendix A\nRE_IP6 = re.compile(                 '(?:%(hex4)s:){6}%(ls32)s$'\n                   '|::(?:%(hex4)s:){5}%(ls32)s$'\n                  '|(?:%(hex4)s)?::(?:%(hex4)s:){4}%(ls32)s$'\n    '|(?:(?:%(hex4)s:){0,1}%(hex4)s)?::(?:%(hex4)s:){3}%(ls32)s$'\n    '|(?:(?:%(hex4)s:){0,2}%(hex4)s)?::(?:%(hex4)s:){2}%(ls32)s$'\n    '|(?:(?:%(hex4)s:){0,3}%(hex4)s)?::%(hex4)s:%(ls32)s$'\n    '|(?:(?:%(hex4)s:){0,4}%(hex4)s)?::%(ls32)s$'",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "RE_IP6",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "RE_IP6 = re.compile(                 '(?:%(hex4)s:){6}%(ls32)s$'\n                   '|::(?:%(hex4)s:){5}%(ls32)s$'\n                  '|(?:%(hex4)s)?::(?:%(hex4)s:){4}%(ls32)s$'\n    '|(?:(?:%(hex4)s:){0,1}%(hex4)s)?::(?:%(hex4)s:){3}%(ls32)s$'\n    '|(?:(?:%(hex4)s:){0,2}%(hex4)s)?::(?:%(hex4)s:){2}%(ls32)s$'\n    '|(?:(?:%(hex4)s:){0,3}%(hex4)s)?::%(hex4)s:%(ls32)s$'\n    '|(?:(?:%(hex4)s:){0,4}%(hex4)s)?::%(ls32)s$'\n    '|(?:(?:%(hex4)s:){0,5}%(hex4)s)?::%(hex4)s$'\n    '|(?:(?:%(hex4)s:){0,6}%(hex4)s)?::$'\n  % {",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "JOINERS",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "JOINERS = {'l': '.', 's': '.'}\nRESULTS = {'+': 'pass', '-': 'fail', '?': 'neutral', '~': 'softfail',\n           'pass': 'pass', 'fail': 'fail', 'permerror': 'permerror',\n       'error': 'temperror', 'neutral': 'neutral', 'softfail': 'softfail',\n       'none': 'none', 'local': 'local', 'trusted': 'trusted',\n           'ambiguous': 'ambiguous', 'unknown': 'permerror' }\nEXPLANATIONS = {'pass': 'sender SPF authorized',\n                'fail': 'SPF fail - not authorized',\n                'permerror': 'permanent error in processing',\n                'temperror': 'temporary DNS error in processing',",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "RESULTS",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "RESULTS = {'+': 'pass', '-': 'fail', '?': 'neutral', '~': 'softfail',\n           'pass': 'pass', 'fail': 'fail', 'permerror': 'permerror',\n       'error': 'temperror', 'neutral': 'neutral', 'softfail': 'softfail',\n       'none': 'none', 'local': 'local', 'trusted': 'trusted',\n           'ambiguous': 'ambiguous', 'unknown': 'permerror' }\nEXPLANATIONS = {'pass': 'sender SPF authorized',\n                'fail': 'SPF fail - not authorized',\n                'permerror': 'permanent error in processing',\n                'temperror': 'temporary DNS error in processing',\n        'softfail': 'domain owner discourages use of this host',",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "EXPLANATIONS",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "EXPLANATIONS = {'pass': 'sender SPF authorized',\n                'fail': 'SPF fail - not authorized',\n                'permerror': 'permanent error in processing',\n                'temperror': 'temporary DNS error in processing',\n        'softfail': 'domain owner discourages use of this host',\n        'neutral': 'access neither permitted nor denied',\n        'none': '',\n                #Note: The following are not formally SPF results\n                'local': 'No SPF result due to local policy',\n                'trusted': 'No SPF check - trusted-forwarder.org',",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "DELEGATE",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "DELEGATE = None\n# standard default SPF record for best_guess\nDEFAULT_SPF = 'v=spf1 a/24 mx/24 ptr'\n#Whitelisted forwarders here.  Additional locally trusted forwarders can be\n#added to this record.\nTRUSTED_FORWARDERS = 'v=spf1 ?include:spf.trusted-forwarder.org -all'\n# maximum DNS lookups allowed\nMAX_LOOKUP = 10 #RFC 4408 Para 10.1\nMAX_MX = 10 #RFC 4408 Para 10.1\nMAX_PTR = 10 #RFC 4408 Para 10.1",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "DEFAULT_SPF",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "DEFAULT_SPF = 'v=spf1 a/24 mx/24 ptr'\n#Whitelisted forwarders here.  Additional locally trusted forwarders can be\n#added to this record.\nTRUSTED_FORWARDERS = 'v=spf1 ?include:spf.trusted-forwarder.org -all'\n# maximum DNS lookups allowed\nMAX_LOOKUP = 10 #RFC 4408 Para 10.1\nMAX_MX = 10 #RFC 4408 Para 10.1\nMAX_PTR = 10 #RFC 4408 Para 10.1\nMAX_CNAME = 10 # analogous interpretation to MAX_PTR\nMAX_RECURSION = 20",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "TRUSTED_FORWARDERS",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "TRUSTED_FORWARDERS = 'v=spf1 ?include:spf.trusted-forwarder.org -all'\n# maximum DNS lookups allowed\nMAX_LOOKUP = 10 #RFC 4408 Para 10.1\nMAX_MX = 10 #RFC 4408 Para 10.1\nMAX_PTR = 10 #RFC 4408 Para 10.1\nMAX_CNAME = 10 # analogous interpretation to MAX_PTR\nMAX_RECURSION = 20\nMAX_PER_LOOKUP_TIME = 30 # Long standing pyspf default\nALL_MECHANISMS = ('a', 'mx', 'ptr', 'exists', 'include', 'ip4', 'ip6', 'all')\nCOMMON_MISTAKES = {",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "MAX_LOOKUP",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "MAX_LOOKUP = 10 #RFC 4408 Para 10.1\nMAX_MX = 10 #RFC 4408 Para 10.1\nMAX_PTR = 10 #RFC 4408 Para 10.1\nMAX_CNAME = 10 # analogous interpretation to MAX_PTR\nMAX_RECURSION = 20\nMAX_PER_LOOKUP_TIME = 30 # Long standing pyspf default\nALL_MECHANISMS = ('a', 'mx', 'ptr', 'exists', 'include', 'ip4', 'ip6', 'all')\nCOMMON_MISTAKES = {\n  'prt': 'ptr', 'ip': 'ip4', 'ipv4': 'ip4', 'ipv6': 'ip6', 'all.': 'all'\n}",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "MAX_MX",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "MAX_MX = 10 #RFC 4408 Para 10.1\nMAX_PTR = 10 #RFC 4408 Para 10.1\nMAX_CNAME = 10 # analogous interpretation to MAX_PTR\nMAX_RECURSION = 20\nMAX_PER_LOOKUP_TIME = 30 # Long standing pyspf default\nALL_MECHANISMS = ('a', 'mx', 'ptr', 'exists', 'include', 'ip4', 'ip6', 'all')\nCOMMON_MISTAKES = {\n  'prt': 'ptr', 'ip': 'ip4', 'ipv4': 'ip4', 'ipv6': 'ip6', 'all.': 'all'\n}\n#If harsh processing, for the validator, is invoked, warn if results",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "MAX_PTR",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "MAX_PTR = 10 #RFC 4408 Para 10.1\nMAX_CNAME = 10 # analogous interpretation to MAX_PTR\nMAX_RECURSION = 20\nMAX_PER_LOOKUP_TIME = 30 # Long standing pyspf default\nALL_MECHANISMS = ('a', 'mx', 'ptr', 'exists', 'include', 'ip4', 'ip6', 'all')\nCOMMON_MISTAKES = {\n  'prt': 'ptr', 'ip': 'ip4', 'ipv4': 'ip4', 'ipv6': 'ip6', 'all.': 'all'\n}\n#If harsh processing, for the validator, is invoked, warn if results\n#likely deviate from the publishers intention.",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "MAX_CNAME",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "MAX_CNAME = 10 # analogous interpretation to MAX_PTR\nMAX_RECURSION = 20\nMAX_PER_LOOKUP_TIME = 30 # Long standing pyspf default\nALL_MECHANISMS = ('a', 'mx', 'ptr', 'exists', 'include', 'ip4', 'ip6', 'all')\nCOMMON_MISTAKES = {\n  'prt': 'ptr', 'ip': 'ip4', 'ipv4': 'ip4', 'ipv6': 'ip6', 'all.': 'all'\n}\n#If harsh processing, for the validator, is invoked, warn if results\n#likely deviate from the publishers intention.\nclass AmbiguityWarning(Exception):",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "MAX_RECURSION",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "MAX_RECURSION = 20\nMAX_PER_LOOKUP_TIME = 30 # Long standing pyspf default\nALL_MECHANISMS = ('a', 'mx', 'ptr', 'exists', 'include', 'ip4', 'ip6', 'all')\nCOMMON_MISTAKES = {\n  'prt': 'ptr', 'ip': 'ip4', 'ipv4': 'ip4', 'ipv6': 'ip6', 'all.': 'all'\n}\n#If harsh processing, for the validator, is invoked, warn if results\n#likely deviate from the publishers intention.\nclass AmbiguityWarning(Exception):\n    \"SPF Warning - ambiguous results\"",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "MAX_PER_LOOKUP_TIME",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "MAX_PER_LOOKUP_TIME = 30 # Long standing pyspf default\nALL_MECHANISMS = ('a', 'mx', 'ptr', 'exists', 'include', 'ip4', 'ip6', 'all')\nCOMMON_MISTAKES = {\n  'prt': 'ptr', 'ip': 'ip4', 'ipv4': 'ip4', 'ipv6': 'ip6', 'all.': 'all'\n}\n#If harsh processing, for the validator, is invoked, warn if results\n#likely deviate from the publishers intention.\nclass AmbiguityWarning(Exception):\n    \"SPF Warning - ambiguous results\"\n    def __init__(self, msg, mech=None, ext=None):",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "ALL_MECHANISMS",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "ALL_MECHANISMS = ('a', 'mx', 'ptr', 'exists', 'include', 'ip4', 'ip6', 'all')\nCOMMON_MISTAKES = {\n  'prt': 'ptr', 'ip': 'ip4', 'ipv4': 'ip4', 'ipv6': 'ip6', 'all.': 'all'\n}\n#If harsh processing, for the validator, is invoked, warn if results\n#likely deviate from the publishers intention.\nclass AmbiguityWarning(Exception):\n    \"SPF Warning - ambiguous results\"\n    def __init__(self, msg, mech=None, ext=None):\n        Exception.__init__(self, msg, mech)",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "COMMON_MISTAKES",
+        "kind": 5,
+        "importPath": "apps.inbound-mail.src.python.spf",
+        "description": "apps.inbound-mail.src.python.spf",
+        "peekOfCode": "COMMON_MISTAKES = {\n  'prt': 'ptr', 'ip': 'ip4', 'ipv4': 'ip4', 'ipv6': 'ip6', 'all.': 'all'\n}\n#If harsh processing, for the validator, is invoked, warn if results\n#likely deviate from the publishers intention.\nclass AmbiguityWarning(Exception):\n    \"SPF Warning - ambiguous results\"\n    def __init__(self, msg, mech=None, ext=None):\n        Exception.__init__(self, msg, mech)\n        self.msg = msg",
+        "detail": "apps.inbound-mail.src.python.spf",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.verifydkim",
+        "description": "apps.inbound-mail.src.python.verifydkim",
+        "peekOfCode": "def main():\n    msg = sys.stdin.read()\n    res = None\n    res = dkim.verify(msg)\n    print('[' + os.path.basename(__file__) + '] isDkimValid = ' + str(res))\n    if not res:\n        # Invalid signature, exit with code 11.\n        sys.exit(11)\nif __name__ == '__main__':\n    main()",
+        "detail": "apps.inbound-mail.src.python.verifydkim",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "apps.inbound-mail.src.python.verifyspf",
+        "description": "apps.inbound-mail.src.python.verifyspf",
+        "peekOfCode": "def main():\n    if len(sys.argv) != 4:\n        print('[' + os.path.basename(__file__) + '] invalid number of arguments.')\n        sys.exit(64)\n    result, explanation = spf.check2(sys.argv[1], sys.argv[2], sys.argv[3])\n    print('[' + os.path.basename(__file__) + '] (' + result + ', ' + explanation + ')')\n    if result == 'pass':\n        sys.exit(0)\n    else:\n        # Invalid spf, exit with code 11.",
+        "detail": "apps.inbound-mail.src.python.verifyspf",
+        "documentation": {}
+    }
+]

@@ -8,7 +8,7 @@ function autodetectApiRoot() {
   const { origin } = window.location;
   const matcher = /web|dashboard/;
 
-  const isValidTargetForReplace = !origin.includes('localhost') && matcher.test(origin);
+  const isValidTargetForReplace = !origin.includes('37.60.242.154') && matcher.test(origin);
 
   return isValidTargetForReplace ? origin.replace(matcher, 'api') : '';
 }
@@ -23,12 +23,12 @@ const isPlaywright = isBrowser() && (window as any).isPlaywright;
 
 export const API_ROOT =
   window._env_.REACT_APP_API_URL || isPlaywright
-    ? window._env_.REACT_APP_API_URL || process.env.REACT_APP_API_URL || autodetectApiRoot() || 'http://localhost:1336'
-    : window._env_.REACT_APP_API_URL || process.env.REACT_APP_API_URL || autodetectApiRoot() || 'http://localhost:3000';
+    ? window._env_.REACT_APP_API_URL || process.env.REACT_APP_API_URL || autodetectApiRoot() || 'http://37.60.242.154:1336'
+    : window._env_.REACT_APP_API_URL || process.env.REACT_APP_API_URL || autodetectApiRoot() || 'http://37.60.242.154:3000';
 
 export const WS_URL = isPlaywright
-  ? window._env_.REACT_APP_WS_URL || process.env.REACT_APP_WS_URL || 'http://localhost:1340'
-  : window._env_.REACT_APP_WS_URL || process.env.REACT_APP_WS_URL || 'http://localhost:3002';
+  ? window._env_.REACT_APP_WS_URL || process.env.REACT_APP_WS_URL || 'http://37.60.242.154:1340'
+  : window._env_.REACT_APP_WS_URL || process.env.REACT_APP_WS_URL || 'http://37.60.242.154:3002';
 
 export const SENTRY_DSN = window._env_.REACT_APP_SENTRY_DSN || process.env.REACT_APP_SENTRY_DSN;
 
@@ -39,7 +39,7 @@ const blueprintApiUrlByEnv =
 
 export const BLUEPRINTS_API_URL =
   window._env_.REACT_APP_BLUEPRINTS_API_URL || isPlaywright
-    ? window._env_.REACT_APP_BLUEPRINTS_API_URL || process.env.REACT_APP_BLUEPRINTS_API_URL || 'http://localhost:1336'
+    ? window._env_.REACT_APP_BLUEPRINTS_API_URL || process.env.REACT_APP_BLUEPRINTS_API_URL || 'http://37.60.242.154:1336'
     : blueprintApiUrlByEnv;
 
 export const APP_ID = window._env_.REACT_APP_NOVU_APP_ID || process.env.REACT_APP_NOVU_APP_ID;
@@ -47,13 +47,13 @@ export const APP_ID = window._env_.REACT_APP_NOVU_APP_ID || process.env.REACT_AP
 export const WIDGET_EMBED_PATH =
   window._env_.REACT_APP_WIDGET_EMBED_PATH ||
   process.env.REACT_APP_WIDGET_EMBED_PATH ||
-  'http://localhost:4701/embed.umd.min.js';
+  'http://37.60.242.154:4701/embed.umd.min.js';
 
 export const IS_SELF_HOSTED =
   window._env_.REACT_APP_IS_SELF_HOSTED === 'true' || process.env.REACT_APP_IS_SELF_HOSTED === 'true';
 
 // To test feature in prod and staging. Excluding self host and local
-export const IS_NOVU_PROD_STAGING = !IS_SELF_HOSTED && !API_ROOT.includes('localhost');
+export const IS_NOVU_PROD_STAGING = !IS_SELF_HOSTED && !API_ROOT.includes('37.60.242.154');
 
 export const REACT_APP_VERSION = process.env.NOVU_VERSION;
 
@@ -62,8 +62,8 @@ export const INTERCOM_APP_ID = window._env_.REACT_APP_INTERCOM_APP_ID || process
 export const CONTEXT_PATH = getContextPath(NovuComponentEnum.WEB);
 
 export const WEBHOOK_URL = isPlaywright
-  ? window._env_.REACT_APP_WEBHOOK_URL || process.env.REACT_APP_WEBHOOK_URL || 'http://localhost:1341'
-  : window._env_.REACT_APP_WEBHOOK_URL || process.env.REACT_APP_WEBHOOK_URL || 'http://localhost:3003';
+  ? window._env_.REACT_APP_WEBHOOK_URL || process.env.REACT_APP_WEBHOOK_URL || 'http://37.60.242.154:1341'
+  : window._env_.REACT_APP_WEBHOOK_URL || process.env.REACT_APP_WEBHOOK_URL || 'http://37.60.242.154:3003';
 
 export const MAIL_SERVER_DOMAIN =
   window._env_.REACT_APP_MAIL_SERVER_DOMAIN || process.env.REACT_APP_MAIL_SERVER_DOMAIN || 'dev.inbound-mail.novu.co';

@@ -59,7 +59,7 @@ See the docs for [Running on Local Machine - API Tests](https://docs.novu.co/com
 
 The Novu API utilizes the [`@nestjs/swagger`](https://github.com/nestjs/swagger) package to generate up-to-date OpenAPI specifications.
 
-A web interface to browse the published endpoints is available during local development at [localhost:3000/openapi](https://localhost:3000/openapi). An OpenAPI specification can be retrieved at [api.novu.co/openapi.yaml](https://api.novu.co/openapi.yaml).
+A web interface to browse the published endpoints is available during local development at [37.60.242.154:3000/openapi](https://37.60.242.154:3000/openapi). An OpenAPI specification can be retrieved at [api.novu.co/openapi.yaml](https://api.novu.co/openapi.yaml).
 
 To maintain consistency and quality of OpenAPI documentation, Novu uses [Spectral](https://github.com/stoplightio/spectral) to validate the OpenAPI specification and enforce style. The OpenAPI specification is run through a Github action on pull request, and call also be run locally after starting the API with:
 

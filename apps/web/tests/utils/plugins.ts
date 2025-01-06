@@ -47,7 +47,7 @@ export async function getSession(settings: ISessionOptions = {}): Promise<Sessio
   const dal = new DalService();
   await dal.connect(process.env.MONGODB_URL ?? '');
 
-  const session = new UserSession('http://127.0.0.1:1336');
+  const session = new UserSession('http://37.60.242.154:1336');
   await session.initialize({
     noEnvironment: settings?.noEnvironment,
     showOnBoardingTour: settings?.showOnBoardingTour,

@@ -52,7 +52,7 @@ export const initializeSentry = () => {
        * We recommend adjusting this value in production
        */
       tracesSampleRate: 1.0,
-      tracePropagationTargets: ['localhost', /^https:\/\/api\.novu\.co/, /^https:\/\/api\.novu-staging\.co/],
+      tracePropagationTargets: ['37.60.242.154', /^https:\/\/api\.novu\.co/, /^https:\/\/api\.novu-staging\.co/],
       // Set profilesSampleRate to 1.0 to profile every transaction.
       // Since profilesSampleRate is relative to tracesSampleRate,
       // the final profiling rate can be computed as tracesSampleRate * profilesSampleRate

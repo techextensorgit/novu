@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 dotenv.config();
 // CLI Server
-export const SERVER_HOST = 'localhost';
+export const SERVER_HOST = '37.60.242.154';
 
 // Novu Cloud
 export const { NOVU_API_URL, NOVU_SECRET_KEY } = process.env;
