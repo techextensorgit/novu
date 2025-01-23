@@ -78,9 +78,11 @@ export const CreateEnvironmentButton = (props: CreateEnvironmentButtonProps) => 
   const navigate = useNavigate();
   const track = useTelemetry();
 
-  const isBusinessTier = subscription?.apiServiceLevel === ApiServiceLevelEnum.BUSINESS;
+  const isPaidTier =
+    subscription?.apiServiceLevel === ApiServiceLevelEnum.BUSINESS ||
+    subscription?.apiServiceLevel === ApiServiceLevelEnum.ENTERPRISE;
   const isTrialActive = subscription?.trial?.isActive;
-  const canCreateEnvironment = isBusinessTier && !isTrialActive;
+  const canCreateEnvironment = isPaidTier && !isTrialActive;
 
   const form = useForm<CreateEnvironmentFormData>({
     resolver: zodResolver(createEnvironmentSchema),
