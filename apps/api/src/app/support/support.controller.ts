@@ -10,7 +10,7 @@ import { PlainCardsGuard } from './guards/plain-cards.guard';
 import { ApiExcludeController } from '@nestjs/swagger';
 
 @Controller('/support')
-@ApiExcludeController
+@ApiExcludeController()
 export class SupportController {
   constructor(
     private createSupportThreadUsecase: CreateSupportThreadUsecase,
