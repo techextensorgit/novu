@@ -20,8 +20,10 @@ import { GetSubscriber } from './usecases/get-subscriber/get-subscriber.usecase'
 import { GetSubscriberCommand } from './usecases/get-subscriber/get-subscriber.command';
 import { PatchSubscriber } from './usecases/patch-subscriber/patch-subscriber.usecase';
 import { PatchSubscriberCommand } from './usecases/patch-subscriber/patch-subscriber.command';
+import { GetSubscriberPreferences } from './usecases/get-subscriber-preferences/get-subscriber-preferences.usecase';
+import { GetSubscriberPreferencesCommand } from './usecases/get-subscriber-preferences/get-subscriber-preferences.command';
 import { ListSubscribersQueryDto } from './dtos/list-subscribers-query.dto';
-import { ListSubscribersResponseDto } from './dtos';
+import { ListSubscribersResponseDto } from './dtos/list-subscribers-response.dto';
 import { SdkGroupName, SdkMethodName } from '../shared/framework/swagger/sdk.decorators';
 import { DirectionEnum } from '../shared/dtos/base-responses';
 import { PatchSubscriberRequestDto } from './dtos/patch-subscriber.dto';
@@ -29,6 +31,7 @@ import { SubscriberResponseDto } from '../subscribers/dtos';
 import { RemoveSubscriberCommand } from './usecases/remove-subscriber/remove-subscriber.command';
 import { RemoveSubscriber } from './usecases/remove-subscriber/remove-subscriber.usecase';
 import { RemoveSubscriberResponseDto } from './dtos/remove-subscriber.dto';
+import { GetSubscriberPreferencesDto } from './dtos/get-subscriber-preferences.dto';
 
 @Controller({ path: '/subscribers', version: '2' })
 @UseInterceptors(ClassSerializerInterceptor)
@@ -40,7 +43,8 @@ export class SubscribersController {
     private listSubscribersUsecase: ListSubscribersUseCase,
     private getSubscriberUsecase: GetSubscriber,
     private patchSubscriberUsecase: PatchSubscriber,
-    private removeSubscriberUsecase: RemoveSubscriber
+    private removeSubscriberUsecase: RemoveSubscriber,
+    private getSubscriberPreferencesUsecase: GetSubscriberPreferences
   ) {}
 
   @Get('')
@@ -130,6 +134,29 @@ export class SubscribersController {
   ): Promise<RemoveSubscriberResponseDto> {
     return await this.removeSubscriberUsecase.execute(
       RemoveSubscriberCommand.create({
+        environmentId: user.environmentId,
+        organizationId: user.organizationId,
+        subscriberId,
+      })
+    );
+  }
+
+  @Get('/:subscriberId/preferences')
+  @UserAuthentication()
+  @ExternalApiAccessible()
+  @ApiOperation({
+    summary: 'Get subscriber preferences',
+    description: 'Get subscriber preferences',
+  })
+  @ApiResponse(GetSubscriberPreferencesDto)
+  @SdkGroupName('Subscribers.Preferences')
+  @SdkMethodName('retrieve')
+  async getSubscriberPreferences(
+    @UserSession() user: UserSessionData,
+    @Param('subscriberId') subscriberId: string
+  ): Promise<GetSubscriberPreferencesDto> {
+    return await this.getSubscriberPreferencesUsecase.execute(
+      GetSubscriberPreferencesCommand.create({
         environmentId: user.environmentId,
         organizationId: user.organizationId,
         subscriberId,
