@@ -68,15 +68,7 @@ With Novu, you can create custom workflows and define conditions for each channe
 
 ## 🚀 Getting Started
 
-There are two ways to get started:
-
-1. type the following command in your terminal.
-
-```bash
-npx novu@latest dev
-```
-
-2. [Create a free cloud account](https://dashboard-v2.novu.co?utm_campaign=github-readme)
+[Create a free account](https://dashboard-v2.novu.co?utm_campaign=github-readme) and follow the instructions on the dashboard.
 
 ## 📚 Table of contents
 
