@@ -8,6 +8,7 @@ import {
 } from '@/components/primitives/sheet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/primitives/tabs';
 import { useFetchApiKeys } from '@/hooks/use-fetch-api-keys';
+import { useTelemetry } from '@/hooks/use-telemetry';
 import {
   type CodeSnippet,
   createCurlSnippet,
@@ -17,8 +18,10 @@ import {
   createPhpSnippet,
   createPythonSnippet,
 } from '@/utils/code-snippets';
+import { TelemetryEvent } from '@/utils/telemetry';
 import type { WorkflowResponseDto } from '@novu/shared';
 import { motion } from 'motion/react';
+import { useEffect } from 'react';
 import { CodeBlock, Language } from '../../primitives/code-block';
 import { InlineToast } from '../../primitives/inline-toast';
 import { Separator } from '../../primitives/separator';
@@ -143,6 +146,13 @@ export function TestWorkflowInstructions({ isOpen, onClose, workflow, to, payloa
   const identifier = workflow?.workflowId ?? '';
   const { data: apiKeysResponse } = useFetchApiKeys();
   const apiKey = apiKeysResponse?.data?.[0]?.key ?? '';
+  const track = useTelemetry();
+
+  useEffect(() => {
+    if (isOpen) {
+      track(TelemetryEvent.WORKFLOW_INSTRUCTIONS_OPENED);
+    }
+  }, [isOpen, track, identifier]);
 
   const getSnippetForLanguage = (language: SnippetLanguage) => {
     const snippetUtil = LANGUAGE_TO_SNIPPET_UTIL[language];
