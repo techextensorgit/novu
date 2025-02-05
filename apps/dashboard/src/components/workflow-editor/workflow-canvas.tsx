@@ -266,6 +266,7 @@ const WorkflowCanvasChild = ({ steps, readOnly }: { steps: Step[]; readOnly?: bo
       </ReactFlow>
       {currentWorkflow &&
         currentEnvironment?.name === EnvironmentEnum.DEVELOPMENT &&
+        currentWorkflow.origin === WorkflowOriginEnum.NOVU_CLOUD &&
         !user?.unsafeMetadata?.workflowChecklistCompleted &&
         isWorkflowChecklistEnabled && <WorkflowChecklist steps={steps} workflow={currentWorkflow} />}
     </div>
