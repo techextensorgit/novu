@@ -19,7 +19,7 @@
 </p>
 
 <h1 align="center">
-  The open source notifications framework that makes it easy for developers to empower product teams.
+  The open source notification platform
 </h1>
 
 <div align="center">
