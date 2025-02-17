@@ -43,6 +43,17 @@ type SubscriberOverviewFormProps = {
   readOnly?: boolean;
 };
 
+const createDefaultSubscriberValues = (subscriber: SubscriberResponseDto) => ({
+  avatar: subscriber?.avatar ?? '',
+  email: subscriber.email || null,
+  phone: subscriber.phone ?? '',
+  firstName: subscriber.firstName ?? '',
+  lastName: subscriber.lastName ?? '',
+  locale: subscriber.locale ?? null,
+  timezone: subscriber.timezone ?? null,
+  data: JSON.stringify(subscriber.data, null, 2) ?? '',
+});
+
 export function SubscriberOverviewForm(props: SubscriberOverviewFormProps) {
   const { subscriber, readOnly = false } = props;
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -61,16 +72,7 @@ export function SubscriberOverviewForm(props: SubscriberOverviewFormProps) {
   const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof SubscriberFormSchema>>({
-    defaultValues: {
-      avatar: subscriber?.avatar ?? '',
-      email: subscriber.email || null,
-      phone: subscriber.phone ?? '',
-      firstName: subscriber.firstName ?? '',
-      lastName: subscriber.lastName ?? '',
-      locale: subscriber.locale ?? null,
-      timezone: subscriber.timezone ?? null,
-      data: JSON.stringify(subscriber.data, null, 2) ?? '',
-    },
+    defaultValues: createDefaultSubscriberValues(subscriber),
     resolver: zodResolver(SubscriberFormSchema),
     shouldFocusError: false,
   });
@@ -78,7 +80,7 @@ export function SubscriberOverviewForm(props: SubscriberOverviewFormProps) {
   const { patchSubscriber } = usePatchSubscriber({
     onSuccess: (data) => {
       showSuccessToast(`Updated subscriber: ${getSubscriberTitle(data)}`, undefined, toastOptions);
-      form.reset({ ...data, data: JSON.stringify(data.data, null, 2) ?? '' });
+      form.reset(createDefaultSubscriberValues(data));
       track(TelemetryEvent.SUBSCRIBER_EDITED);
     },
     onError: () => {
@@ -93,16 +95,7 @@ export function SubscriberOverviewForm(props: SubscriberOverviewFormProps) {
    */
   useEffect(() => {
     if (subscriber) {
-      form.reset({
-        avatar: subscriber?.avatar ?? '',
-        email: subscriber.email || null,
-        phone: subscriber.phone ?? '',
-        firstName: subscriber.firstName ?? '',
-        lastName: subscriber.lastName ?? '',
-        locale: subscriber.locale ?? null,
-        timezone: subscriber.timezone ?? null,
-        data: JSON.stringify(subscriber.data, null, 2) ?? '',
-      });
+      form.reset(createDefaultSubscriberValues(subscriber));
     }
   }, [subscriber, form]);
 
