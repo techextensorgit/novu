@@ -8,6 +8,16 @@ import { useEffect, useState } from 'react';
 import { HeaderButton } from './header-navigation/header-button';
 import { InboxBellFilled } from './icons/inbox-bell-filled';
 
+declare global {
+  interface Window {
+    Clerk: {
+      session: {
+        getToken: (options: { template: string }) => Promise<string>;
+      };
+    };
+  }
+}
+
 const InboxInner = () => {
   const [open, setOpen] = useState(false);
   const [jingle, setJingle] = useState(false);
@@ -92,12 +102,13 @@ export const InboxButton = () => {
    * This displays a test inbox, where the user can see their test notifications appear
    * in real-time.
    */
-  const appId = isTestPage ? currentEnvironment?.identifier : APP_ID;
+  const appId = isTestPage ? currentEnvironment?.identifier : 'aqs6CnVJ1kbL';
 
   const localizationTestSuffix = isTestPage ? ' (Test)' : '';
 
   return (
     <Inbox
+      jwt="foo"
       subscriberId={user.externalId ?? ''}
       applicationIdentifier={appId}
       backendUrl={API_HOSTNAME}

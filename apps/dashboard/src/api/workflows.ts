@@ -53,6 +53,7 @@ export const getWorkflows = async ({
   if (orderBy) {
     params.append('orderBy', orderBy);
   }
+
   if (orderDirection) {
     params.append('orderDirection', orderDirection.toUpperCase());
   }

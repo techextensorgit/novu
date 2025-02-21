@@ -107,6 +107,7 @@ export function InboxPlayground() {
      */
     const initializeDemoWorkflow = async () => {
       const workflow = data?.workflows.find((workflow) => workflow.workflowId?.includes(ONBOARDING_DEMO_WORKFLOW_ID));
+
       if (!workflow) {
         await createDemoWorkflow({ environment: currentEnvironment! });
       }
