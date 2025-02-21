@@ -128,6 +128,7 @@ export function InboxPlayground() {
           body: formValues.body,
           primaryActionLabel: formValues.primaryAction?.label || '',
           secondaryActionLabel: formValues.secondaryAction?.label || '',
+          __source: 'inbox-onboarding',
         },
       });
 
