@@ -21,17 +21,7 @@ interface ApiKeysFormData {
   identifier: string;
 }
 
-function getJwt() {
-  return 'foo';
-}
-
-function Bar() {
-  const jwt = getJwt();
-  return <div>{jwt}</div>;
-}
-
 export function ApiKeysPage() {
-  Bar();
   const apiKeysQuery = useFetchApiKeys();
   const { currentEnvironment } = useEnvironment();
   const apiKeys = apiKeysQuery.data?.data;
