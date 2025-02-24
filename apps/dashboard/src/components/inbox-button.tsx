@@ -108,7 +108,6 @@ export const InboxButton = () => {
 
   return (
     <Inbox
-      jwt="foo"
       subscriberId={user.externalId ?? ''}
       applicationIdentifier={appId}
       backendUrl={API_HOSTNAME}
