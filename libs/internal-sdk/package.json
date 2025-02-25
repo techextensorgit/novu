@@ -4,6 +4,7 @@
   "author": "Novu",
   "main": "./index.js",
   "sideEffects": false,
+  "private": true,
   "scripts": {
     "lint": "eslint --cache --max-warnings=0 src",
     "build": "tsc",
